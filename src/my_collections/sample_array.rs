@@ -56,11 +56,11 @@ pub fn array_slice() {
     println!("\nTaking slice...");
     let slice1 = &array1[2..4]; // elements from index 2 untill 4 (values 33 and 44)
     println!("{} | {}", slice1[0], slice1[1]);
-    assert_eq!(slice1, vec![33, 44]);
+    assert_eq!(slice1, [33, 44]);
 
     println!("\nMapping sliced items...");
     let slice2: Vec<i32> = slice1.iter().map(|x| x+1).collect();
-    assert_eq!(slice2, vec![34, 45]);
+    assert_eq!(slice2, [34, 45]);
 
     println!("\nMap result");
     for x in slice2.iter() {

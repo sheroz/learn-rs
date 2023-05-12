@@ -1,8 +1,18 @@
 pub fn vector1(){
     println!("\n***\n\nVectors:");
 
+    let numbers = Vec::from([-1, 0, 1, 100]);
+    assert_eq!(numbers.len(), 4);
+    assert_eq!(numbers, vec![-1, 0, 1, 100]);
+
+    let mut days: Vec<&str> = Vec::new();
+    days.push("Monday");
+    days.push("Tuesday");
+    days.push("Wednesday");
+    assert_eq!(days.len(), 3);
+
     let mut vec1 = vec![1, 2, 3];
-    print_my_vector("Sample vector", &vec1);
+    print_my_vector("Sample vector1", &vec1);
 
     vec1.push(4);
     vec1.push(5);
