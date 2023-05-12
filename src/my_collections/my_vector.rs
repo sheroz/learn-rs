@@ -1,9 +1,14 @@
 pub fn vector1(){
     println!("\n***\n\nVectors:");
 
-    let numbers = Vec::from([-1, 0, 1, 100]);
+    let mut numbers = Vec::from([-1, 0, 1, 100]);
     assert_eq!(numbers.len(), 4);
     assert_eq!(numbers, vec![-1, 0, 1, 100]);
+    let x = numbers.get(3);
+    assert_eq!(*x.unwrap(), 100);
+
+    numbers[3] = 200;    
+    assert_eq!(numbers, vec![-1, 0, 1, 200]);
 
     let mut days: Vec<&str> = Vec::new();
     days.push("Monday");
