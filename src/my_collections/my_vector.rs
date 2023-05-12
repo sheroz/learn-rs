@@ -5,6 +5,7 @@ pub fn vector1(){
     assert_eq!(numbers.len(), 4);
     assert_eq!(numbers, vec![-1, 0, 1, 100]);
     let x = numbers.get(3);
+    assert!(x.is_some());
     assert_eq!(*x.unwrap(), 100);
 
     numbers[3] = 200;    
