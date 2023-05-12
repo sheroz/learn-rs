@@ -31,4 +31,21 @@ pub fn simple_array1()
     {
         println!("{} : {}", str, str.len());
     }
+
+    println!("sample array1. 2D matrix");
+
+    let matrix1 = [[1,2,3],[4,5,6],[7,8,9]];
+    for matrix1_line in matrix1.iter()
+    {
+        for matrix_item in matrix1_line.iter() {
+            println!("{}",matrix_item);
+        }
+    }
+
+    // pretty print
+    for matrix1_line in matrix1.iter()
+    {
+        println!("{} | {} | {}", matrix1_line[0], matrix1_line[1], matrix1_line[2]);
+    }
+
 } 
