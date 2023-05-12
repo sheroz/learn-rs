@@ -1,8 +1,8 @@
 // #[path = "../src/mycalc.rs"] mod mycalc; 
 
 extern crate my_rust;
-use my_rust::sum2;
-use my_rust::mul2;
+use my_rust::my_lib::sum2;
+use my_rust::my_lib::mul2;
 
 #[test]
 fn test_sum2() {

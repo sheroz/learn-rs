@@ -1,9 +1,8 @@
 // #[path = "../src/mycalc.rs"] mod mycalc; 
 
 extern crate my_rust;
+use my_rust::my_calc::*;
 use std::arch::asm;
-
-use my_rust::mycalc::*;
 
 #[test]
 fn test_sum1() {
