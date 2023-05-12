@@ -1,5 +1,5 @@
 pub fn vector1(){
-    println!("\n***\nVectors:");
+    println!("\n***\n\nVectors:");
 
     let mut vec1 = vec![1, 2, 3];
     print_my_vector("Sample vector", &vec1);

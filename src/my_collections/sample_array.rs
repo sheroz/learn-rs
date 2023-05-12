@@ -46,7 +46,7 @@ pub fn simple_array1() {
 }
 
 pub fn array_slice() {
-    println!("\nArray slice sample");
+    println!("\n***\n\nArray slice samples");
 
     let array1 = [11, 22, 33, 44, 55];
     for i in array1.iter() {
@@ -59,7 +59,7 @@ pub fn array_slice() {
     assert_eq!(slice1, vec![33, 44]);
 
     println!("\nMapping sliced items...");
-    let slice2: Vec<_> = slice1.iter().map(|x| x+1).collect();
+    let slice2: Vec<i32> = slice1.iter().map(|x| x+1).collect();
     assert_eq!(slice2, vec![34, 45]);
 
     println!("\nMap result");
