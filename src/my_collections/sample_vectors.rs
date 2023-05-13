@@ -44,6 +44,21 @@ pub fn vec_sample(){
     vec1.insert(1,77);
     assert_eq!(vec1, vec![11,77,12,14]);
     println!("After insert(1,77) {:?}", vec1);
+
+    vec1.reverse();
+    println!("After reverse {:?}", vec1);
+
+    vec1.sort();
+    println!("After sort {:?}", vec1);
+
+    use rand::Rng;
+    let mut rng = rand::thread_rng();
+    let mut vec2: Vec<_> = (0..10).map(|_| rng.gen::<u8>()).collect();
+    println!("Random numbers{:?}", vec2);
+
+    vec2.sort_by(|a, b| b.cmp(a));
+    println!("After reverse sort {:?}", vec2);
+
 }
 
 pub fn vec_deque_sample() {

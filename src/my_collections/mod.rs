@@ -1,2 +1,2 @@
 pub mod sample_array;
-pub mod my_vectors;
+pub mod sample_vectors;

@@ -6,7 +6,7 @@ fn main() {
     my_collections::sample_array::array_sample();
     my_collections::sample_array::array_slice_sample();
 
-    my_collections::my_vectors::vec_sample();
-    my_collections::my_vectors::vec_deque_sample();
+    my_collections::sample_vectors::vec_sample();
+    my_collections::sample_vectors::vec_deque_sample();
 
 }
