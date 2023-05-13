@@ -53,11 +53,17 @@ pub fn vec_sample(){
 
     use rand::Rng;
     let mut rng = rand::thread_rng();
-    let mut vec2: Vec<_> = (0..10).map(|_| rng.gen::<u8>()).collect();
-    println!("Random numbers{:?}", vec2);
+    let mut vec2: Vec<_> = (0..10).map(|_| rng.gen_range(3..33)).collect();
+    println!("Random numbers1{:?}", vec2);
 
-    vec2.sort_by(|a, b| b.cmp(a));
-    println!("After reverse sort {:?}", vec2);
+    let mut vec3: Vec<_> = (0..10).map(|_| rng.gen::<u8>()).collect();
+    println!("Random numbers2{:?}", vec3);
+
+    vec3.append(&mut vec2);
+    println!("Appended numbers{:?}", vec3);
+
+    vec3.sort_by(|a, b| b.cmp(a));
+    println!("After reverse sort {:?}", vec3);
 
 }
 
