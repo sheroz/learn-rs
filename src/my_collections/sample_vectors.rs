@@ -73,10 +73,10 @@ pub fn vec_deque_sample() {
     println!("VecDeque sample1 {:?}", vec_deque1);
 
     vec_deque1.push_front(0);
-    println!("VecDeque after push_front {:?}", vec_deque1);
+    println!("VecDeque after push_front(0) {:?}", vec_deque1);
 
     vec_deque1.push_back(4);
-    println!("VecDeque after push_back {:?}", vec_deque1);
+    println!("VecDeque after push_back(4) {:?}", vec_deque1);
 
     vec_deque1.pop_front();
     println!("VecDeque after pop_front {:?}", vec_deque1);
