@@ -7,14 +7,14 @@ struct User {
     address: String,
     age: u8,
 }
-
-pub fn hash_map_sample() {
+fn create_users() -> [User;3] {
     let user1 = User {
         email: "user1@mail.com".to_string(),
         name: "user1".to_string(),
         address: "address1".to_string(),
         age: 21,
     };
+
 
     let user2 = User {
         email: "user2@mail.com".to_string(),
@@ -30,11 +30,17 @@ pub fn hash_map_sample() {
         age: 40,
     };
 
-    let hash_map1 = HashMap::from([
-        (&user1.email, &user1),
-        (&user2.email, &user2),
-        (&user3.email, &user3)
-    ]);
+    [user1, user2, user3]
+}
+
+pub fn hash_map_sample() {
+    let users = create_users();
+    let mut hash_map1: HashMap<&String, &User> = HashMap::new();
+    /*
+    for &user in users {
+        hash_map1.insert(&user.email, &user);
+    }
+    */
 
     assert_eq!(hash_map1.len(), 3);
     println!("HashMap sample1 {:?}", hash_map1);
