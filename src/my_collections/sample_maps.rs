@@ -48,7 +48,7 @@ pub fn hash_map_sample() {
     assert_eq!(hash_map1.len(), 3);
     println!("HashMap sample1 {:?}", hash_map1);
 
-    // get a value from hashmap
+    // get a value from map
     let k = "user2@mail.com".to_string();
     let v = hash_map1.get(&k);
     assert!(v.is_some());
@@ -71,7 +71,7 @@ pub fn tree_map_sample() {
     assert_eq!(btree_map1.len(), 3);
     println!("BTreeMap sample1 {:?}", btree_map1);
 
-    // get a value from hashmap
+    // get a value from map
     let k = "user2@mail.com".to_string();
     let v = btree_map1.get(&k);
     assert!(v.is_some());
