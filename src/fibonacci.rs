@@ -30,14 +30,14 @@ mod tests {
     fn fibonacci_recursive_test() {
         let s = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
         let r: Vec<_> = (0..s.len()).map(|n| super::fibonacci_recursive(n as u32)).collect();
-        assert_eq!(&s[..], &r[..]);
+        assert_eq!(r, s);
     }
 
     #[test]
     fn fibonacci_iterative_test() {
         let s = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
         let r: Vec<_> = (0..s.len()).map(|n| super::fibonacci_iterative(n as u32)).collect();
-        assert_eq!(&s[..], &r[..]);
+        assert_eq!(r, s);
     }
     /*
     #[bench]
