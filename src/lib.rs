@@ -1,4 +1,4 @@
 pub mod my_calc;
 pub mod my_lib;
 pub mod my_collections;
-pub mod my_algortithms;
+pub mod my_algorithms;

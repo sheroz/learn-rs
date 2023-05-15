@@ -1,5 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
-use my_rust::my_algortithms::fibonacci;
+use my_rust::my_algorithms::fibonacci;
 
 fn fibonacci_benchmark(c: &mut Criterion) {
     c.bench_function("fibonacci_recursive(20)", |b| b.iter(|| fibonacci::fibonacci_recursive(black_box(20))));
