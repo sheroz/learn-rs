@@ -1,5 +1,4 @@
-use std::collections::HashMap;
-use std::collections::BTreeMap;
+use std::collections::{HashMap, BTreeMap};
 
 #[derive(Debug)]
 struct User {
@@ -10,7 +9,6 @@ struct User {
 }
 
 fn create_users() -> Vec<User> {
-    
     let mut users: Vec<User> = Vec::with_capacity(3);
 
     users.push(User {
@@ -37,7 +35,7 @@ fn create_users() -> Vec<User> {
     users
 }
 
-pub fn hash_map_sample() {
+pub fn hashmap_sample() {
     let mut hash_map1: HashMap<String, User> = HashMap::new();
 
     let users = create_users();
@@ -60,7 +58,7 @@ pub fn hash_map_sample() {
     println!("User's age: {}", u.age);
 }
 
-pub fn tree_map_sample() {
+pub fn btreemap_sample() {
     let users = create_users();
     let mut btree_map1: BTreeMap<String, User> = BTreeMap::new();
 
@@ -81,4 +79,18 @@ pub fn tree_map_sample() {
     println!("User's name: {}", u.name);
     println!("User's address: {}", u.address);
     println!("User's age: {}", u.age);
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn create_users_test() {
+        let users = super::create_users();
+        assert_eq!(users.len(), 3);
+        let emails: Vec<_> = users.iter().map(|u| u.email.to_string()).collect();
+        assert_eq!(emails.len(), 3);
+        assert!(emails.contains(&"user1@mail.com".to_string()));
+        assert!(emails.contains(&"user2@mail.com".to_string()));
+        assert!(emails.contains(&"user3@mail.com".to_string()));
+    }
 }

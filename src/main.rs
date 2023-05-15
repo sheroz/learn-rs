@@ -12,6 +12,10 @@ fn main() {
 
     my_collections::sample_linked_list::linked_list_sample();
 
-    my_collections::sample_maps::hash_map_sample();
-    my_collections::sample_maps::tree_map_sample();
+    my_collections::sample_maps::hashmap_sample();
+    my_collections::sample_maps::btreemap_sample();
+
+    my_collections::sample_sets::hashset_sample();
+    my_collections::sample_sets::btreeset_sample();
+
 }
