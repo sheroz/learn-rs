@@ -9,6 +9,7 @@ pub fn hashset_sample() {
     println!("HashSet sample: {:?}", hashset1);
 
     hashset1.insert("0-zero");
+    hashset1.insert("4-four");
     println!("HashSet sample: {:?}", hashset1);
 }
 
@@ -21,5 +22,6 @@ pub fn btreeset_sample() {
     println!("BTreeSet sample: {:?}", btreeset1);
 
     btreeset1.insert("0-zero");
+    btreeset1.insert("4-four");
     println!("BTreeSet sample: {:?}", btreeset1);
 }
