@@ -3,6 +3,7 @@ use my_rust::*;
 
 fn main() {
     my_calc::calc_sample();
+    println!("fibonacci(7) = {}", my_algortithms::fibonacci::fibonacci(7));
 
     my_collections::sample_array::array_sample();
     my_collections::sample_array::array_slice_sample();

@@ -1,4 +1,8 @@
 
+pub fn fibonacci(n: u32) -> u32 {
+    fibonacci_iterative(n)
+} 
+
 #[inline]
 pub fn fibonacci_recursive(n: u32) -> u32 {
     if n <= 1 {
