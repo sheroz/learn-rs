@@ -25,7 +25,6 @@ pub fn is_palindrome_regex(sample: &str) -> bool {
 }
 
 pub fn is_palindrome_raw(sample: &str) -> bool {
-
     // make all characters lower case
     let mut txt = sample.to_string().to_lowercase();
 
@@ -37,7 +36,7 @@ pub fn is_palindrome_raw(sample: &str) -> bool {
 
     let mut iterator = txt.graphemes(true).into_iter();
     loop {
-        let char_start  = iterator.next();
+        let char_start = iterator.next();
         if char_start.is_none() {
             break;
         }
