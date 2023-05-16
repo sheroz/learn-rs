@@ -15,7 +15,7 @@ pub fn is_palindrome_regex(sample: &str) -> bool {
 
     // removing non-word characters
     let clean_txt = re.replace_all(&txt, "").to_string();
-    println!("clean text: {}", clean_txt);
+    // println!("clean text: {}", clean_txt);
 
     // reverse the text
     let reverse_txt: String = clean_txt.graphemes(true).rev().collect();
@@ -33,6 +33,7 @@ pub fn is_palindrome_raw(sample: &str) -> bool {
     for c in excluded_symbols {
         txt = txt.replace(c, "");
     }
+    // println!("clean text: {}", clean_txt);
 
     let mut iterator = txt.graphemes(true).into_iter();
     loop {
@@ -59,6 +60,7 @@ mod tests {
     #[test]
     fn palindrome_test() {
         // palindome samples
+        assert!(super::is_palindrome("Madam, I'm Adam!"));
         assert!(super::is_palindrome("A man, a plan, a canal: Panama!"));
         assert!(super::is_palindrome("Dammit I’m mad."));
         assert!(super::is_palindrome("Engage le jeu que je le gagne."));
