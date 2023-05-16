@@ -25,47 +25,25 @@ pub fn is_palindrome_regex(sample: &str) -> bool {
 }
 
 pub fn is_palindrome_raw(sample: &str) -> bool {
-    if sample.len() == 0 {
-        return false;
-    }
 
     // make all characters lower case
-    let txt = sample.to_string().to_lowercase();
+    let mut txt = sample.to_string().to_lowercase();
+
+    // remove excluded symbols
+    let excluded_symbols = [" ", ".", ",", "!", ":", ";", "'", "’", "\"", "-"];
+    for c in excluded_symbols {
+        txt = txt.replace(c, "");
+    }
+
     let mut iterator = txt.graphemes(true).into_iter();
-    let mut option_char_start: Option<&str>;
-    let mut option_char_end: Option<&str>;
-
-    let exclude_pattern = [' ', '.', ',', '!', ':', ';', '\'', '’', '"', '-'];
-    let mut char_start: &str = "";
-    let mut char_end: &str = "";
-
     loop {
-        
-        loop {
-            option_char_start = iterator.next();
-            if option_char_start.is_none() {
-                break;
-            }
-
-            char_start = option_char_start.unwrap();
-            if char_start.find(&exclude_pattern).is_none() {
-                break;
-            }
+        let char_start  = iterator.next();
+        if char_start.is_none() {
+            break;
         }
 
-        loop {
-            option_char_end = iterator.next_back();
-            if option_char_end.is_none() {
-                break;
-            }
-
-            char_end = option_char_end.unwrap();
-            if char_end.find(&exclude_pattern).is_none() {
-                break;
-            }
-        }
-
-        if option_char_start.is_none() || option_char_end.is_none() {
+        let char_end = iterator.next_back();
+        if char_end.is_none() {
             break;
         }
 
