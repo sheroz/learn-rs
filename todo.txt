@@ -1,5 +1,5 @@
-- heap and BST related stuff
 - add a palindrome function without using (1) regex replace and (2) string reverse then (3) benchmarks against existing
+- heap and BST related stuff
 - implement and benchmark sort functions
 - implement dijkstra 
 
