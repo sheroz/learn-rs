@@ -118,20 +118,20 @@ pub fn shortest_path(graph: &Graph, from: &str, to: &str) -> Option<ShortestPath
 
 pub fn generate_graph_sample() -> Graph {
     let mut graph = Graph::new();
-    add_edge(&mut graph, &"0", &"1", 4);
-    add_edge(&mut graph, &"0", &"7", 8);
-    add_edge(&mut graph, &"1", &"2", 8);
-    add_edge(&mut graph, &"1", &"7", 11);
-    add_edge(&mut graph, &"2", &"3", 7);
-    add_edge(&mut graph, &"2", &"8", 2);
-    add_edge(&mut graph, &"2", &"5", 4);
-    add_edge(&mut graph, &"3", &"4", 9);
-    add_edge(&mut graph, &"3", &"5", 14);
-    add_edge(&mut graph, &"4", &"5", 10);
-    add_edge(&mut graph, &"5", &"6", 2);
-    add_edge(&mut graph, &"6", &"7", 1);
-    add_edge(&mut graph, &"6", &"8", 6);
-    add_edge(&mut graph, &"7", &"8", 7);
+    add_edge(&mut graph, "0", "1", 4);
+    add_edge(&mut graph, "0", "7", 8);
+    add_edge(&mut graph, "1", "2", 8);
+    add_edge(&mut graph, "1", "7", 11);
+    add_edge(&mut graph, "2", "3", 7);
+    add_edge(&mut graph, "2", "8", 2);
+    add_edge(&mut graph, "2", "5", 4);
+    add_edge(&mut graph, "3", "4", 9);
+    add_edge(&mut graph, "3", "5", 14);
+    add_edge(&mut graph, "4", "5", 10);
+    add_edge(&mut graph, "5", "6", 2);
+    add_edge(&mut graph, "6", "7", 1);
+    add_edge(&mut graph, "6", "8", 6);
+    add_edge(&mut graph, "7", "8", 7);
     graph
 }
 
