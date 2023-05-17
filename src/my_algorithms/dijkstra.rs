@@ -176,15 +176,15 @@ mod tests {
         7 | 8, 11,  0,  0,  0,  0,  1,  0,  7
         8 | 0,  0,  2,  0,  0,  0,  6,  7,  0
 
-        Output:
-        The minimum distance from 0 to 1 = 4.  0->1
-        The minimum distance from 0 to 2 = 12. 0->1->2
-        The minimum distance from 0 to 3 = 19. 0->1->2->3
-        The minimum distance from 0 to 4 = 21. 0->7->6->5->4
-        The minimum distance from 0 to 5 = 11. 0->7->6->5
-        The minimum distance from 0 to 6 = 9.  0->7->6
-        The minimum distance from 0 to 7 = 8.  0->7
-        The minimum distance from 0 to 8 = 14. 0->1->2->8
+        Minimum distance:
+        from 0 to 1 = 4.  0->1
+        from 0 to 2 = 12. 0->1->2
+        from 0 to 3 = 19. 0->1->2->3
+        from 0 to 4 = 21. 0->7->6->5->4
+        from 0 to 5 = 11. 0->7->6->5
+        from 0 to 6 = 9.  0->7->6
+        from 0 to 7 = 8.  0->7
+        from 0 to 8 = 14. 0->1->2->8
         */
 
         let graph = generate_graph_sample();
