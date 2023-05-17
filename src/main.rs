@@ -1,12 +1,10 @@
 
+use std::collections::HashMap;
+
 use my_rust::*;
 
 fn main() {
     my_calc::calc_sample();
-    println!("fibonacci(7) = {}", my_algorithms::fibonacci::fibonacci(7));
-
-    let sample_text = "A man, a plan, a canal: Panama!";
-    println!("Check for palindrome: {}\n{}\n", sample_text, my_algorithms::palindrome::is_palindrome(sample_text));
 
     my_collections::sample_array::array_sample();
     my_collections::sample_array::array_slice_sample();
@@ -22,4 +20,21 @@ fn main() {
     my_collections::sample_sets::hashset_sample();
     my_collections::sample_sets::btreeset_sample();
 
+    println!("fibonacci(7) = {}", my_algorithms::fibonacci::fibonacci(7));
+
+    let sample_text = "A man, a plan, a canal: Panama!";
+    println!("Check for palindrome: {}\n{}\n", sample_text, my_algorithms::palindrome::is_palindrome(sample_text));
+
+    // Dijkstra’s Shortest Path Algorithm
+    let graph = my_algorithms::dijkstra::generate_graph_sample();
+    println!("Graph {:?}", &graph as &HashMap<String, my_algorithms::dijkstra::GraphNode>);
+    let mut keys: Vec<_> = graph.keys().collect();
+    keys.sort();
+    println!("\nGraph view by sorted keys:");
+    for node in keys {
+        println!("{:?}", graph.get(node).unwrap());
+    }
+
+    let shortest_path = my_algorithms::dijkstra::shortest_path(&graph, "0".to_string(), "8".to_string());
+    println!("Shortest path from 0 to 8 is :\n {:?}\n", shortest_path);
 }
