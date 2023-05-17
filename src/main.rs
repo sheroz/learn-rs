@@ -1,6 +1,3 @@
-
-use std::collections::HashMap;
-
 use my_rust::*;
 
 fn main() {
@@ -27,7 +24,7 @@ fn main() {
 
     // Dijkstra’s Shortest Path Algorithm
     let graph = my_algorithms::dijkstra::generate_graph_sample();
-    println!("Graph {:?}", &graph as &HashMap<String, my_algorithms::dijkstra::GraphNode>);
+    println!("Graph {:?}", &graph);
     let mut keys: Vec<_> = graph.keys().collect();
     keys.sort();
     println!("\nGraph view by sorted keys:");
@@ -35,6 +32,6 @@ fn main() {
         println!("{:?}", graph.get(node).unwrap());
     }
 
-    let shortest_path = my_algorithms::dijkstra::shortest_path(&graph, "0".to_string(), "8".to_string());
+    let shortest_path = my_algorithms::dijkstra::shortest_path(&graph, "0", "8");
     println!("Shortest path from 0 to 8 is :\n {:?}\n", shortest_path);
 }
