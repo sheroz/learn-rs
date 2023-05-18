@@ -1,6 +1,6 @@
 + add a palindrome function without using (1) regex replace and (2) string reverse then (3) benchmarks against existing
 - implement dijkstra
- - make the test input as json data
+ + make the test input as json data
  - implement array based tree calculation
  - add benchmarks
 - heap and BST related stuff
