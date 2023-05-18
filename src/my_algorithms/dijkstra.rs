@@ -164,21 +164,31 @@ pub fn build_shortest_path_tree(graph: &Graph, source: &str) -> Option<ShortestP
 }
 
 pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
+    let graph_values = json!([
+        { "from": "0", "to": "1", "distance": 4 },
+        { "from": "0", "to": "7", "distance": 8 },
+        { "from": "1", "to": "2", "distance": 8 },
+        { "from": "1", "to": "7", "distance": 11},
+        { "from": "2", "to": "3", "distance": 7 },
+        { "from": "2", "to": "8", "distance": 2 },
+        { "from": "2", "to": "5", "distance": 3 },
+        { "from": "3", "to": "4", "distance": 9 },
+        { "from": "3", "to": "5", "distance": 14},
+        { "from": "4", "to": "5", "distance": 10},
+        { "from": "5", "to": "6", "distance": 2 },
+        { "from": "6", "to": "7", "distance": 1 },
+        { "from": "6", "to": "8", "distance": 6 },
+        { "from": "7", "to": "8", "distance": 7 }
+    ]);
+
     let mut graph = Graph::new();
-    add_edge(&mut graph, "0", "1", 4);
-    add_edge(&mut graph, "0", "7", 8);
-    add_edge(&mut graph, "1", "2", 8);
-    add_edge(&mut graph, "1", "7", 11);
-    add_edge(&mut graph, "2", "3", 7);
-    add_edge(&mut graph, "2", "8", 2);
-    add_edge(&mut graph, "2", "5", 4);
-    add_edge(&mut graph, "3", "4", 9);
-    add_edge(&mut graph, "3", "5", 14);
-    add_edge(&mut graph, "4", "5", 10);
-    add_edge(&mut graph, "5", "6", 2);
-    add_edge(&mut graph, "6", "7", 1);
-    add_edge(&mut graph, "6", "8", 6);
-    add_edge(&mut graph, "7", "8", 7);
+
+    for v in graph_values.as_array().unwrap() {
+        let from = v["from"].as_str().unwrap();
+        let to = v["to"].as_str().unwrap();
+        let distance = v["distance"].as_u64().unwrap() as u32;
+        add_edge(&mut graph, from, to, distance);
+    }
 
     /*
     Graph
@@ -250,14 +260,24 @@ pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
 }
 
 pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
+    let graph_values = json!([
+        { "from": "A", "to": "B", "distance": 6 },
+        { "from": "A", "to": "D", "distance": 1 },
+        { "from": "B", "to": "D", "distance": 2 },
+        { "from": "B", "to": "E", "distance": 2 },
+        { "from": "B", "to": "C", "distance": 5 },
+        { "from": "C", "to": "E", "distance": 5 },
+        { "from": "D", "to": "E", "distance": 1 }
+    ]);
+
     let mut graph = Graph::new();
-    add_edge(&mut graph, "A", "B", 6);
-    add_edge(&mut graph, "A", "D", 1);
-    add_edge(&mut graph, "B", "D", 2);
-    add_edge(&mut graph, "B", "E", 2);
-    add_edge(&mut graph, "B", "C", 5);
-    add_edge(&mut graph, "C", "E", 5);
-    add_edge(&mut graph, "D", "E", 1);
+
+    for v in graph_values.as_array().unwrap() {
+        let from = v["from"].as_str().unwrap();
+        let to = v["to"].as_str().unwrap();
+        let distance = v["distance"].as_u64().unwrap() as u32;
+        add_edge(&mut graph, from, to, distance);
+    }
 
     /*
     Shortest-path tree:
@@ -300,16 +320,26 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
 }
 
 pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
+    let graph_values = json!([
+        { "from": "A", "to": "B", "distance": 4 },
+        { "from": "A", "to": "C", "distance": 5 },
+        { "from": "B", "to": "C", "distance": 11},
+        { "from": "B", "to": "D", "distance": 9 },
+        { "from": "B", "to": "E", "distance": 7 },
+        { "from": "C", "to": "E", "distance": 3 },
+        { "from": "D", "to": "E", "distance": 13},
+        { "from": "D", "to": "F", "distance": 2 },
+        { "from": "E", "to": "F", "distance": 6 }
+    ]);
+
     let mut graph = Graph::new();
-    add_edge(&mut graph, "A", "B", 4);
-    add_edge(&mut graph, "A", "C", 5);
-    add_edge(&mut graph, "B", "C", 11);
-    add_edge(&mut graph, "B", "D", 9);
-    add_edge(&mut graph, "B", "E", 7);
-    add_edge(&mut graph, "C", "E", 3);
-    add_edge(&mut graph, "D", "E", 13);
-    add_edge(&mut graph, "D", "F", 2);
-    add_edge(&mut graph, "E", "F", 6);
+
+    for v in graph_values.as_array().unwrap() {
+        let from = v["from"].as_str().unwrap();
+        let to = v["to"].as_str().unwrap();
+        let distance = v["distance"].as_u64().unwrap() as u32;
+        add_edge(&mut graph, from, to, distance);
+    }
 
     /*
     Shortest-path tree:
