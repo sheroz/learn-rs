@@ -5,4 +5,6 @@
  - add benchmarks
 - heap and BST related stuff
 - implement and benchmark sort functions
+- optimize base64 encoder and benchmark
+  - post in LinkedIn (https://www.linkedin.com/posts/rustjobs-dev_base64-implementation-in-rust-activity-7064862496720924672-fN7y)
 
