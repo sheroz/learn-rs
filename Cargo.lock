@@ -309,6 +309,8 @@ dependencies = [
  "criterion",
  "rand",
  "regex",
+ "serde",
+ "serde_json",
  "unicode-segmentation",
 ]
 
