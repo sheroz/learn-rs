@@ -23,7 +23,7 @@ fn main() {
     println!("Check for palindrome: {}\n{}\n", sample_text, my_algorithms::palindrome::is_palindrome(sample_text));
 
     // Dijkstra’s Shortest Path Algorithm
-    let (graph,_) = my_algorithms::dijkstra::generate_test_sample1();
+    let (graph,_, _) = my_algorithms::dijkstra::generate_test_sample1();
     println!("Graph {:?}", &graph);
     let mut keys: Vec<_> = graph.keys().collect();
     keys.sort();
