@@ -2,6 +2,7 @@ use my_rust::*;
 
 fn main() {
     my_calc::calc_sample();
+    crypto::hash_sample::sha256_sample();    
 
     my_collections::sample_array::array_sample();
     my_collections::sample_array::array_slice_sample();
@@ -24,14 +25,6 @@ fn main() {
 
     // Dijkstra’s Shortest Path Algorithm
     let (graph,_, _) = my_algorithms::dijkstra::generate_test_sample1();
-    println!("Graph {:?}", &graph);
-    let mut keys: Vec<_> = graph.keys().collect();
-    keys.sort();
-    println!("\nGraph view by sorted keys:");
-    for node in keys {
-        println!("{:?}", graph.get(node).unwrap());
-    }
-
     let shortest_path = my_algorithms::dijkstra::shortest_path_map(&graph, "0", "8");
     println!("Shortest path from 0 to 8 is :\n {:?}\n", shortest_path);
 }
