@@ -1,1 +1,1 @@
-pub mod hash_sample;
+pub mod openssl_sample;

@@ -2,7 +2,9 @@ use my_rust::*;
 
 fn main() {
     my_calc::calc_sample();
-    crypto::hash_sample::sha256_sample();    
+    let txt = "Hello world!";
+    let hex_encoded = crypto::openssl_sample::sha256_digest(txt);    
+    println!("\nOpenSSL: SHA256 hash for {}\n{}\n", txt, hex_encoded);
 
     my_collections::sample_array::array_sample();
     my_collections::sample_array::array_slice_sample();
