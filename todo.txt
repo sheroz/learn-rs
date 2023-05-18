@@ -1,5 +1,8 @@
 + add a palindrome function without using (1) regex replace and (2) string reverse then (3) benchmarks against existing
 - implement dijkstra
+ - make the test imput as json data
+ - implement array based calculation
+ - benchmarks
 - heap and BST related stuff
 - implement and benchmark sort functions
 
