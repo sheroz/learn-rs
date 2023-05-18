@@ -5,7 +5,7 @@
 // sample: https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/
 
 use serde::{Deserialize, Serialize};
-use serde_json::json;
+use serde_json::{json, Value};
 use std::collections::HashMap;
 
 pub type Graph = HashMap<String, HashMap<String, u32>>;
@@ -165,20 +165,20 @@ pub fn build_shortest_path_tree(graph: &Graph, source: &str) -> Option<ShortestP
 
 pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     let graph_values = json!([
-        { "from": "0", "to": "1", "distance": 4 },
-        { "from": "0", "to": "7", "distance": 8 },
-        { "from": "1", "to": "2", "distance": 8 },
-        { "from": "1", "to": "7", "distance": 11},
-        { "from": "2", "to": "3", "distance": 7 },
-        { "from": "2", "to": "8", "distance": 2 },
-        { "from": "2", "to": "5", "distance": 3 },
-        { "from": "3", "to": "4", "distance": 9 },
-        { "from": "3", "to": "5", "distance": 14},
-        { "from": "4", "to": "5", "distance": 10},
-        { "from": "5", "to": "6", "distance": 2 },
-        { "from": "6", "to": "7", "distance": 1 },
-        { "from": "6", "to": "8", "distance": 6 },
-        { "from": "7", "to": "8", "distance": 7 }
+        { "from": "0", "to": "1", "distance":  4 },
+        { "from": "0", "to": "7", "distance":  8 },
+        { "from": "1", "to": "2", "distance":  8 },
+        { "from": "1", "to": "7", "distance": 11 },
+        { "from": "2", "to": "3", "distance":  7 },
+        { "from": "2", "to": "8", "distance":  2 },
+        { "from": "2", "to": "5", "distance":  3 },
+        { "from": "3", "to": "4", "distance":  9 },
+        { "from": "3", "to": "5", "distance": 14 },
+        { "from": "4", "to": "5", "distance": 10 },
+        { "from": "5", "to": "6", "distance":  2 },
+        { "from": "6", "to": "7", "distance":  1 },
+        { "from": "6", "to": "8", "distance":  6 },
+        { "from": "7", "to": "8", "distance":  7 }
     ]);
 
     let mut graph = Graph::new();
@@ -229,29 +229,29 @@ pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     let json_value = json!({
         "node": "0",
         "edges": [
-            {"node": "0", "distance": 0,  "previous": ""},
-            {"node": "1", "distance": 4,  "previous": "0"},
-            {"node": "2", "distance": 12, "previous": "1"},
-            {"node": "3", "distance": 19, "previous": "2"},
-            {"node": "4", "distance": 21, "previous": "5"},
-            {"node": "5", "distance": 11, "previous": "6"},
-            {"node": "6", "distance": 9,  "previous": "7"},
-            {"node": "7", "distance": 8,  "previous": "0"},
-            {"node": "8", "distance": 14, "previous": "2"}
+            { "node": "0", "distance": 0,  "previous":  "" },
+            { "node": "1", "distance": 4,  "previous": "0" },
+            { "node": "2", "distance": 12, "previous": "1" },
+            { "node": "3", "distance": 19, "previous": "2" },
+            { "node": "4", "distance": 21, "previous": "5" },
+            { "node": "5", "distance": 11, "previous": "6" },
+            { "node": "6", "distance": 9,  "previous": "7" },
+            { "node": "7", "distance": 8,  "previous": "0" },
+            { "node": "8", "distance": 14, "previous": "2" }
         ]
     });
 
     let shortest_path_tree: ShortestPathTree = serde_json::from_value(json_value).unwrap();
 
     let shortest_paths_value = json!([
-        {"from": "0", "to": "1", "distance": 4,  "path": ["0", "1"]},
-        {"from": "0", "to": "2", "distance": 12, "path": ["0", "1", "2"]},
-        {"from": "0", "to": "3", "distance": 19, "path": ["0", "1", "2", "3"]},
-        {"from": "0", "to": "4", "distance": 21, "path": ["0", "7", "6", "5", "4"]},
-        {"from": "0", "to": "5", "distance": 11, "path": ["0", "7", "6", "5"]},
-        {"from": "0", "to": "6", "distance": 9,  "path": ["0", "7", "6"]},
-        {"from": "0", "to": "7", "distance": 8,  "path": ["0", "7"]},
-        {"from": "0", "to": "8", "distance": 14, "path": ["0", "1", "2", "8"]}
+        { "from": "0", "to": "1", "distance": 4,  "path": [ "0", "1" ] },
+        { "from": "0", "to": "2", "distance": 12, "path": [ "0", "1", "2" ] },
+        { "from": "0", "to": "3", "distance": 19, "path": [ "0", "1", "2", "3" ] },
+        { "from": "0", "to": "4", "distance": 21, "path": [ "0", "7", "6", "5", "4" ] },
+        { "from": "0", "to": "5", "distance": 11, "path": [ "0", "7", "6", "5" ] },
+        { "from": "0", "to": "6", "distance": 9,  "path": [ "0", "7", "6" ] },
+        { "from": "0", "to": "7", "distance": 8,  "path": [ "0", "7" ] },
+        { "from": "0", "to": "8", "distance": 14, "path": [ "0", "1", "2", "8" ] }
     ]);
 
     let shortest_paths: Vec<ShortestPath> = serde_json::from_value(shortest_paths_value).unwrap();
@@ -260,7 +260,9 @@ pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
 }
 
 pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
-    let graph_values = json!([
+
+    let graph_json = r#"
+    [
         { "from": "A", "to": "B", "distance": 6 },
         { "from": "A", "to": "D", "distance": 1 },
         { "from": "B", "to": "D", "distance": 2 },
@@ -268,10 +270,12 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
         { "from": "B", "to": "C", "distance": 5 },
         { "from": "C", "to": "E", "distance": 5 },
         { "from": "D", "to": "E", "distance": 1 }
-    ]);
+    ]
+    "#;
 
     let mut graph = Graph::new();
 
+    let graph_values: Value = serde_json::from_str(&graph_json).unwrap();
     for v in graph_values.as_array().unwrap() {
         let from = v["from"].as_str().unwrap();
         let to = v["to"].as_str().unwrap();
@@ -296,11 +300,11 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     let shortest_path_tree_json = r#" {
         "node": "A",
         "edges": [
-            {"node": "A", "distance": 0, "previous": ""},
-            {"node": "B", "distance": 3, "previous": "D"},
-            {"node": "C", "distance": 7, "previous": "E"},
-            {"node": "D", "distance": 1, "previous": "A"},
-            {"node": "E", "distance": 2, "previous": "D"}
+            { "node": "A", "distance": 0, "previous": ""  },
+            { "node": "B", "distance": 3, "previous": "D" },
+            { "node": "C", "distance": 7, "previous": "E" },
+            { "node": "D", "distance": 1, "previous": "A" },
+            { "node": "E", "distance": 2, "previous": "D" }
         ]
     }
     "#;
@@ -308,10 +312,10 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
 
     let shortest_paths_json = r#"
         [
-            {"from": "A", "to": "B", "distance": 3, "path": ["A", "D", "B"]},
-            {"from": "A", "to": "C", "distance": 7, "path": ["A", "D", "E", "C"]},
-            {"from": "A", "to": "D", "distance": 1, "path": ["A", "D"]},
-            {"from": "A", "to": "E", "distance": 2, "path": ["A", "D", "E"]}
+            { "from": "A", "to": "B", "distance": 3, "path": ["A", "D", "B"] },
+            { "from": "A", "to": "C", "distance": 7, "path": ["A", "D", "E", "C"] },
+            { "from": "A", "to": "D", "distance": 1, "path": ["A", "D"] },
+            { "from": "A", "to": "E", "distance": 2, "path": ["A", "D", "E"] }
         ]
     "#;
     let shortest_paths: Vec<ShortestPath> = serde_json::from_str(&shortest_paths_json).unwrap();
@@ -321,15 +325,15 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
 
 pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     let graph_values = json!([
-        { "from": "A", "to": "B", "distance": 4 },
-        { "from": "A", "to": "C", "distance": 5 },
-        { "from": "B", "to": "C", "distance": 11},
-        { "from": "B", "to": "D", "distance": 9 },
-        { "from": "B", "to": "E", "distance": 7 },
-        { "from": "C", "to": "E", "distance": 3 },
-        { "from": "D", "to": "E", "distance": 13},
-        { "from": "D", "to": "F", "distance": 2 },
-        { "from": "E", "to": "F", "distance": 6 }
+        {"from": "A", "to": "B", "distance":  4},
+        {"from": "A", "to": "C", "distance":  5},
+        {"from": "B", "to": "C", "distance": 11},
+        {"from": "B", "to": "D", "distance":  9},
+        {"from": "B", "to": "E", "distance":  7},
+        {"from": "C", "to": "E", "distance":  3},
+        {"from": "D", "to": "E", "distance": 13},
+        {"from": "D", "to": "F", "distance":  2},
+        {"from": "E", "to": "F", "distance":  6}
     ]);
 
     let mut graph = Graph::new();
