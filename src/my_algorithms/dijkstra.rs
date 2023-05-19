@@ -32,40 +32,6 @@ pub struct ShortestPath {
     path: Vec<String>,
 }
 
-pub fn shortest_path_from_tree(
-    to: &str,
-    shortest_path_tree: &ShortestPathTree,
-) -> Option<ShortestPath> {
-    let mut path: Vec<String> = Vec::new();
-    let edges = &shortest_path_tree.edges;
-    let from = shortest_path_tree.node.clone();
-    let edge = edges.iter().find(|e| e.node == to).unwrap();
-    let distance = edge.distance;
-    let mut prev_name = edge.previous.clone();
-
-    path.push(to.to_string());
-    while prev_name != from {
-        path.push(prev_name.clone());
-
-        let path_record_option = edges.iter().find(|e| e.node == prev_name);
-        if path_record_option.is_none() {
-            panic!("Previous node not found: {}", prev_name);
-        }
-
-        prev_name = path_record_option.unwrap().previous.clone();
-    }
-
-    path.push(from.to_string());
-    path.reverse();
-
-    Some(ShortestPath {
-        from: from.to_string(),
-        to: to.to_string(),
-        distance,
-        path,
-    })
-}
-
 pub fn shortest_path(graph: &Graph, from: &str, to: &str) -> Option<ShortestPath> {
     if graph.get(from).is_none() || graph.get(to).is_none() {
         return None;
@@ -164,6 +130,40 @@ pub fn shortest_path_tree(graph: &Graph, source: &str) -> Option<ShortestPathTre
     Some(ShortestPathTree {
         node: source.to_string(),
         edges,
+    })
+}
+
+pub fn shortest_path_from_tree(
+    to: &str,
+    shortest_path_tree: &ShortestPathTree,
+) -> Option<ShortestPath> {
+    let mut path: Vec<String> = Vec::new();
+    let edges = &shortest_path_tree.edges;
+    let from = shortest_path_tree.node.clone();
+    let edge = edges.iter().find(|e| e.node == to).unwrap();
+    let distance = edge.distance;
+    let mut prev_name = edge.previous.clone();
+
+    path.push(to.to_string());
+    while prev_name != from {
+        path.push(prev_name.clone());
+
+        let path_record_option = edges.iter().find(|e| e.node == prev_name);
+        if path_record_option.is_none() {
+            panic!("Previous node not found: {}", prev_name);
+        }
+
+        prev_name = path_record_option.unwrap().previous.clone();
+    }
+
+    path.push(from.to_string());
+    path.reverse();
+
+    Some(ShortestPath {
+        from: from.to_string(),
+        to: to.to_string(),
+        distance,
+        path,
     })
 }
 
