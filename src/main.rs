@@ -26,7 +26,7 @@ fn main() {
     println!("Check for palindrome: {}\n{}\n", sample_text, my_algorithms::palindrome::is_palindrome(sample_text));
 
     // Dijkstra’s Shortest Path Algorithm
-    let (graph,_, _) = my_algorithms::dijkstra::generate_test_sample1();
-    let shortest_path = my_algorithms::dijkstra::shortest_path(&graph, "0", "8");
-    println!("Shortest path from 0 to 8 is :\n {:?}\n", shortest_path);
+    let (graph,_, _) = my_algorithms::dijkstra::test_sample1();
+    let shortest_path = my_algorithms::dijkstra::shortest_path(&graph, "A", "I");
+    println!("Shortest path from A to I is :\n {:?}\n", shortest_path);
 }

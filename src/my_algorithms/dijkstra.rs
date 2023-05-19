@@ -167,7 +167,7 @@ pub fn shortest_path_from_tree(
     })
 }
 
-pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
+pub fn test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     let input_graph_edges = [
         ("A", "B", 4),
         ("A", "H", 8),
@@ -277,7 +277,7 @@ pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     (graph, expected_shortest_path_tree, expected_shortest_paths)
 }
 
-pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
+pub fn test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     let input_graph_edges = [
         ("A", "B", 6),
         ("A", "D", 1),
@@ -338,7 +338,7 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     (graph, expected_shortest_path_tree, expected_shortest_paths)
 }
 
-pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
+pub fn test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     let input_graph_edges = [
         ("A", "B", 4),
         ("A", "C", 5),
@@ -402,7 +402,7 @@ pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     (graph, expected_shortest_path_tree, expected_shortest_paths)
 }
 
-pub fn generate_test_sample4() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
+pub fn test_sample4() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     let input_graph_edges = [
         ("A", "B", 7),
         ("A", "C", 9),
@@ -475,23 +475,23 @@ mod tests {
 
     #[test]
     fn shortest_tree_sample1_test() {
-        sample_test(generate_test_sample1)
+        shortest_tree_test(test_sample1)
     }
     #[test]
     fn shortest_tree_sample2_test() {
-        sample_test(generate_test_sample2)
+        shortest_tree_test(test_sample2)
     }
     #[test]
     fn shortest_tree_sample3_test() {
-        sample_test(generate_test_sample3)
+        shortest_tree_test(test_sample3)
     }
 
     #[test]
     fn shortest_tree_sample4_test() {
-        sample_test(generate_test_sample4)
+        shortest_tree_test(test_sample4)
     }
 
-    fn sample_test(test_sample_function: fn() -> (Graph, ShortestPathTree, Vec<ShortestPath>)) {
+    fn shortest_tree_test(test_sample_function: fn() -> (Graph, ShortestPathTree, Vec<ShortestPath>)) {
         let (graph, expected_shortest_path_tree, expected_shortest_paths) = test_sample_function();
         assert!(!graph.is_empty());
 
@@ -514,7 +514,7 @@ mod tests {
 
     #[test]
     fn shortest_path_test() {
-        let (graph, _, _) = generate_test_sample1();
+        let (graph, _, _) = test_sample1();
         assert!(!graph.is_empty());
 
         let from = "A";
