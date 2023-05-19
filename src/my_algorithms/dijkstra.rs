@@ -402,6 +402,53 @@ pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     (graph, expected_shortest_path_tree, expected_shortest_paths)
 }
 
+pub fn generate_test_sample4() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
+    let input_graph_edges = [
+        ("A", "B", 7),
+        ("A", "C", 9),
+        ("A", "F", 14),
+        ("B", "C", 10),
+        ("B", "D", 15),
+        ("C", "D", 11),
+        ("C", "F", 2),
+        ("D", "E", 6),
+        ("E", "F", 9),
+    ];
+
+    let mut graph = Graph::new();
+    input_graph_edges
+        .iter()
+        .for_each(|x| add_edge(&mut graph, x.0, x.1, x.2));
+
+    let input_shortest_path_tree = json!({
+        "node": "A",
+        "edges": [
+            {"node": "A", "distance": 0,  "previous": ""},
+            {"node": "B", "distance": 7,  "previous": "A"},
+            {"node": "C", "distance": 9,  "previous": "A"},
+            {"node": "D", "distance": 20, "previous": "C"},
+            {"node": "E", "distance": 20, "previous": "F"},
+            {"node": "F", "distance": 11, "previous": "C"}
+        ]
+    });
+
+    let expected_shortest_path_tree: ShortestPathTree =
+        serde_json::from_value(input_shortest_path_tree).unwrap();
+
+    let input_shortest_paths = json!([
+        {"from": "A", "to": "B", "distance": 7,  "path": ["A", "B"]},
+        {"from": "A", "to": "C", "distance": 9,  "path": ["A", "C"]},
+        {"from": "A", "to": "D", "distance": 20, "path": ["A", "C", "D"]},
+        {"from": "A", "to": "E", "distance": 20, "path": ["A", "C", "F", "E"]},
+        {"from": "A", "to": "F", "distance": 11, "path": ["A", "C", "F"]}
+    ]);
+
+    let expected_shortest_paths: Vec<ShortestPath> =
+        serde_json::from_value(input_shortest_paths).unwrap();
+
+    (graph, expected_shortest_path_tree, expected_shortest_paths)
+}
+
 fn add_edge(graph: &mut Graph, a: &str, b: &str, distance: u32) {
     let a_node = graph.get_mut(a);
     if a_node.is_some() {
@@ -428,51 +475,26 @@ mod tests {
 
     #[test]
     fn shortest_tree_sample1_test() {
-        let (graph, expected_shortest_path_tree, expected_shortest_paths) = generate_test_sample1();
-        assert_eq!(graph.len(), 9);
-        let option_shortest_path_tree =
-            super::shortest_path_tree(&graph, &expected_shortest_path_tree.node);
-        assert!(option_shortest_path_tree.is_some());
-
-        let shortest_path_tree = option_shortest_path_tree.unwrap();
-        assert_eq!(shortest_path_tree, expected_shortest_path_tree);
-
-        assert!(!expected_shortest_paths.is_empty());
-        assert_eq!(expected_shortest_paths.len(), 8);
-        for expected_shortest_path in expected_shortest_paths {
-            let shortest_path =
-                shortest_path_from_tree(&expected_shortest_path.to, &shortest_path_tree);
-            assert!(shortest_path.is_some());
-            assert_eq!(shortest_path.unwrap(), expected_shortest_path);
-        }
+        sample_test(generate_test_sample1)
     }
-
     #[test]
     fn shortest_tree_sample2_test() {
-        let (graph, expected_shortest_path_tree, expected_shortest_paths) = generate_test_sample2();
-        assert_eq!(graph.len(), 5);
-
-        let option_shortest_path_tree =
-            super::shortest_path_tree(&graph, &expected_shortest_path_tree.node);
-        assert!(option_shortest_path_tree.is_some());
-
-        let shortest_path_tree = option_shortest_path_tree.unwrap();
-        assert_eq!(shortest_path_tree, expected_shortest_path_tree);
-
-        assert!(!expected_shortest_paths.is_empty());
-        assert_eq!(expected_shortest_paths.len(), 4);
-        for expected_shortest_path in expected_shortest_paths {
-            let shortest_path =
-                shortest_path_from_tree(&expected_shortest_path.to, &shortest_path_tree);
-            assert!(shortest_path.is_some());
-            assert_eq!(shortest_path.unwrap(), expected_shortest_path);
-        }
+        sample_test(generate_test_sample2)
+    }
+    #[test]
+    fn shortest_tree_sample3_test() {
+        sample_test(generate_test_sample3)
     }
 
     #[test]
-    fn shortest_tree_sample3_test() {
-        let (graph, expected_shortest_path_tree, expected_shortest_paths) = generate_test_sample3();
-        assert_eq!(graph.len(), 6);
+    fn shortest_tree_sample4_test() {
+        sample_test(generate_test_sample4)
+    }
+
+    fn sample_test(test_sample_function: fn() -> (Graph, ShortestPathTree, Vec<ShortestPath>)) {
+        let (graph, expected_shortest_path_tree, expected_shortest_paths) = test_sample_function();
+        assert!(!graph.is_empty());
+
         let option_shortest_path_tree =
             super::shortest_path_tree(&graph, &expected_shortest_path_tree.node);
         assert!(option_shortest_path_tree.is_some());
@@ -481,7 +503,7 @@ mod tests {
         assert_eq!(shortest_path_tree, expected_shortest_path_tree);
 
         assert!(!expected_shortest_paths.is_empty());
-        assert_eq!(expected_shortest_paths.len(), 5);
+        assert_eq!(expected_shortest_paths.len(), graph.len()-1);
         for expected_shortest_path in expected_shortest_paths {
             let shortest_path =
                 shortest_path_from_tree(&expected_shortest_path.to, &shortest_path_tree);
@@ -493,7 +515,7 @@ mod tests {
     #[test]
     fn shortest_path_test() {
         let (graph, _, _) = generate_test_sample1();
-        assert_eq!(graph.len(), 9);
+        assert!(!graph.is_empty());
 
         let from = "A";
         let mut to = "B";
