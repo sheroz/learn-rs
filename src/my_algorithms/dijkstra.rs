@@ -128,21 +128,20 @@ pub fn shortest_path_tree_matrix(matrix_graph: &Vec<Vec<usize>>, source: usize) 
     loop {
         
         // check for min distance and not visited
-        let mut min_distance_record_index: Option<usize> = None;
+        let mut cur_record_index = usize::MAX;
         let mut min_distance = usize::MAX;
         for index in 0..node_count {
             let record = &path_table[index];
             if !record.visited && record.distance < min_distance {
                 min_distance = record.distance;
-                min_distance_record_index = Some(index);
+                cur_record_index = index;
             }    
         }
 
-        if min_distance_record_index.is_none() {
+        if cur_record_index == usize::MAX {
             break;
         }
 
-        let cur_record_index = min_distance_record_index.unwrap();
         let mut cur_record = path_table.get_mut(cur_record_index).unwrap();
 
         let node_distance = cur_record.distance;
@@ -172,6 +171,7 @@ pub fn shortest_path_tree_matrix(matrix_graph: &Vec<Vec<usize>>, source: usize) 
         edges.push(edge);
     }
     edges.sort_by(|a, b| a.node.cmp(&b.node));
+    
     Some(edges)
 }
 
