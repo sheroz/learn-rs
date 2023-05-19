@@ -253,13 +253,13 @@ pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     };
 
     let input_shortest_paths = [
-        ("A", "B", 4,  vec!["A", "B"]),
+        ("A", "B", 4, vec!["A", "B"]),
         ("A", "C", 12, vec!["A", "B", "C"]),
         ("A", "D", 19, vec!["A", "B", "C", "D"]),
         ("A", "E", 21, vec!["A", "H", "G", "F", "E"]),
         ("A", "F", 11, vec!["A", "H", "G", "F"]),
-        ("A", "G", 9,  vec!["A", "H", "G"]),
-        ("A", "H", 8,  vec!["A", "H"]),
+        ("A", "G", 9, vec!["A", "H", "G"]),
+        ("A", "H", 8, vec!["A", "H"]),
         ("A", "I", 14, vec!["A", "B", "C", "I"]),
     ];
 
@@ -307,16 +307,17 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     E = 2, A->D->E
     */
 
-    let input_shortest_path_tree = r#" {
-        "node": "A",
-        "edges": [
-            { "node": "A", "distance": 0, "previous": ""  },
-            { "node": "B", "distance": 3, "previous": "D" },
-            { "node": "C", "distance": 7, "previous": "E" },
-            { "node": "D", "distance": 1, "previous": "A" },
-            { "node": "E", "distance": 2, "previous": "D" }
-        ]
-    }
+    let input_shortest_path_tree = r#"
+        {
+            "node": "A",
+            "edges": [
+                {"node": "A", "distance": 0, "previous": "" },
+                {"node": "B", "distance": 3, "previous": "D"},
+                {"node": "C", "distance": 7, "previous": "E"},
+                {"node": "D", "distance": 1, "previous": "A"},
+                {"node": "E", "distance": 2, "previous": "D"}
+            ]
+        }
     "#;
 
     let expected_shortest_path_tree: ShortestPathTree =
@@ -324,14 +325,15 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
 
     let input_shortest_paths = r#"
         [
-            { "from": "A", "to": "B", "distance": 3, "path": ["A", "D", "B"] },
-            { "from": "A", "to": "C", "distance": 7, "path": ["A", "D", "E", "C"] },
-            { "from": "A", "to": "D", "distance": 1, "path": ["A", "D"] },
-            { "from": "A", "to": "E", "distance": 2, "path": ["A", "D", "E"] }
+            {"from": "A", "to": "B", "distance": 3, "path": ["A", "D", "B"]},
+            {"from": "A", "to": "C", "distance": 7, "path": ["A", "D", "E", "C"]},
+            {"from": "A", "to": "D", "distance": 1, "path": ["A", "D"]},
+            {"from": "A", "to": "E", "distance": 2, "path": ["A", "D", "E"]}
         ]
     "#;
 
-    let expected_shortest_paths: Vec<ShortestPath> = serde_json::from_str(&input_shortest_paths).unwrap();
+    let expected_shortest_paths: Vec<ShortestPath> =
+        serde_json::from_str(&input_shortest_paths).unwrap();
 
     (graph, expected_shortest_path_tree, expected_shortest_paths)
 }
@@ -383,7 +385,8 @@ pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
         ]
     });
 
-    let expected_shortest_path_tree: ShortestPathTree = serde_json::from_value(input_shortest_path_tree).unwrap();
+    let expected_shortest_path_tree: ShortestPathTree =
+        serde_json::from_value(input_shortest_path_tree).unwrap();
 
     let input_shortest_paths = json!([
         {"from": "A", "to": "B", "distance": 4,  "path": ["A", "B"]},
@@ -393,7 +396,8 @@ pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
         {"from": "A", "to": "F", "distance": 14, "path": ["A", "C", "E", "F"]}
     ]);
 
-    let expected_shortest_paths: Vec<ShortestPath> = serde_json::from_value(input_shortest_paths).unwrap();
+    let expected_shortest_paths: Vec<ShortestPath> =
+        serde_json::from_value(input_shortest_paths).unwrap();
 
     (graph, expected_shortest_path_tree, expected_shortest_paths)
 }
