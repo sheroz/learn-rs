@@ -32,7 +32,10 @@ pub struct ShortestPath {
     path: Vec<String>,
 }
 
-pub fn shortest_path_tree_to_path(to: &str, shortest_path_tree: &ShortestPathTree) -> Option<ShortestPath> {
+pub fn shortest_path_tree_to_path(
+    to: &str,
+    shortest_path_tree: &ShortestPathTree,
+) -> Option<ShortestPath> {
     let mut path: Vec<String> = Vec::new();
     let edges = &shortest_path_tree.edges;
     let from = shortest_path_tree.node.clone();
@@ -165,110 +168,130 @@ pub fn build_shortest_path_tree(graph: &Graph, source: &str) -> Option<ShortestP
 }
 
 pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
-
-    let graph_edges = [
-        ("0", "1", 4),
-        ("0", "7", 8),
-        ("1", "2", 8),
-        ("1", "7", 11),
-        ("2", "3", 7),
-        ("2", "8", 2),
-        ("2", "5", 3),
-        ("3", "4", 9),
-        ("3", "5", 14),
-        ("4", "5", 10),
-        ("5", "6", 2),
-        ("6", "7", 1),
-        ("6", "8", 6),
-        ("7", "8", 7)
+    let input_graph_edges = [
+        ("A", "B", 4),
+        ("A", "H", 8),
+        ("B", "C", 8),
+        ("B", "H", 11),
+        ("C", "D", 7),
+        ("C", "I", 2),
+        ("C", "F", 3),
+        ("D", "E", 9),
+        ("D", "F", 14),
+        ("E", "F", 10),
+        ("F", "G", 2),
+        ("G", "H", 1),
+        ("G", "I", 6),
+        ("H", "I", 7),
     ];
 
     let mut graph = Graph::new();
-    graph_edges.iter().for_each(|x| add_edge(&mut graph, x.0, x.1, x.2));
+    input_graph_edges
+        .iter()
+        .for_each(|x| add_edge(&mut graph, x.0, x.1, x.2));
 
     /*
     Graph
-
-        0   1   2   3   4   5   6   7   8
+        A   B   C   D   E   F   G   H   I
     --------------------------------------
-    0 | 0,  4,  0,  0,  0,  0,  0,  8,  0
-    1 | 4,  0,  8,  0,  0,  0,  0, 11,  0
-    2 | 0,  8,  0,  7,  0,  4,  0,  0,  2
-    3 | 0,  0,  7,  0,  9, 14,  0,  0,  0
-    4 | 0,  0,  0,  9,  0, 10,  0,  0,  0
-    5 | 0,  0,  4, 14, 10,  0,  2,  0,  0
-    6 | 0,  0,  0,  0,  0,  2,  0,  1,  6
-    7 | 8, 11,  0,  0,  0,  0,  1,  0,  7
-    8 | 0,  0,  2,  0,  0,  0,  6,  7,  0
+    A | 0,  4,  0,  0,  0,  0,  0,  8,  0
+    B | 4,  0,  8,  0,  0,  0,  0, 11,  0
+    C | 0,  8,  0,  7,  0,  4,  0,  0,  2
+    D | 0,  0,  7,  0,  9, 14,  0,  0,  0
+    E | 0,  0,  0,  9,  0, 10,  0,  0,  0
+    F | 0,  0,  4, 14, 10,  0,  2,  0,  0
+    G | 0,  0,  0,  0,  0,  2,  0,  1,  6
+    H | 8, 11,  0,  0,  0,  0,  1,  0,  7
+    I | 0,  0,  2,  0,  0,  0,  6,  7,  0
 
     Shortest-path tree:
-    "1"  4 "0"
-    "2" 12 "1"
-    "3" 19 "2"
-    "4" 21 "5"
-    "5" 11 "6"
-    "6"  9 "7"
-    "7"  8 "0"
-    "8" 14 "2"
+    "B"  4 "A"
+    "C" 12 "B"
+    "D" 19 "C"
+    "E" 21 "F"
+    "F" 11 "G"
+    "G"  9 "H"
+    "H"  8 "A"
+    "I" 14 "C"
 
-    Minimum distance:
-    from 0 to 1 = 4.  0->1
-    from 0 to 2 = 12. 0->1->2
-    from 0 to 3 = 19. 0->1->2->3
-    from 0 to 4 = 21. 0->7->6->5->4
-    from 0 to 5 = 11. 0->7->6->5
-    from 0 to 6 = 9.  0->7->6
-    from 0 to 7 = 8.  0->7
-    from 0 to 8 = 14. 0->1->2->8
+    Minimum distance from A:
+    B = 4,  A->B
+    C = 12, A->B->C
+    D = 19, A->B->C->D
+    E = 21, A->H->G->F->E
+    F = 11, A->H->G->F
+    G = 9,  A->H->G
+    H = 8,  A->H
+    I = 14, A->B->C->I
     */
 
-    let json_value = json!({
-        "node": "0",
-        "edges": [
-            { "node": "0", "distance": 0,  "previous":  "" },
-            { "node": "1", "distance": 4,  "previous": "0" },
-            { "node": "2", "distance": 12, "previous": "1" },
-            { "node": "3", "distance": 19, "previous": "2" },
-            { "node": "4", "distance": 21, "previous": "5" },
-            { "node": "5", "distance": 11, "previous": "6" },
-            { "node": "6", "distance": 9,  "previous": "7" },
-            { "node": "7", "distance": 8,  "previous": "0" },
-            { "node": "8", "distance": 14, "previous": "2" }
-        ]
+    let input_shortest_path = [
+        ("A", 0, ""),
+        ("B", 4, "A"),
+        ("C", 12, "B"),
+        ("D", 19, "C"),
+        ("E", 21, "F"),
+        ("F", 11, "G"),
+        ("G", 9, "H"),
+        ("H", 8, "A"),
+        ("I", 14, "C"),
+    ];
+
+    let mut shortest_path_edges: Vec<ShortestPathNode> =
+        Vec::with_capacity(input_shortest_path.len());
+    input_shortest_path.iter().for_each(|x| {
+        shortest_path_edges.push(ShortestPathNode {
+            node: x.0.to_string(),
+            distance: x.1,
+            previous: x.2.to_string(),
+        })
     });
 
-    let shortest_path_tree: ShortestPathTree = serde_json::from_value(json_value).unwrap();
+    let expected_shortest_path_tree = ShortestPathTree {
+        node: "A".to_string(),
+        edges: shortest_path_edges,
+    };
 
-    let shortest_paths_value = json!([
-        { "from": "0", "to": "1", "distance": 4,  "path": [ "0", "1" ] },
-        { "from": "0", "to": "2", "distance": 12, "path": [ "0", "1", "2" ] },
-        { "from": "0", "to": "3", "distance": 19, "path": [ "0", "1", "2", "3" ] },
-        { "from": "0", "to": "4", "distance": 21, "path": [ "0", "7", "6", "5", "4" ] },
-        { "from": "0", "to": "5", "distance": 11, "path": [ "0", "7", "6", "5" ] },
-        { "from": "0", "to": "6", "distance": 9,  "path": [ "0", "7", "6" ] },
-        { "from": "0", "to": "7", "distance": 8,  "path": [ "0", "7" ] },
-        { "from": "0", "to": "8", "distance": 14, "path": [ "0", "1", "2", "8" ] }
-    ]);
+    let input_shortest_paths = [
+        ("A", "B", 4,  vec!["A", "B"]),
+        ("A", "C", 12, vec!["A", "B", "C"]),
+        ("A", "D", 19, vec!["A", "B", "C", "D"]),
+        ("A", "E", 21, vec!["A", "H", "G", "F", "E"]),
+        ("A", "F", 11, vec!["A", "H", "G", "F"]),
+        ("A", "G", 9,  vec!["A", "H", "G"]),
+        ("A", "H", 8,  vec!["A", "H"]),
+        ("A", "I", 14, vec!["A", "B", "C", "I"]),
+    ];
 
-    let shortest_paths: Vec<ShortestPath> = serde_json::from_value(shortest_paths_value).unwrap();
+    let mut expected_shortest_paths: Vec<ShortestPath> =
+        Vec::with_capacity(input_shortest_paths.len());
+    input_shortest_paths.iter().for_each(|x| {
+        expected_shortest_paths.push(ShortestPath {
+            from: x.0.to_string(),
+            to: x.1.to_string(),
+            distance: x.2,
+            path: x.3.iter().map(|v| v.to_string()).collect(),
+        })
+    });
 
-    (graph, shortest_path_tree, shortest_paths)
+    (graph, expected_shortest_path_tree, expected_shortest_paths)
 }
 
 pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
-
-    let graph_edges = [
+    let input_graph_edges = [
         ("A", "B", 6),
         ("A", "D", 1),
         ("B", "D", 2),
         ("B", "E", 2),
         ("B", "C", 5),
         ("C", "E", 5),
-        ("D", "E", 1)
+        ("D", "E", 1),
     ];
 
     let mut graph = Graph::new();
-    graph_edges.iter().for_each(|x| add_edge(&mut graph, x.0, x.1, x.2));
+    input_graph_edges
+        .iter()
+        .for_each(|x| add_edge(&mut graph, x.0, x.1, x.2));
 
     /*
     Shortest-path tree:
@@ -284,7 +307,7 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     E = 2, A->D->E
     */
 
-    let shortest_path_tree_json = r#" {
+    let input_shortest_path_tree = r#" {
         "node": "A",
         "edges": [
             { "node": "A", "distance": 0, "previous": ""  },
@@ -295,9 +318,11 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
         ]
     }
     "#;
-    let shortest_path_tree: ShortestPathTree = serde_json::from_str(&shortest_path_tree_json).unwrap();
 
-    let shortest_paths_json = r#"
+    let expected_shortest_path_tree: ShortestPathTree =
+        serde_json::from_str(&input_shortest_path_tree).unwrap();
+
+    let input_shortest_paths = r#"
         [
             { "from": "A", "to": "B", "distance": 3, "path": ["A", "D", "B"] },
             { "from": "A", "to": "C", "distance": 7, "path": ["A", "D", "E", "C"] },
@@ -305,26 +330,29 @@ pub fn generate_test_sample2() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
             { "from": "A", "to": "E", "distance": 2, "path": ["A", "D", "E"] }
         ]
     "#;
-    let shortest_paths: Vec<ShortestPath> = serde_json::from_str(&shortest_paths_json).unwrap();
 
-    (graph, shortest_path_tree, shortest_paths)
+    let expected_shortest_paths: Vec<ShortestPath> = serde_json::from_str(&input_shortest_paths).unwrap();
+
+    (graph, expected_shortest_path_tree, expected_shortest_paths)
 }
 
 pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
-    let graph_edges = [
-        ("A", "B",  4),
-        ("A", "C",  5),
+    let input_graph_edges = [
+        ("A", "B", 4),
+        ("A", "C", 5),
         ("B", "C", 11),
-        ("B", "D",  9),
-        ("B", "E",  7),
-        ("C", "E",  3),
+        ("B", "D", 9),
+        ("B", "E", 7),
+        ("C", "E", 3),
         ("D", "E", 13),
-        ("D", "F",  2),
-        ("E", "F",  6)
+        ("D", "F", 2),
+        ("E", "F", 6),
     ];
 
     let mut graph = Graph::new();
-    graph_edges.iter().for_each(|x| add_edge(&mut graph, x.0, x.1, x.2));
+    input_graph_edges
+        .iter()
+        .for_each(|x| add_edge(&mut graph, x.0, x.1, x.2));
 
     /*
     Shortest-path tree:
@@ -343,7 +371,7 @@ pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     F = 14, A−>C−>E−>F
     */
 
-    let json_value = json!({
+    let input_shortest_path_tree = json!({
         "node": "A",
         "edges": [
             {"node": "A", "distance": 0,  "previous": ""},
@@ -355,9 +383,9 @@ pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
         ]
     });
 
-    let shortest_path_tree: ShortestPathTree = serde_json::from_value(json_value).unwrap();
+    let expected_shortest_path_tree: ShortestPathTree = serde_json::from_value(input_shortest_path_tree).unwrap();
 
-    let shortest_paths_value = json!([
+    let input_shortest_paths = json!([
         {"from": "A", "to": "B", "distance": 4,  "path": ["A", "B"]},
         {"from": "A", "to": "C", "distance": 5,  "path": ["A", "C"]},
         {"from": "A", "to": "D", "distance": 13, "path": ["A", "B", "D"]},
@@ -365,9 +393,9 @@ pub fn generate_test_sample3() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
         {"from": "A", "to": "F", "distance": 14, "path": ["A", "C", "E", "F"]}
     ]);
 
-    let shortest_paths: Vec<ShortestPath> = serde_json::from_value(shortest_paths_value).unwrap();
+    let expected_shortest_paths: Vec<ShortestPath> = serde_json::from_value(input_shortest_paths).unwrap();
 
-    (graph, shortest_path_tree, shortest_paths)
+    (graph, expected_shortest_path_tree, expected_shortest_paths)
 }
 
 fn add_edge(graph: &mut Graph, a: &str, b: &str, distance: u32) {
@@ -398,7 +426,8 @@ mod tests {
     fn shortest_tree_sample1_test() {
         let (graph, expected_shortest_path_tree, expected_shortest_paths) = generate_test_sample1();
         assert_eq!(graph.len(), 9);
-        let option_shortest_path_tree = super::build_shortest_path_tree(&graph, &expected_shortest_path_tree.node);
+        let option_shortest_path_tree =
+            super::build_shortest_path_tree(&graph, &expected_shortest_path_tree.node);
         assert!(option_shortest_path_tree.is_some());
 
         let shortest_path_tree = option_shortest_path_tree.unwrap();
@@ -407,7 +436,8 @@ mod tests {
         assert!(!expected_shortest_paths.is_empty());
         assert_eq!(expected_shortest_paths.len(), 8);
         for expected_shortest_path in expected_shortest_paths {
-            let shortest_path = shortest_path_tree_to_path(&expected_shortest_path.to, &shortest_path_tree);
+            let shortest_path =
+                shortest_path_tree_to_path(&expected_shortest_path.to, &shortest_path_tree);
             assert!(shortest_path.is_some());
             assert_eq!(shortest_path.unwrap(), expected_shortest_path);
         }
@@ -418,7 +448,8 @@ mod tests {
         let (graph, expected_shortest_path_tree, expected_shortest_paths) = generate_test_sample2();
         assert_eq!(graph.len(), 5);
 
-        let option_shortest_path_tree = super::build_shortest_path_tree(&graph, &expected_shortest_path_tree.node);
+        let option_shortest_path_tree =
+            super::build_shortest_path_tree(&graph, &expected_shortest_path_tree.node);
         assert!(option_shortest_path_tree.is_some());
 
         let shortest_path_tree = option_shortest_path_tree.unwrap();
@@ -427,7 +458,8 @@ mod tests {
         assert!(!expected_shortest_paths.is_empty());
         assert_eq!(expected_shortest_paths.len(), 4);
         for expected_shortest_path in expected_shortest_paths {
-            let shortest_path = shortest_path_tree_to_path(&expected_shortest_path.to, &shortest_path_tree);
+            let shortest_path =
+                shortest_path_tree_to_path(&expected_shortest_path.to, &shortest_path_tree);
             assert!(shortest_path.is_some());
             assert_eq!(shortest_path.unwrap(), expected_shortest_path);
         }
@@ -437,7 +469,8 @@ mod tests {
     fn shortest_tree_sample3_test() {
         let (graph, expected_shortest_path_tree, expected_shortest_paths) = generate_test_sample3();
         assert_eq!(graph.len(), 6);
-        let option_shortest_path_tree = super::build_shortest_path_tree(&graph, &expected_shortest_path_tree.node);
+        let option_shortest_path_tree =
+            super::build_shortest_path_tree(&graph, &expected_shortest_path_tree.node);
         assert!(option_shortest_path_tree.is_some());
 
         let shortest_path_tree = option_shortest_path_tree.unwrap();
@@ -446,7 +479,8 @@ mod tests {
         assert!(!expected_shortest_paths.is_empty());
         assert_eq!(expected_shortest_paths.len(), 5);
         for expected_shortest_path in expected_shortest_paths {
-            let shortest_path = shortest_path_tree_to_path(&expected_shortest_path.to, &shortest_path_tree);
+            let shortest_path =
+                shortest_path_tree_to_path(&expected_shortest_path.to, &shortest_path_tree);
             assert!(shortest_path.is_some());
             assert_eq!(shortest_path.unwrap(), expected_shortest_path);
         }
@@ -457,8 +491,8 @@ mod tests {
         let (graph, _, _) = generate_test_sample1();
         assert_eq!(graph.len(), 9);
 
-        let from = "0";
-        let mut to = "1";
+        let from = "A";
+        let mut to = "B";
         let shortest_path = super::shortest_path_map(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
@@ -466,11 +500,11 @@ mod tests {
                 from: from.to_string(),
                 to: to.to_string(),
                 distance: 4,
-                path: ["0", "1"].iter().map(|n| n.to_string()).collect()
+                path: ["A", "B"].iter().map(|n| n.to_string()).collect()
             }
         );
 
-        to = "2";
+        to = "C";
         let shortest_path = super::shortest_path_map(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
@@ -478,11 +512,11 @@ mod tests {
                 from: from.to_string(),
                 to: to.to_string(),
                 distance: 12,
-                path: ["0", "1", "2"].iter().map(|n| n.to_string()).collect()
+                path: ["A", "B", "C"].iter().map(|n| n.to_string()).collect()
             }
         );
 
-        to = "3";
+        to = "D";
         let shortest_path = super::shortest_path_map(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
@@ -490,11 +524,11 @@ mod tests {
                 from: from.to_string(),
                 to: to.to_string(),
                 distance: 19,
-                path: ["0", "1", "2", "3"].iter().map(|n| n.to_string()).collect()
+                path: ["A", "B", "C", "D"].iter().map(|n| n.to_string()).collect()
             }
         );
 
-        to = "4";
+        to = "E";
         let shortest_path = super::shortest_path_map(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
@@ -502,14 +536,14 @@ mod tests {
                 from: from.to_string(),
                 to: to.to_string(),
                 distance: 21,
-                path: ["0", "7", "6", "5", "4"]
+                path: ["A", "H", "G", "F", "E"]
                     .iter()
                     .map(|n| n.to_string())
                     .collect()
             }
         );
 
-        to = "5";
+        to = "F";
         let shortest_path = super::shortest_path_map(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
@@ -517,11 +551,11 @@ mod tests {
                 from: from.to_string(),
                 to: to.to_string(),
                 distance: 11,
-                path: ["0", "7", "6", "5"].iter().map(|n| n.to_string()).collect()
+                path: ["A", "H", "G", "F"].iter().map(|n| n.to_string()).collect()
             }
         );
 
-        to = "6";
+        to = "G";
         let shortest_path = super::shortest_path_map(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
@@ -529,11 +563,11 @@ mod tests {
                 from: from.to_string(),
                 to: to.to_string(),
                 distance: 9,
-                path: ["0", "7", "6"].iter().map(|n| n.to_string()).collect()
+                path: ["A", "H", "G"].iter().map(|n| n.to_string()).collect()
             }
         );
 
-        to = "7";
+        to = "H";
         let shortest_path = super::shortest_path_map(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
@@ -541,11 +575,11 @@ mod tests {
                 from: from.to_string(),
                 to: to.to_string(),
                 distance: 8,
-                path: ["0", "7"].iter().map(|n| n.to_string()).collect()
+                path: ["A", "H"].iter().map(|n| n.to_string()).collect()
             }
         );
 
-        to = "8";
+        to = "I";
         let shortest_path = super::shortest_path_map(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
@@ -553,7 +587,7 @@ mod tests {
                 from: from.to_string(),
                 to: to.to_string(),
                 distance: 14,
-                path: ["0", "1", "2", "8"].iter().map(|n| n.to_string()).collect()
+                path: ["A", "B", "C", "I"].iter().map(|n| n.to_string()).collect()
             }
         );
     }
