@@ -32,7 +32,7 @@ pub struct ShortestPath {
     path: Vec<String>,
 }
 
-pub fn shortest_path_tree_to_path(
+pub fn shortest_path_from_tree(
     to: &str,
     shortest_path_tree: &ShortestPathTree,
 ) -> Option<ShortestPath> {
@@ -66,20 +66,20 @@ pub fn shortest_path_tree_to_path(
     })
 }
 
-pub fn shortest_path_map(graph: &Graph, from: &str, to: &str) -> Option<ShortestPath> {
+pub fn shortest_path(graph: &Graph, from: &str, to: &str) -> Option<ShortestPath> {
     if graph.get(from).is_none() || graph.get(to).is_none() {
         return None;
     }
 
-    let shortest_path_tree = build_shortest_path_tree(&graph, &from);
+    let shortest_path_tree = shortest_path_tree(&graph, &from);
     if shortest_path_tree.is_none() {
         return None;
     }
 
-    shortest_path_tree_to_path(&to, &shortest_path_tree.unwrap())
+    shortest_path_from_tree(&to, &shortest_path_tree.unwrap())
 }
 
-pub fn build_shortest_path_tree(graph: &Graph, source: &str) -> Option<ShortestPathTree> {
+pub fn shortest_path_tree(graph: &Graph, source: &str) -> Option<ShortestPathTree> {
     struct PathRecord {
         name: String,
         distance: Option<u32>,
@@ -225,7 +225,7 @@ pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     I = 14, A->B->C->I
     */
 
-    let input_shortest_path = [
+    let input_shortest_path_tree = [
         ("A", 0, ""),
         ("B", 4, "A"),
         ("C", 12, "B"),
@@ -238,8 +238,8 @@ pub fn generate_test_sample1() -> (Graph, ShortestPathTree, Vec<ShortestPath>) {
     ];
 
     let mut shortest_path_edges: Vec<ShortestPathNode> =
-        Vec::with_capacity(input_shortest_path.len());
-    input_shortest_path.iter().for_each(|x| {
+        Vec::with_capacity(input_shortest_path_tree.len());
+    input_shortest_path_tree.iter().for_each(|x| {
         shortest_path_edges.push(ShortestPathNode {
             node: x.0.to_string(),
             distance: x.1,
@@ -431,7 +431,7 @@ mod tests {
         let (graph, expected_shortest_path_tree, expected_shortest_paths) = generate_test_sample1();
         assert_eq!(graph.len(), 9);
         let option_shortest_path_tree =
-            super::build_shortest_path_tree(&graph, &expected_shortest_path_tree.node);
+            super::shortest_path_tree(&graph, &expected_shortest_path_tree.node);
         assert!(option_shortest_path_tree.is_some());
 
         let shortest_path_tree = option_shortest_path_tree.unwrap();
@@ -441,7 +441,7 @@ mod tests {
         assert_eq!(expected_shortest_paths.len(), 8);
         for expected_shortest_path in expected_shortest_paths {
             let shortest_path =
-                shortest_path_tree_to_path(&expected_shortest_path.to, &shortest_path_tree);
+                shortest_path_from_tree(&expected_shortest_path.to, &shortest_path_tree);
             assert!(shortest_path.is_some());
             assert_eq!(shortest_path.unwrap(), expected_shortest_path);
         }
@@ -453,7 +453,7 @@ mod tests {
         assert_eq!(graph.len(), 5);
 
         let option_shortest_path_tree =
-            super::build_shortest_path_tree(&graph, &expected_shortest_path_tree.node);
+            super::shortest_path_tree(&graph, &expected_shortest_path_tree.node);
         assert!(option_shortest_path_tree.is_some());
 
         let shortest_path_tree = option_shortest_path_tree.unwrap();
@@ -463,7 +463,7 @@ mod tests {
         assert_eq!(expected_shortest_paths.len(), 4);
         for expected_shortest_path in expected_shortest_paths {
             let shortest_path =
-                shortest_path_tree_to_path(&expected_shortest_path.to, &shortest_path_tree);
+                shortest_path_from_tree(&expected_shortest_path.to, &shortest_path_tree);
             assert!(shortest_path.is_some());
             assert_eq!(shortest_path.unwrap(), expected_shortest_path);
         }
@@ -474,7 +474,7 @@ mod tests {
         let (graph, expected_shortest_path_tree, expected_shortest_paths) = generate_test_sample3();
         assert_eq!(graph.len(), 6);
         let option_shortest_path_tree =
-            super::build_shortest_path_tree(&graph, &expected_shortest_path_tree.node);
+            super::shortest_path_tree(&graph, &expected_shortest_path_tree.node);
         assert!(option_shortest_path_tree.is_some());
 
         let shortest_path_tree = option_shortest_path_tree.unwrap();
@@ -484,7 +484,7 @@ mod tests {
         assert_eq!(expected_shortest_paths.len(), 5);
         for expected_shortest_path in expected_shortest_paths {
             let shortest_path =
-                shortest_path_tree_to_path(&expected_shortest_path.to, &shortest_path_tree);
+                shortest_path_from_tree(&expected_shortest_path.to, &shortest_path_tree);
             assert!(shortest_path.is_some());
             assert_eq!(shortest_path.unwrap(), expected_shortest_path);
         }
@@ -497,7 +497,7 @@ mod tests {
 
         let from = "A";
         let mut to = "B";
-        let shortest_path = super::shortest_path_map(&graph, &from, &to);
+        let shortest_path = super::shortest_path(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
             ShortestPath {
@@ -509,7 +509,7 @@ mod tests {
         );
 
         to = "C";
-        let shortest_path = super::shortest_path_map(&graph, &from, &to);
+        let shortest_path = super::shortest_path(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
             ShortestPath {
@@ -521,7 +521,7 @@ mod tests {
         );
 
         to = "D";
-        let shortest_path = super::shortest_path_map(&graph, &from, &to);
+        let shortest_path = super::shortest_path(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
             ShortestPath {
@@ -533,7 +533,7 @@ mod tests {
         );
 
         to = "E";
-        let shortest_path = super::shortest_path_map(&graph, &from, &to);
+        let shortest_path = super::shortest_path(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
             ShortestPath {
@@ -548,7 +548,7 @@ mod tests {
         );
 
         to = "F";
-        let shortest_path = super::shortest_path_map(&graph, &from, &to);
+        let shortest_path = super::shortest_path(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
             ShortestPath {
@@ -560,7 +560,7 @@ mod tests {
         );
 
         to = "G";
-        let shortest_path = super::shortest_path_map(&graph, &from, &to);
+        let shortest_path = super::shortest_path(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
             ShortestPath {
@@ -572,7 +572,7 @@ mod tests {
         );
 
         to = "H";
-        let shortest_path = super::shortest_path_map(&graph, &from, &to);
+        let shortest_path = super::shortest_path(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
             ShortestPath {
@@ -584,7 +584,7 @@ mod tests {
         );
 
         to = "I";
-        let shortest_path = super::shortest_path_map(&graph, &from, &to);
+        let shortest_path = super::shortest_path(&graph, &from, &to);
         assert_eq!(
             shortest_path.unwrap(),
             ShortestPath {
