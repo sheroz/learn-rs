@@ -1,5 +1,5 @@
 + add a palindrome function without using (1) regex replace and (2) string reverse then (3) benchmarks against existing
-- implement dijkstra
+- WIP: implement dijkstra
  + make the test input as json data
  - implement array based tree calculation
  - add benchmarks
@@ -8,3 +8,6 @@
 - optimize base64 encoder and benchmark
   - post in LinkedIn (https://www.linkedin.com/posts/rustjobs-dev_base64-implementation-in-rust-activity-7064862496720924672-fN7y)
 
++ create account on creates.io
+- create a crate from dijkstra code and publish as dreamlogic::dijkstra
+- base64 complete coding and publish as a crate dreamlogic::base64
