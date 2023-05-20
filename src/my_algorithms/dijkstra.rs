@@ -61,7 +61,7 @@ pub fn add_edge(graph: &mut GraphMap, a: &str, b: &str, distance: u32) {
 }
 
 /// Converts map based graph into vector based graph
-pub fn graph_map_to_vector(graph_map: &GraphMap) -> GraphVector {
+pub fn graph_map_to_vector(graph_map: &GraphMap) -> Option<GraphVector> {
     let node_count = graph_map.len();
     let mut vector_graph: GraphVector = GraphVector::with_capacity(node_count);
 
@@ -72,7 +72,25 @@ pub fn graph_map_to_vector(graph_map: &GraphMap) -> GraphVector {
         }
         vector_graph.push((node.to_string(), edges));
     }
-    vector_graph
+
+    Some(vector_graph)
+}
+
+pub fn graph_map_to_matrix(graph_map: &GraphMap) -> Option<GraphMatrix> {
+/* 
+    let node_count = graph_map.len();
+    let mut graph_vector: GraphVector = GraphVector::with_capacity(node_count);
+
+    for (node, map) in graph_map {
+        let mut edges: Vec<(String, u32)> = Vec::with_capacity(map.len());  
+        for (node, distance) in map {
+            edges.push((node.to_string(), *distance));
+        }
+        graph_vector.push((node.to_string(), edges));
+    }
+    graph_vector
+ */
+    None
 }
 
 pub fn shortest_path_tree_vector(graph_vector: &GraphVector, source: &str) -> Option<ShortestPathTreeString> {
@@ -626,7 +644,7 @@ mod tests {
         let (graph_map, expected_shortest_path_tree, expected_shortest_paths) = fn_test_input();
         assert!(!graph_map.is_empty());
 
-        let graph_vector = super::graph_map_to_vector(&graph_map);
+        let graph_vector = super::graph_map_to_vector(&graph_map).unwrap();
         assert!(!graph_vector.is_empty());
 
         let option_shortest_path_tree =
