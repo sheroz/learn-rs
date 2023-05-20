@@ -25,8 +25,10 @@ fn main() {
     let sample_text = "A man, a plan, a canal: Panama!";
     println!("Check for palindrome: {}\n{}\n", sample_text, my_algorithms::palindrome::is_palindrome(sample_text));
 
+/* 
     // Dijkstra’s Shortest Path Algorithm
     let (graph,_, _) = my_algorithms::dijkstra::test_sample1();
     let shortest_path = my_algorithms::dijkstra::shortest_path(&graph, "A", "I");
     println!("Shortest path from A to I is :\n {:?}\n", shortest_path);
+ */    
 }
