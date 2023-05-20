@@ -624,6 +624,8 @@ mod tests {
 
         assert!(!graph_matrix.is_empty());
         assert_eq!(graph_matrix.len(), names.len());
+        
+        // todo: convert test results into numbers
         // let expected_shortest_path_tree =  tree_from_path(&expected_shortest_paths);
     }
  
