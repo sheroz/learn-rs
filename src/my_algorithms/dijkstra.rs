@@ -122,8 +122,8 @@ pub fn shortest_path_tree_matrix(graph_matrix: &Vec<Vec<u32>>, source: usize) ->
         return None;
     }
 
-    let mut shortest_path_tree: Vec<ShortestPathNodeNumber> = Vec::with_capacity(node_count);
     let mut visited = vec![false; node_count];
+    let mut shortest_path_tree: Vec<ShortestPathNodeNumber> = Vec::with_capacity(node_count);
     for node in 0..node_count {
         shortest_path_tree.push(
             ShortestPathNodeNumber {
