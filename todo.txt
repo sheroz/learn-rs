@@ -2,6 +2,7 @@
 - WIP: implement dijkstra
  + make the test input as json data
  + implement array based tree calculation
+ - add test coverage: https://lib.rs/crates/cargo-llvm-cov
  - add benchmarks
 - heap and BST related stuff
 - implement and benchmark sort functions
