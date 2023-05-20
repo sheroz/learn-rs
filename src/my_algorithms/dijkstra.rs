@@ -135,40 +135,40 @@ pub fn shortest_path_tree_matrix(graph_matrix: &Vec<Vec<u32>>, source: usize) ->
     }
 
     // starting from the source node
-    let mut visiting_index = source;
-    shortest_path_tree[visiting_index].distance = 0;
+    let mut node = source;
+    shortest_path_tree[node].distance = 0;
 
-    while visiting_index != usize::MAX {
+    while node != usize::MAX {
 
-        let node_distance = shortest_path_tree[visiting_index].distance;
-        visited[visiting_index] = true;
+        let node_distance = shortest_path_tree[node].distance;
+        visited[node] = true;
 
-        let column = &graph_matrix[visiting_index];
+        let column = &graph_matrix[node];
 
         // applying the core dijkstra algorithm
-        // calculating distance from and previous node 
+        // calculating new distance and setting a previous node to follow from
         for index in 0..node_count {
             if !visited[index] {
                 let distance = column[index];
                 if  distance > 0 {
                     let mut record = &mut shortest_path_tree[index];
-                    let new_distance = distance + node_distance;
+                    let new_distance = node_distance + distance;
                     if record.distance > new_distance {
                             record.distance = new_distance;
-                            record.previous = visiting_index;
+                            record.previous = node;
                     }
                 }
             }
         }
 
         // checking for not visited record with min distance
-        visiting_index = usize::MAX;
+        node = usize::MAX;
         let mut min_distance = u32::MAX;
         for index in 0..node_count {
             let record = &shortest_path_tree[index];
             if !visited[index] && record.distance < min_distance {
                 min_distance = record.distance;
-                visiting_index = index;
+                node = index;
             }    
         }
     }
