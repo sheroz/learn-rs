@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 
 pub type GraphMap = HashMap<String, HashMap<String, u32>>;
 pub type GraphVector = Vec<(String, Vec<(String, u32)>)>;
+pub type GraphMatrix = Vec<Vec<u32>>;
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct ShortestPathTreeNode {
@@ -115,7 +116,7 @@ pub fn shortest_path_tree_vector(graph_vector: &GraphVector, source: &str) -> Op
     Some(ShortestPathTreeString{node: source.to_string(), edges: edges})
 }
 
-pub fn shortest_path_tree_matrix(graph_matrix: &Vec<Vec<u32>>, source: usize) -> Option<Vec<ShortestPathTreeNode>> {
+pub fn shortest_path_tree_matrix(graph_matrix: &GraphMatrix, source: usize) -> Option<Vec<ShortestPathTreeNode>> {
 
     // check source node exists in the matrix
     let node_count = graph_matrix.len();
