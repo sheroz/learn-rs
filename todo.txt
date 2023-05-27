@@ -12,3 +12,5 @@
 + create account on creates.io
 - create a crate from dijkstra code and publish as dreamlogic::dijkstra
 - base64 complete coding and publish as a crate dreamlogic::base64
+
+Closures: https://www.linkedin.com/pulse/what-closures-inrust-luis-soares-m-sc-/?trackingId=mZt%2BxjpsBSwbCCJx1yfvuA%3D%3D
