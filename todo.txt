@@ -4,6 +4,7 @@
  + implement array based tree calculation
  - add test coverage: https://lib.rs/crates/cargo-llvm-cov
  - add benchmarks
+- todo: Implement A Star (A *) algorithm
 - heap and BST related stuff
 - implement and benchmark sort functions
 - optimize base64 encoder and benchmark
