@@ -19,7 +19,7 @@ pub fn  asm_tick_counter_processor_id() -> (u64, u32) {
     let mut reg_ecx:u32;
 
     unsafe {
-        asm!("rdtsc", out("eax") reg_eax, out("edx") reg_edx, out("ecx") reg_ecx);
+        asm!("rdtscp", out("eax") reg_eax, out("edx") reg_edx, out("ecx") reg_ecx);
     }
 
     ((reg_edx as u64) << 32 | reg_eax as u64, reg_ecx)
@@ -39,13 +39,13 @@ fn test_asm_rdtsc() {
     let mut ecx: u32 = 0;
     let ptr_ecx: *mut u32 = (&mut ecx) as *mut u32;
     let counter5 = unsafe {__rdtscp(ptr_ecx)};
-    let processor_id_1 = ecx;
+    let cpu_core_id_1 = ecx;
 
     let counter6 = unsafe {__rdtscp(ptr_ecx)};
-    let processor_id_2 = ecx;
+    let cpu_core_id_2 = ecx;
 
-    let (counter7, processor_id_3) = asm_tick_counter_processor_id();
-    let (counter8, processor_id_4) = asm_tick_counter_processor_id();
+    let (counter7, cpu_core_id_3) = asm_tick_counter_processor_id();
+    let (counter8, cpu_core_id_4) = asm_tick_counter_processor_id();
 
     assert!(counter1 < counter2);
     assert!(counter3 < counter4);
