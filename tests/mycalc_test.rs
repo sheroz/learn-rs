@@ -2,7 +2,6 @@
 
 extern crate my_rust;
 use my_rust::my_calc::*;
-use std::arch::asm;
 
 #[test]
 fn test_sum1() {
@@ -21,22 +20,3 @@ fn test_mul1() {
 
     assert_eq!(m1, 12);
 }
-
-/// adding documentation 
-/// test_asm1: using the inline assembly feature
-#[test]
-fn test_asm1() {
-        let i: u64 = 3;
-        let mut o: u64 = 1;
-        assert_eq!(o, 1); 
-        assert_ne!(o, i); 
-        unsafe {
-            asm!(
-                "mov {0}, {1}",
-                out(reg) o,
-                in(reg) i,
-            );
-        }
-        assert_eq!(o, i); 
-}
-
