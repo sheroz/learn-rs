@@ -12,11 +12,31 @@ pub fn asm_tick_counter() -> u64 {
     (reg_edx as u64) << 32 | reg_eax as u64
 }
 
-#[cfg(not(target_arch = "x86_64"))]
+#[cfg(target_arch = "aarch64")]
+#[inline]
 pub fn asm_tick_counter() -> u64 {
-    unsupported_architecture();
+    let tick_counter: u64;
+    unsafe {
+        asm!(
+            "mrs x0, cntvct_el0",
+            out("x0") tick_counter
+        );
+    }
+    tick_counter
 }
 
+#[cfg(target_arch = "aarch64")]
+#[inline]
+pub fn asm_tick_counter_frequency() -> u64 {
+    let tick_frequency: u64;
+    unsafe {
+        asm!(
+            "mrs x0, cntfrq_el0",
+            out("x0") tick_frequency
+        );
+    }
+    tick_frequency
+}
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 pub fn asm_tick_counter_processor_id() -> (u64, u32) {
@@ -34,6 +54,7 @@ pub fn asm_tick_counter_processor_id() -> (u64, u32) {
 #[cfg(not(target_arch = "x86_64"))]
 pub fn asm_tick_counter_processor_id() -> u64 {
     unsupported_architecture();
+    0
 }
 
 #[cfg(target_arch = "x86_64")]
@@ -52,9 +73,10 @@ pub fn asm_tick_counter_start() -> u64 {
     rax
 }
 
-#[cfg(not(target_arch = "x86_64"))]
+#[cfg(target_arch = "aarch64")]
+#[inline]
 pub fn asm_tick_counter_start() -> u64 {
-    unsupported_architecture();
+    asm_tick_counter()
 }
 
 #[cfg(target_arch = "x86_64")]
@@ -72,9 +94,10 @@ pub fn asm_tick_counter_stop() -> u64 {
     rax
 }
 
-#[cfg(not(target_arch = "x86_64"))]
-pub fn asm_tick_counter_stop() -> u64 {
-    unsupported_architecture();
+#[cfg(target_arch = "aarch64")]
+#[inline]
+ pub fn asm_tick_counter_stop() -> u64 {
+    asm_tick_counter()
 }
 
 #[allow(dead_code)]
@@ -86,8 +109,33 @@ fn unsupported_architecture() {
 mod tests {
     
     #[test]
+    #[cfg(target_arch = "aarch64")]
+    fn test_asm_aarch64_tick_counter() {
+        use std::{thread::sleep, time::Duration};
+
+        use super::*;
+        const DURATION_IN_MILLISECONDS: u64 = 200; 
+
+        let counter_start = asm_tick_counter_start();
+        sleep(Duration::from_millis(DURATION_IN_MILLISECONDS));
+        let counter_stop = asm_tick_counter_stop();
+        println!("counter_start: {}. counter_end: {}", counter_start, counter_stop);
+        assert!(counter_start < counter_stop);
+
+        let counter_diff = counter_stop - counter_start;
+        assert!(counter_diff > 0);
+
+        let calculated_frequency = counter_diff * (1000 / DURATION_IN_MILLISECONDS);
+        println!("calculated_frequency: {}", calculated_frequency);
+
+        let counter_frequency = asm_tick_counter_frequency();
+        println!("cpu_counter_frequency: {}", counter_frequency);
+        assert!(counter_frequency > 0);
+    }
+    
+    #[test]
     #[cfg(target_arch = "x86_64")]
-    fn test_asm_counters() {
+    fn test_asm_x86_64_counters() {
         use super::*;
         use core::arch::x86_64::__rdtscp;
         use core::arch::x86_64::_rdtsc;
@@ -137,7 +185,7 @@ mod tests {
     /// test_asm1: using the inline assembly feature
     #[test]
     #[cfg(target_arch = "x86_64")]
-    fn test_asm1() {
+    fn test_asm_x86_64() {
         use std::arch::asm;
 
         let i: u64 = 3;
