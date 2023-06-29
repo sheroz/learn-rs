@@ -1,6 +1,7 @@
 use my_rust::*;
 
 fn main() {
+
     my_calc::calc_sample();
     let txt = "Hello world!";
     let hex_encoded = crypto::openssl_sample::sha256_digest(txt);    
