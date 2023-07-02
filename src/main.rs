@@ -23,9 +23,6 @@ fn main() {
 
     println!("fibonacci(7) = {}", my_algorithms::fibonacci::fibonacci(7));
 
-    let sample_text = "A man, a plan, a canal: Panama!";
-    println!("Check for palindrome: {}\n{}\n", sample_text, my_algorithms::palindrome::is_palindrome(sample_text));
-
 /* 
     // Dijkstra’s Shortest Path Algorithm
     let (graph,_, _) = my_algorithms::dijkstra::test_sample1();
