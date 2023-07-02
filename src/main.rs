@@ -20,7 +20,4 @@ fn main() {
 
     my_collections::sample_sets::hashset_sample();
     my_collections::sample_sets::btreeset_sample();
-
-    println!("fibonacci(7) = {}", my_algorithms::fibonacci::fibonacci(7));
- 
 }
