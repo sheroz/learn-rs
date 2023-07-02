@@ -22,11 +22,5 @@ fn main() {
     my_collections::sample_sets::btreeset_sample();
 
     println!("fibonacci(7) = {}", my_algorithms::fibonacci::fibonacci(7));
-
-/* 
-    // Dijkstra’s Shortest Path Algorithm
-    let (graph,_, _) = my_algorithms::dijkstra::test_sample1();
-    let shortest_path = my_algorithms::dijkstra::shortest_path(&graph, "A", "I");
-    println!("Shortest path from A to I is :\n {:?}\n", shortest_path);
- */    
+ 
 }
