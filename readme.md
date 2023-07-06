@@ -12,7 +12,7 @@
 
 ### DEBUG CONSOLE
 
-#### Sample useful commands
+#### Sample useful commands for debugging (to be executed in DEBUG CONSOLE tab of VS Code)
 
     >help
     >vo
@@ -22,3 +22,10 @@
     >x -c 256 0x00555555597036
     >p source_text
     >p &source_text
+
+### Test Coverage
+
+    $cargo +stable install cargo-llvm-cov --locked
+    $cargo llvm-cov
+    $cargo llvm-cov --html
+    $cargo llvm-cov --open 
