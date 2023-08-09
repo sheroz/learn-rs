@@ -1,4 +1,4 @@
-# Learning Rust
+# Playground Rust
 
 ## Useful links
 
