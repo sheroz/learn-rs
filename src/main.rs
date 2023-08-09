@@ -1,4 +1,4 @@
-use my_rust::*;
+use playground_rs::*;
 
 fn main() {
 

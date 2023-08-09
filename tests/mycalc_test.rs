@@ -1,7 +1,7 @@
 // #[path = "../src/mycalc.rs"] mod mycalc; 
 
-extern crate my_rust;
-use my_rust::my_calc::*;
+extern crate playground_rs;
+use playground_rs::my_calc::*;
 
 #[test]
 fn test_sum1() {
