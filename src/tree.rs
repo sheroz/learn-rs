@@ -13,7 +13,7 @@ pub struct TreeNode {
     pub uuid: Uuid,
     pub value: u32,
     pub data: String,
-    // pub parent: RefCell<Weak<TreeNode>>,
+    pub parent: RefCell<Weak<TreeNode>>,
     pub children: RefCell<Vec<TreeNodeRef>>,
 }
 
@@ -39,15 +39,21 @@ impl TreeNode {
             uuid: Uuid::new_v4(),
             value: 0,
             data: "".to_string(),
-            // parent: RefCell::new(Weak::<TreeNode>::new()),
+            parent: RefCell::new(Weak::<TreeNode>::new()),
             children: RefCell::new(vec![]),
         }
     }
 
-    pub fn add_child(&mut self, child_ref: TreeNodeRef) {
-        // *child_ref.parent.borrow_mut() = Rc::downgrade(Rc::new(self));
-        self.children.borrow_mut().push(child_ref);
+    pub fn add_child(self, child: TreeNode) -> Rc<Self>{
+
+        let rc = Rc::new(self);
+        *child.parent.borrow_mut() = Rc::downgrade(&rc);
+
+        let child_ref = Rc::new(child);
+        rc.children.borrow_mut().push(child_ref);
+        rc
     }
+
 }
 
 impl Tree {
@@ -56,7 +62,7 @@ impl Tree {
     }
 
     pub fn add_child(&self, parent: TreeNodeRef, child: TreeNode) {
-        // *child.parent.borrow_mut() = Rc::downgrade(&parent);
+        *child.parent.borrow_mut() = Rc::downgrade(&parent);
 
         let child_ref = Rc::new(child);
         parent.children.borrow_mut().push(child_ref);
@@ -108,14 +114,15 @@ mod tests {
         let mut node4 = TreeNode::new();
         node4.data = "node4".to_string();
 
-        let mut ref_node4_1 = Rc::new(TreeNode::new());
-        let a1 = &ref_node4_1.data;
+        let mut node4_1 = TreeNode::new();
+        let mut node4_2 = TreeNode::new();
+        //let a1 = &ref_node4_1.data;
 
-        let mut ref_node4_2 = Rc::new(TreeNode::new());
-        (*ref_node4_2.borrow_mut()).data = "ref_node4_2".to_string();
+        //let mut ref_node4_2 = Rc::new(TreeNode::new());
+        //(*ref_node4_2.borrow_mut()).data = "ref_node4_2".to_string();
 
-        node4.add_child(ref_node4_1);
-        node4.add_child(ref_node4_2);
+        // let t = node4.add_child(node4_1).clone();
+        // t.into().add_child(node4_2);
 
         tree.add_child(root_ref.clone(), node4);
 
