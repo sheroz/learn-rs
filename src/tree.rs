@@ -44,14 +44,12 @@ impl TreeNode {
         }
     }
 
-    pub fn add_child(self, child: TreeNode) -> Rc<Self>{
+    pub fn add_child(&self, parent: Rc<TreeNode>, child: TreeNode) {
 
-        let rc = Rc::new(self);
-        *child.parent.borrow_mut() = Rc::downgrade(&rc);
+        *child.parent.borrow_mut() = Rc::downgrade(&parent);
 
         let child_ref = Rc::new(child);
-        rc.children.borrow_mut().push(child_ref);
-        rc
+        parent.children.borrow_mut().push(child_ref);
     }
 
 }
@@ -120,11 +118,11 @@ mod tests {
 
         //let mut ref_node4_2 = Rc::new(TreeNode::new());
         //(*ref_node4_2.borrow_mut()).data = "ref_node4_2".to_string();
+        let parent = Rc::new(node4);
+        parent.add_child(parent.clone(), node4_1);
+        parent.add_child(parent.clone(), node4_2);
 
-        // let t = node4.add_child(node4_1).clone();
-        // t.into().add_child(node4_2);
-
-        tree.add_child(root_ref.clone(), node4);
+        //tree.add_child(root_ref.clone(), parent.try_into().unwrap());
 
         println!("{:#?}", tree);
     }
