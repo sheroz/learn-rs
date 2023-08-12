@@ -5,7 +5,7 @@
 /// ```
 /// let arg1 = 1;
 /// let arg2 = 2;
-/// let result = my_rust::my_lib::sum2(arg1, arg2);
+/// let result = playground_rs::my_lib::sum2(arg1, arg2);
 ///
 /// assert_eq!(3, result);
 /// ```

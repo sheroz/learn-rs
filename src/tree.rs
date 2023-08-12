@@ -1,49 +1,55 @@
 // https://rust-unofficial.github.io/too-many-lists/
 // https://doc.rust-lang.org/nightly/nomicon/
 
-use std::{rc::{Rc, Weak}, cell::{RefCell, Cell}, borrow::BorrowMut, ops::{DerefMut, Deref}};
+use std::rc::Rc;
+use std::cell::RefCell;
 use uuid::Uuid;
 
 #[derive(Debug)]
 pub struct Tree {
-    pub root: TreeNodeRef,
+    pub root: Option<TreeNodeRef>,
 }
 
 #[derive(Debug, Clone)]
 pub struct TreeNode {
     pub uuid: Uuid,
-    pub value: u32,
-    pub data: String,
-    pub parent: TreeNodeRef,
-    pub children: Rc<RefCell<Vec<TreeNode>>>,
+    pub number: u32,
+    pub text: String,
+    pub parent: Option<TreeNodeRef>,
+    pub children: Option<Vec<TreeNodeRef>>
 }
 
-type TreeNodeRef = Rc<RefCell<Option<TreeNode>>>;
+type TreeNodeRef = Rc<RefCell<TreeNode>>;
 
 impl TreeNode {
     pub fn new() -> Self {
         TreeNode {
             uuid: Uuid::new_v4(),
-            value: 0,
-            data: "".to_string(),
-            parent: Rc::new(RefCell::new(None)),
-            children: Rc::new(RefCell::new(vec![])),
+            number: 0,
+            text: "".to_string(),
+            parent: None,
+            children: None,
         }
     }
 }
 
 impl Tree {
     pub fn new() -> Self {
-        Tree { root: Rc::new(RefCell::new(None)) }
+        Tree { root: None }
     }
 
-    pub fn add_child(&self, parent: TreeNodeRef, mut child: TreeNode) {
-        if let Some(node) = parent.borrow().as_ref() {
-            child.parent = parent.clone();
+    pub fn into_node_ref(node: TreeNode) -> TreeNodeRef {
+        Rc::new(RefCell::new(node))
+    }
 
-            let mut ref_mut = node.children.as_ref().borrow_mut();
-            let children: &mut Vec<TreeNode> = ref_mut.as_mut();
-            children.push(child);
+    pub fn add_child(&self, parent: TreeNodeRef, child: TreeNodeRef) {
+        child.as_ref().borrow_mut().parent = Some(parent.clone());
+
+        let mut node = parent.as_ref().borrow_mut();
+        if node.children.is_some() {
+            node.children.as_mut().unwrap().push(child);
+        } else {
+            node.children = Some(vec![child]);
         }
     }
 
@@ -69,42 +75,46 @@ mod tests {
     #[test]
     fn add_child() {
 
-
         let mut tree = Tree::new();
 
         let mut root = TreeNode::new();
-        root.data = "root".to_string();
+        root.text = "root".to_string();
 
-        let root_ref = Rc::new(RefCell::new(Some(root)));
-        tree.root = root_ref.clone();
+        let root_ref = Rc::new(RefCell::new(root));
+        tree.root = Some(root_ref.clone());
 
         let mut node1 = TreeNode::new();
-        node1.data = "node1".to_string();
-        tree.add_child(root_ref.clone(), node1);
+        node1.text = "node1".to_string();
+        let node1_ref = Tree::into_node_ref(node1);
+        tree.add_child(root_ref.clone(), node1_ref);
 
         let mut node2 = TreeNode::new();
-        node2.data = "node2".to_string();
-        tree.add_child(root_ref.clone(), node2);
+        node2.text = "node2".to_string();
+        let node2_ref = Tree::into_node_ref(node2);
+        tree.add_child(root_ref.clone(), node2_ref);
 
         let mut node3 = TreeNode::new();
-        node3.data = "node3".to_string();
-        tree.add_child(root_ref.clone(), node3);
+        node3.text = "node3".to_string();
+        let node3_ref = Tree::into_node_ref(node3);
+        tree.add_child(root_ref.clone(), node3_ref);
 
-        // let mut node4 = TreeNode::new();
-        // node4.data = "node4".to_string();
+        let mut node4 = TreeNode::new();
+        node4.text = "node4".to_string();
 
-        // let mut node4_1 = TreeNode::new();
-        // let mut node4_2 = TreeNode::new();
-        //let a1 = &ref_node4_1.data;
+        let mut node41 = TreeNode::new();
+        node41.text = "node41".to_string();
+        let node41_ref = Tree::into_node_ref(node41);
 
-        //let mut ref_node4_2 = Rc::new(TreeNode::new());
-        //(*ref_node4_2.borrow_mut()).data = "ref_node4_2".to_string();
-        // let parent = Rc::new(node4);
-        // parent.add_child(parent.clone(), node4_1);
-        // parent.add_child(parent.clone(), node4_2);
+        let mut node42 = TreeNode::new();
+        node42.text = "node42".to_string();
+        let node42_ref = Tree::into_node_ref(node42);
 
-        //tree.add_child(root_ref.clone(), parent.try_into().unwrap());
+        let node4_ref = Rc::new(RefCell::new(node4));
+        tree.add_child(node4_ref.clone(), node41_ref);
+        tree.add_child(node4_ref.clone(), node42_ref);
 
-        println!("{:#?}", tree);
+        tree.add_child(root_ref, node4_ref);
+
+        // println!("{:#?}", tree);
     }
 }
