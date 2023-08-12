@@ -1,4 +1,5 @@
 // https://rust-unofficial.github.io/too-many-lists/
+// https://doc.rust-lang.org/nightly/nomicon/
 
 use std::{rc::{Rc, Weak}, cell::{RefCell, Cell}, borrow::BorrowMut, ops::{DerefMut, Deref}};
 use uuid::Uuid;
@@ -40,9 +41,8 @@ impl Tree {
         if let Some(node) = parent.borrow().as_ref() {
             child.parent = parent.clone();
 
-            let r1 = node.children.as_ref();
-            let mut r2 = r1.borrow_mut();
-            let children: &mut Vec<TreeNode> = r2.as_mut();
+            let mut ref_mut = node.children.as_ref().borrow_mut();
+            let children: &mut Vec<TreeNode> = ref_mut.as_mut();
             children.push(child);
         }
     }
