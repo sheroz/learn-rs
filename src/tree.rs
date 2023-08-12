@@ -5,7 +5,7 @@ use uuid::Uuid;
 
 #[derive(Debug)]
 pub struct Tree {
-    pub root: Option<TreeNodeRef>,
+    pub root: TreeNodeRef,
 }
 
 #[derive(Debug, Clone)]
@@ -13,25 +13,11 @@ pub struct TreeNode {
     pub uuid: Uuid,
     pub value: u32,
     pub data: String,
-    pub parent: RefCell<Weak<TreeNode>>,
-    pub children: RefCell<Vec<TreeNodeRef>>,
+    pub parent: TreeNodeRef,
+    pub children: Rc<RefCell<Vec<TreeNode>>>,
 }
 
-impl Deref for TreeNode {
-    type Target = String;
-
-    fn deref(&self) -> &Self::Target {
-        &self.data
-    }
-}
-
-impl DerefMut for TreeNode {
-    fn deref_mut(&mut self) -> &mut String {
-        &mut self.data
-    }
-}
-
-type TreeNodeRef = Rc<TreeNode>;
+type TreeNodeRef = Rc<RefCell<Option<TreeNode>>>;
 
 impl TreeNode {
     pub fn new() -> Self {
@@ -39,31 +25,26 @@ impl TreeNode {
             uuid: Uuid::new_v4(),
             value: 0,
             data: "".to_string(),
-            parent: RefCell::new(Weak::<TreeNode>::new()),
-            children: RefCell::new(vec![]),
+            parent: Rc::new(RefCell::new(None)),
+            children: Rc::new(RefCell::new(vec![])),
         }
     }
-
-    pub fn add_child(&self, parent: Rc<TreeNode>, child: TreeNode) {
-
-        *child.parent.borrow_mut() = Rc::downgrade(&parent);
-
-        let child_ref = Rc::new(child);
-        parent.children.borrow_mut().push(child_ref);
-    }
-
 }
 
 impl Tree {
     pub fn new() -> Self {
-        Tree { root: None }
+        Tree { root: Rc::new(RefCell::new(None)) }
     }
 
-    pub fn add_child(&self, parent: TreeNodeRef, child: TreeNode) {
-        *child.parent.borrow_mut() = Rc::downgrade(&parent);
+    pub fn add_child(&self, parent: TreeNodeRef, mut child: TreeNode) {
+        if let Some(node) = parent.borrow().as_ref() {
+            child.parent = parent.clone();
 
-        let child_ref = Rc::new(child);
-        parent.children.borrow_mut().push(child_ref);
+            let r1 = node.children.as_ref();
+            let mut r2 = r1.borrow_mut();
+            let children: &mut Vec<TreeNode> = r2.as_mut();
+            children.push(child);
+        }
     }
 
     pub fn remove(_uuid: Uuid) {
@@ -71,11 +52,11 @@ impl Tree {
     }
 
     pub fn search(_uuid: Uuid) -> Option<TreeNode> {
-        None
+        unimplemented!()
     }
 
     pub fn flatten() -> Vec<TreeNode> {
-        Vec::<TreeNode>::new()
+        unimplemented!()
     }
 
 }
@@ -94,8 +75,8 @@ mod tests {
         let mut root = TreeNode::new();
         root.data = "root".to_string();
 
-        let root_ref = Rc::new(root);
-        tree.root = Some(root_ref.clone());
+        let root_ref = Rc::new(RefCell::new(Some(root)));
+        tree.root = root_ref.clone();
 
         let mut node1 = TreeNode::new();
         node1.data = "node1".to_string();
@@ -109,18 +90,18 @@ mod tests {
         node3.data = "node3".to_string();
         tree.add_child(root_ref.clone(), node3);
 
-        let mut node4 = TreeNode::new();
-        node4.data = "node4".to_string();
+        // let mut node4 = TreeNode::new();
+        // node4.data = "node4".to_string();
 
-        let mut node4_1 = TreeNode::new();
-        let mut node4_2 = TreeNode::new();
+        // let mut node4_1 = TreeNode::new();
+        // let mut node4_2 = TreeNode::new();
         //let a1 = &ref_node4_1.data;
 
         //let mut ref_node4_2 = Rc::new(TreeNode::new());
         //(*ref_node4_2.borrow_mut()).data = "ref_node4_2".to_string();
-        let parent = Rc::new(node4);
-        parent.add_child(parent.clone(), node4_1);
-        parent.add_child(parent.clone(), node4_2);
+        // let parent = Rc::new(node4);
+        // parent.add_child(parent.clone(), node4_1);
+        // parent.add_child(parent.clone(), node4_2);
 
         //tree.add_child(root_ref.clone(), parent.try_into().unwrap());
 
