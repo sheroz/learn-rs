@@ -105,12 +105,15 @@ impl Tree {
                 Some(parent_ref) => {
                     let parent = parent_ref.as_ref();    
                     if let Some(children) = parent.borrow_mut().children.as_mut() {
-                        let mut index = 0;
-                        while index < children.len() {
-                            if children[index].as_ref().borrow().uuid == uuid {
-                                return Some(children.remove(index));
-                            }                             
-                            index += 1;
+                        let mut node_found = None;
+                        for (index, child) in children.iter().enumerate() {
+                            if child.as_ref().borrow().uuid == uuid {
+                                node_found = Some(index);
+                                break;
+                            }
+                        }
+                        if let Some(index) = node_found {
+                            return Some(children.remove(index));
                         }
                     }
                 },
@@ -233,6 +236,7 @@ mod tests {
     #[test]
     fn remove() {
         let mut tree = populate();
+        let count = tree.count();
         let flatten = tree.flatten();
         let out = flatten.iter().map(|v| format!("{}:{}", v.as_ref().borrow().uuid.to_string(), v.as_ref().borrow().text.clone())).collect::<Vec<_>>();
         println!("Tree nodes:\n{}", out.join("\n"));
@@ -253,6 +257,7 @@ mod tests {
         let flatten = tree.flatten();
         let out = flatten.iter().map(|v| format!("{}:{}", v.as_ref().borrow().uuid.to_string(), v.as_ref().borrow().text.clone())).collect::<Vec<_>>();
         println!("Tree nodes:\n{}", out.join("\n"));
+        assert!(count > tree.count());
     }
 
 }
