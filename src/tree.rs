@@ -3,7 +3,7 @@
 // https://manishearth.github.io/
 
 use std::cell::RefCell;
-use std::collections::{vec_deque, VecDeque};
+use std::collections::VecDeque;
 use std::rc::Rc;
 use uuid::Uuid;
 
