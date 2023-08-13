@@ -53,10 +53,13 @@ impl Tree {
         child.as_ref().borrow_mut().parent = Some(parent.clone());
 
         let mut node = parent.as_ref().borrow_mut();
-        if node.children.is_some() {
-            node.children.as_mut().unwrap().push(child);
-        } else {
-            node.children = Some(vec![child]);
+        match node.children.as_mut() {
+            Some(children) => {
+                children.push(child);
+            },
+            None => {
+                node.children = Some(vec![child]);
+            }
         }
     }
 
