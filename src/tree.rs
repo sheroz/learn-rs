@@ -20,7 +20,17 @@ pub struct TreeNode {
     pub children: Option<Vec<TreeNodeRef>>
 }
 
-type TreeNodeRef = Rc<RefCell<TreeNode>>;
+pub type TreeNodeRef = Rc<RefCell<TreeNode>>;
+
+pub trait TreeNodeRefMethods {
+    fn from_tree_node(item: TreeNode) -> TreeNodeRef;
+}
+
+impl TreeNodeRefMethods for TreeNodeRef {
+    fn from_tree_node(item: TreeNode) -> Self {
+        Rc::new(RefCell::new(item))
+    }
+}
 
 impl TreeNode {
     pub fn new() -> Self {
@@ -40,7 +50,7 @@ impl Tree {
     }
 
     pub fn into_node_ref(node: TreeNode) -> TreeNodeRef {
-        Rc::new(RefCell::new(node))
+        TreeNodeRef::from_tree_node(node)
     }
 
     pub fn add_child(&self, parent: TreeNodeRef, child: TreeNodeRef) {
