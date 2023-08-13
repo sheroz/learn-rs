@@ -2,8 +2,8 @@
 // https://doc.rust-lang.org/nightly/nomicon/
 // https://manishearth.github.io/
 
-use std::rc::Rc;
 use std::cell::RefCell;
+use std::rc::Rc;
 use uuid::Uuid;
 
 #[derive(Debug)]
@@ -17,17 +17,17 @@ pub struct TreeNode {
     pub number: u32,
     pub text: String,
     pub parent: Option<TreeNodeRef>,
-    pub children: Option<Vec<TreeNodeRef>>
+    pub children: Option<Vec<TreeNodeRef>>,
 }
 
 pub type TreeNodeRef = Rc<RefCell<TreeNode>>;
 
 pub trait TreeNodeRefMethods {
-    fn from_tree_node(item: TreeNode) -> TreeNodeRef;
+    fn build_from(item: TreeNode) -> TreeNodeRef;
 }
 
 impl TreeNodeRefMethods for TreeNodeRef {
-    fn from_tree_node(item: TreeNode) -> Self {
+    fn build_from(item: TreeNode) -> Self {
         Rc::new(RefCell::new(item))
     }
 }
@@ -47,10 +47,6 @@ impl TreeNode {
 impl Tree {
     pub fn new() -> Self {
         Tree { root: None }
-    }
-
-    pub fn into_node_ref(node: TreeNode) -> TreeNodeRef {
-        TreeNodeRef::from_tree_node(node)
     }
 
     pub fn add_child(&self, parent: TreeNodeRef, child: TreeNodeRef) {
@@ -103,7 +99,7 @@ impl Tree {
         if let Some(node) = self.search(uuid) {
             match node.as_ref().borrow().parent.as_ref() {
                 Some(parent_ref) => {
-                    let parent = parent_ref.as_ref();    
+                    let parent = parent_ref.as_ref();
                     if let Some(children) = parent.borrow_mut().children.as_mut() {
                         let mut node_found = None;
                         for (index, child) in children.iter().enumerate() {
@@ -116,7 +112,7 @@ impl Tree {
                             return Some(children.remove(index));
                         }
                     }
-                },
+                }
                 None => {
                     self.root = None;
                 }
@@ -150,28 +146,27 @@ mod tests {
     use super::*;
 
     fn populate() -> Tree {
-
         let mut tree = Tree::new();
 
         let mut root = TreeNode::new();
         root.text = "root".to_string();
 
-        let root_ref = Tree::into_node_ref(root);
+        let root_ref = TreeNodeRef::build_from(root);
         tree.root = Some(root_ref.clone());
 
         let mut node1 = TreeNode::new();
         node1.text = "node1".to_string();
-        let node1_ref = Tree::into_node_ref(node1);
+        let node1_ref = TreeNodeRef::build_from(node1);
         tree.add_child(root_ref.clone(), node1_ref);
 
         let mut node2 = TreeNode::new();
         node2.text = "node2".to_string();
-        let node2_ref = Tree::into_node_ref(node2);
+        let node2_ref = TreeNodeRef::build_from(node2);
         tree.add_child(root_ref.clone(), node2_ref);
 
         let mut node3 = TreeNode::new();
         node3.text = "node3".to_string();
-        let node3_ref = Tree::into_node_ref(node3);
+        let node3_ref = TreeNodeRef::build_from(node3);
         tree.add_child(root_ref.clone(), node3_ref);
 
         let mut node4 = TreeNode::new();
@@ -179,13 +174,13 @@ mod tests {
 
         let mut node41 = TreeNode::new();
         node41.text = "node41".to_string();
-        let node41_ref = Tree::into_node_ref(node41);
+        let node41_ref = TreeNodeRef::build_from(node41);
 
         let mut node42 = TreeNode::new();
         node42.text = "node42".to_string();
-        let node42_ref = Tree::into_node_ref(node42);
+        let node42_ref = TreeNodeRef::build_from(node42);
 
-        let node4_ref = Tree::into_node_ref(node4);
+        let node4_ref = TreeNodeRef::build_from(node4);
         tree.add_child(node4_ref.clone(), node41_ref);
         tree.add_child(node4_ref.clone(), node42_ref);
 
@@ -211,7 +206,16 @@ mod tests {
         let tree = populate();
         let flatten = tree.flatten();
         assert_eq!(flatten.len(), 7);
-        let out = flatten.iter().map(|v| format!("{}:{}", v.as_ref().borrow().uuid.to_string(), v.as_ref().borrow().text.clone())).collect::<Vec<_>>();
+        let out = flatten
+            .iter()
+            .map(|v| {
+                format!(
+                    "{}:{}",
+                    v.as_ref().borrow().uuid.to_string(),
+                    v.as_ref().borrow().text.clone()
+                )
+            })
+            .collect::<Vec<_>>();
         println!("{}", out.join("\n"));
     }
 
@@ -224,12 +228,16 @@ mod tests {
         println!("Looking for:\n{}", uuid_for_search);
 
         let uuid = Uuid::parse_str(&uuid_for_search).unwrap();
-        
+
         let r = tree.search(uuid);
         assert!(r.is_some());
 
         let v = r.unwrap();
-        let out = format!("{}:{}", v.as_ref().borrow().uuid.to_string(), v.as_ref().borrow().text.clone());
+        let out = format!(
+            "{}:{}",
+            v.as_ref().borrow().uuid.to_string(),
+            v.as_ref().borrow().text.clone()
+        );
         println!("Found:\n{}", out);
     }
 
@@ -238,7 +246,16 @@ mod tests {
         let mut tree = populate();
         let count = tree.count();
         let flatten = tree.flatten();
-        let out = flatten.iter().map(|v| format!("{}:{}", v.as_ref().borrow().uuid.to_string(), v.as_ref().borrow().text.clone())).collect::<Vec<_>>();
+        let out = flatten
+            .iter()
+            .map(|v| {
+                format!(
+                    "{}:{}",
+                    v.as_ref().borrow().uuid.to_string(),
+                    v.as_ref().borrow().text.clone()
+                )
+            })
+            .collect::<Vec<_>>();
         println!("Tree nodes:\n{}", out.join("\n"));
 
         let node_ref = flatten[2].as_ref();
@@ -246,18 +263,30 @@ mod tests {
         println!("Looking for:\n{}", uuid_for_search);
 
         let uuid = Uuid::parse_str(&uuid_for_search).unwrap();
-        
+
         let r = tree.remove(uuid);
         assert!(r.is_some());
 
         let v = r.unwrap();
-        let out = format!("{}:{}", v.as_ref().borrow().uuid.to_string(), v.as_ref().borrow().text.clone());
+        let out = format!(
+            "{}:{}",
+            v.as_ref().borrow().uuid.to_string(),
+            v.as_ref().borrow().text.clone()
+        );
         println!("Removed:\n{}", out);
 
         let flatten = tree.flatten();
-        let out = flatten.iter().map(|v| format!("{}:{}", v.as_ref().borrow().uuid.to_string(), v.as_ref().borrow().text.clone())).collect::<Vec<_>>();
+        let out = flatten
+            .iter()
+            .map(|v| {
+                format!(
+                    "{}:{}",
+                    v.as_ref().borrow().uuid.to_string(),
+                    v.as_ref().borrow().text.clone()
+                )
+            })
+            .collect::<Vec<_>>();
         println!("Tree nodes:\n{}", out.join("\n"));
         assert!(count > tree.count());
     }
-
 }
