@@ -3,6 +3,7 @@
 // https://manishearth.github.io/
 
 use std::cell::RefCell;
+use std::collections::{vec_deque, VecDeque};
 use std::rc::Rc;
 use uuid::Uuid;
 
@@ -66,14 +67,12 @@ impl Tree {
     pub fn count(&self) -> u64 {
         let mut count = 0;
         if let Some(node) = &self.root {
-            let mut queue = vec![node.clone()];
-            while !queue.is_empty() {
-                if let Some(node) = queue.pop() {
-                    count += 1;
-                    let children_ref = node.as_ref().borrow();
-                    if let Some(children) = children_ref.children.as_ref() {
-                        children.iter().for_each(|v| queue.push(v.clone()));
-                    }
+            let mut queue = VecDeque::<TreeNodeRef>::from([node.clone()]);
+            while let Some(node) = queue.pop_front() {
+                count += 1;
+                let children_ref = node.as_ref().borrow();
+                if let Some(children) = children_ref.children.as_ref() {
+                    children.iter().for_each(|v| queue.push_back(v.clone()));
                 }
             }
         }
@@ -84,14 +83,12 @@ impl Tree {
         let mut flatten = Vec::<TreeNodeRef>::new();
 
         if let Some(node) = &self.root {
-            let mut queue = vec![node.clone()];
-            while !queue.is_empty() {
-                if let Some(node) = queue.pop() {
-                    flatten.push(node.clone());
-                    let children_ref = node.as_ref().borrow();
-                    if let Some(children) = children_ref.children.as_ref() {
-                        children.iter().for_each(|v| queue.push(v.clone()));
-                    }
+            let mut queue = VecDeque::<TreeNodeRef>::from([node.clone()]);
+            while let Some(node) = queue.pop_front() {
+                flatten.push(node.clone());
+                let children_ref = node.as_ref().borrow();
+                if let Some(children) = children_ref.children.as_ref() {
+                    children.iter().for_each(|v| queue.push_back(v.clone()));
                 }
             }
         }
@@ -126,16 +123,14 @@ impl Tree {
 
     pub fn search(&self, uuid: Uuid) -> Option<TreeNodeRef> {
         if let Some(node) = &self.root {
-            let mut queue = vec![node.clone()];
-            while !queue.is_empty() {
-                if let Some(node) = queue.pop() {
-                    if uuid == node.as_ref().borrow().uuid {
-                        return Some(node.clone());
-                    }
-                    let children_ref = node.as_ref().borrow();
-                    if let Some(children) = children_ref.children.as_ref() {
-                        children.iter().for_each(|v| queue.push(v.clone()));
-                    }
+            let mut queue = VecDeque::<TreeNodeRef>::from([node.clone()]);
+            while let Some(node) = queue.pop_front() {
+                if uuid == node.as_ref().borrow().uuid {
+                    return Some(node.clone());
+                }
+                let children_ref = node.as_ref().borrow();
+                if let Some(children) = children_ref.children.as_ref() {
+                    children.iter().for_each(|v| queue.push_back(v.clone()));
                 }
             }
         }
@@ -261,7 +256,7 @@ mod tests {
             .collect::<Vec<_>>();
         println!("Tree nodes:\n{}", out.join("\n"));
 
-        let node_ref = flatten[2].as_ref();
+        let node_ref = flatten[4].as_ref();
         let uuid_for_search = node_ref.borrow().uuid.to_string();
         println!("Looking for:\n{}", uuid_for_search);
 
