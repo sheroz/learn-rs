@@ -23,11 +23,11 @@ pub struct TreeNode {
 
 pub type TreeNodeRef = Rc<RefCell<TreeNode>>;
 
-pub trait TreeNodeRefMethods {
+pub trait TreeNodeRefBuild {
     fn build_from(item: TreeNode) -> TreeNodeRef;
 }
 
-impl TreeNodeRefMethods for TreeNodeRef {
+impl TreeNodeRefBuild for TreeNodeRef {
     fn build_from(item: TreeNode) -> Self {
         Rc::new(RefCell::new(item))
     }
