@@ -8,6 +8,12 @@
 
 [Benchmarking](https://bheisler.github.io/criterion.rs/book/)
 
+## Other useful insights
+
+- [https://rust-unofficial.github.io/too-many-lists/](https://rust-unofficial.github.io/too-many-lists/)
+- [https://doc.rust-lang.org/nightly/nomicon/](https://doc.rust-lang.org/nightly/nomicon/)
+- [https://manishearth.github.io/](https://manishearth.github.io/)
+
 ## Visual Studio Code
 
 ### DEBUG CONSOLE
