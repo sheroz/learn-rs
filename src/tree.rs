@@ -52,12 +52,11 @@ impl Tree {
 
     pub fn add_child(&self, parent: TreeNodeRef, child: TreeNodeRef) {
         child.as_ref().borrow_mut().parent = Some(parent.clone());
-
         let mut node = parent.as_ref().borrow_mut();
         match node.children.as_mut() {
             Some(children) => {
                 children.push(child);
-            },
+            }
             None => {
                 node.children = Some(vec![child]);
             }
@@ -81,7 +80,6 @@ impl Tree {
 
     pub fn flatten(&self) -> Vec<TreeNodeRef> {
         let mut flatten = Vec::<TreeNodeRef>::new();
-
         if let Some(node) = &self.root {
             let mut queue = VecDeque::<TreeNodeRef>::from([node.clone()]);
             while let Some(node) = queue.pop_front() {
@@ -115,6 +113,7 @@ impl Tree {
                 }
                 None => {
                     self.root = None;
+                    return Some(node.clone());
                 }
             }
         }
@@ -185,7 +184,6 @@ mod tests {
         tree.add_child(root_ref, node4_ref);
 
         tree
-        // println!("{:#?}", tree);
     }
 
     #[test]
@@ -218,6 +216,22 @@ mod tests {
     }
 
     #[test]
+    fn search_empty() {
+        let tree = Tree::new();
+        let uuid = Uuid::new_v4();
+        let r = tree.search(uuid);
+        assert!(r.is_none());
+    }
+
+    #[test]
+    fn search_non_existing() {
+        let tree = populate();
+        let uuid = Uuid::new_v4();
+        let r = tree.search(uuid);
+        assert!(r.is_none());
+    }
+
+    #[test]
     fn search() {
         let tree = populate();
         let flatten = tree.flatten();
@@ -240,6 +254,32 @@ mod tests {
     }
 
     #[test]
+    fn remove_root() {
+        let mut tree = populate();
+        let count = tree.count();
+        assert!(count > 0);
+
+        let node_ref = tree.root.as_ref().unwrap().as_ref();
+        let uuid = node_ref.borrow().uuid;
+
+        let removed = tree.remove(uuid);
+        assert!(removed.is_some());
+        assert_eq!(tree.count(), 0);
+    }
+
+    #[test]
+    fn remove_non_existing() {
+        let mut tree = populate();
+        let count = tree.count();
+        assert!(count > 0);
+
+        let uuid = Uuid::new_v4();
+        let removed = tree.remove(uuid);
+        assert!(removed.is_none());
+        assert_eq!(tree.count(), count);
+    }
+ 
+    #[test]
     fn remove() {
         let mut tree = populate();
         let count = tree.count();
@@ -257,15 +297,12 @@ mod tests {
         println!("Tree nodes:\n{}", out.join("\n"));
 
         let node_ref = flatten[4].as_ref();
-        let uuid_for_search = node_ref.borrow().uuid.to_string();
-        println!("Looking for:\n{}", uuid_for_search);
+        let uuid = node_ref.borrow().uuid;
+        println!("Looking for:\n{}", uuid.to_string());
+        let removed = tree.remove(uuid);
+        assert!(removed.is_some());
 
-        let uuid = Uuid::parse_str(&uuid_for_search).unwrap();
-
-        let r = tree.remove(uuid);
-        assert!(r.is_some());
-
-        let v = r.unwrap();
+        let v = removed.unwrap();
         let out = format!(
             "{}:{}",
             v.as_ref().borrow().uuid.to_string(),
