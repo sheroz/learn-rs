@@ -1,18 +1,21 @@
 # Playground Rust
 
+## Sample implementations
+
+- [Palindrome](https://github.com/sheroz/palindrome)
+- [Fibonacci](https://github.com/sheroz/fibonacci)
+- [Shortest Path: Dijkstra](https://github.com/sheroz/shortest_path)
+- [Tree and Parent-Child Relationship](https://github.com/sheroz/tree-sample-rs)
+
 ## Useful links
 
-[Rust Book](https://www.cs.brandeis.edu/~cs146a/rust/doc-02-21-2015/book/README.html)
-
-[Rust Collections](https://doc.rust-lang.org/std/collections/index.html)
-
-[Benchmarking](https://bheisler.github.io/criterion.rs/book/)
-
-## Other useful insights
-
-- [https://rust-unofficial.github.io/too-many-lists/](https://rust-unofficial.github.io/too-many-lists/)
-- [https://doc.rust-lang.org/nightly/nomicon/](https://doc.rust-lang.org/nightly/nomicon/)
-- [https://manishearth.github.io/](https://manishearth.github.io/)
+- [The Book](https://doc.rust-lang.org/book)
+- [The Reference](https://doc.rust-lang.org/reference)
+- [Rust Collections](https://doc.rust-lang.org/std/collections)
+- [The Rust Programming Language](https://www.cs.brandeis.edu/~cs146a/rust/doc-02-21-2015/book/README.html)
+- [The Dark Arts of Unsafe Rust](https://doc.rust-lang.org/nightly/nomicon/)
+- [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/)
+- [Benchmarking](https://bheisler.github.io/criterion.rs/book/)
 
 ## Visual Studio Code
 
@@ -20,18 +23,22 @@
 
 #### Sample useful commands for debugging (to be executed in DEBUG CONSOLE tab of VS Code)
 
-    >help
-    >vo
-    >vo source_text
-    >x &source_text
-    >x 0x00555555597036
-    >x -c 256 0x00555555597036
-    >p source_text
-    >p &source_text
+```text
+>help
+>vo
+>vo source_text
+>x &source_text
+>x 0x00555555597036
+>x -c 256 0x00555555597036
+>p source_text
+>p &source_text
+```
 
-### Test Coverage
+### Setting-up and using the [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov) based code coverage
 
-    $cargo +stable install cargo-llvm-cov --locked
-    $cargo llvm-cov
-    $cargo llvm-cov --html
-    $cargo llvm-cov --open 
+```text
+$cargo +stable install cargo-llvm-cov --locked
+$cargo llvm-cov
+$cargo llvm-cov --html
+$cargo llvm-cov --open 
+```

@@ -1,17 +1,3 @@
-+ add a palindrome function without using (1) regex replace and (2) string reverse then (3) benchmarks against existing
-- WIP: implement dijkstra
- + make the test input as json data
- + implement array based tree calculation
- - add test coverage: https://lib.rs/crates/cargo-llvm-cov
- - add benchmarks
 - implement A Star (A *) algorithm
-- heap and BST related stuff
-- implement and benchmark sort functions
+- implement sort functions and benchmark 
 - optimize base64 encoder and benchmark
-  - post in LinkedIn (https://www.linkedin.com/posts/rustjobs-dev_base64-implementation-in-rust-activity-7064862496720924672-fN7y)
-
-+ create account on creates.io
-- create a crate from dijkstra code and publish as dreamlogic::dijkstra
-- base64 complete coding and publish as a crate dreamlogic::base64
-
-Closures: https://www.linkedin.com/pulse/what-closures-inrust-luis-soares-m-sc-/?trackingId=mZt%2BxjpsBSwbCCJx1yfvuA%3D%3D
