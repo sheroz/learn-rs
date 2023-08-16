@@ -1,6 +1,6 @@
 # Playground Rust
 
-## Sample implementations
+## List of samples built for learning purposes
 
 - [Palindrome](https://github.com/sheroz/palindrome)
 - [Fibonacci](https://github.com/sheroz/fibonacci)
