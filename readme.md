@@ -21,7 +21,7 @@
 
 ### DEBUG CONSOLE
 
-#### Sample useful commands for debugging (to be executed in DEBUG CONSOLE tab of VS Code)
+#### Sample commands for debugging
 
 ```text
 >help
