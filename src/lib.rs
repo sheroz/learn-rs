@@ -3,4 +3,4 @@ pub mod my_lib;
 pub mod my_collections;
 pub mod my_algorithms;
 pub mod base64;
-
+pub mod binary_tree;
