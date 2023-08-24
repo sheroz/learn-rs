@@ -179,8 +179,8 @@ mod tests {
                 queue.push_back(right.clone());
             }
         }
-
-        assert_eq!(nodes.len(), NODES_COUNT);
+        let nodes_count = nodes.len();
+        assert_eq!(nodes_count, NODES_COUNT);
 
         for (index, node_ref) in nodes.iter().enumerate() {
             let node = node_ref.borrow();
@@ -196,14 +196,14 @@ mod tests {
                 );
             }
             let left = index * 2 + 1;
-            if left < NODES_COUNT {
+            if left < nodes_count {
                 assert_eq!(
                     node.left.as_ref().unwrap().borrow().name,
                     format!("n{}", left)
                 );
             }
             let right = left + 1;
-            if left < NODES_COUNT {
+            if left < nodes_count {
                 assert_eq!(
                     node.right.as_ref().unwrap().borrow().name,
                     format!("n{}", right)
