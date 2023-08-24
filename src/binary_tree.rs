@@ -37,7 +37,11 @@ impl BinaryTree {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::VecDeque;
+
     use super::*;
+
+    const NODES_COUNT: usize = 15;
 
     fn populate() -> BinaryTree {
         /*
@@ -50,7 +54,7 @@ mod tests {
         n7   n8 n9  n10 n11  n12 n13  n14
 
         left_child = parent * 2 + 1
-        right_child = parent * 2 + 2
+        right_child = parent * 2 + 2 = left_child + 1
         parent_of_left_child = (left_child - 1)/2
         parent_of_right_child = (right_child - 2)/2
 
@@ -60,7 +64,6 @@ mod tests {
         */
 
         let mut tree = BinaryTree::new();
-        const NODES_COUNT: usize = 15;
         let mut nodes = Vec::<BinaryTreeNodeRef>::with_capacity(NODES_COUNT);
         (0..NODES_COUNT).for_each(|n| {
             let node = BinaryTree::new_node();
@@ -70,8 +73,8 @@ mod tests {
 
         (0..NODES_COUNT).for_each(|n| {
             if n != 0 {
-                let parent_side = if n % 2 != 0 { 1 } else { 2 };
-                let parent = (n - parent_side) / 2;
+                let parent_position = if n % 2 != 0 { 1 } else { 2 };
+                let parent = (n - parent_position) / 2;
                 nodes[n].borrow_mut().parent = Some(nodes[parent].clone());
             }
 
@@ -80,7 +83,7 @@ mod tests {
                 nodes[n].borrow_mut().left = Some(nodes[left_child].clone());
             }
 
-            let right_child = n * 2 + 2;
+            let right_child = left_child + 1;
             if left_child < NODES_COUNT {
                 nodes[n].borrow_mut().right = Some(nodes[right_child].clone());
             }
@@ -197,5 +200,46 @@ mod tests {
             n14.parent.as_ref().unwrap().borrow().name,
             "n6".to_string()
         );
+    }
+
+    #[test]
+    fn binary_tree_populate_test2() {
+        let tree = populate();
+        assert!(tree.root.is_some());
+        let mut nodes = Vec::<BinaryTreeNodeRef>::with_capacity(NODES_COUNT);
+        let mut queue = VecDeque::new();
+        let root = tree.root.unwrap();
+
+        queue.push_back(root.clone());
+        while let Some(node) = queue.pop_front() {
+            nodes.push(node.clone());
+            let n = node.borrow();
+            if let Some(left) = n.left.as_ref() {
+                queue.push_back(left.clone());
+            }
+            if let Some(right) = n.right.as_ref() {
+                queue.push_back(right.clone());
+            }
+        }
+
+        assert_eq!(nodes.len(), NODES_COUNT);
+        
+        for (index, node_ref) in nodes.iter().enumerate() {
+            let node = node_ref.borrow();
+            assert_eq!(node.name, format!("n{index}"));
+            if index != 0 {
+                let parent_position = if index % 2 != 0 { 1 } else { 2 };
+                let parent = (index - parent_position) / 2;
+                assert_eq!(node.parent.as_ref().unwrap().borrow().name, format!("n{}", parent));
+            }
+            let left = index * 2 + 1;
+            if left < NODES_COUNT {
+                assert_eq!(node.left.as_ref().unwrap().borrow().name, format!("n{}", left));
+            }
+            let right = left + 1;
+            if left < NODES_COUNT {
+                assert_eq!(node.right.as_ref().unwrap().borrow().name, format!("n{}", right));
+            }
+        }
     }
 }
