@@ -2,8 +2,10 @@ use std::{cell::RefCell, rc::Rc};
 
 use uuid::Uuid;
 
+#[derive(PartialEq, Debug)]
 pub struct BinaryTreeNode {
     id: Uuid,
+    name: String,
     value: u32,
     parent: Option<BinaryTreeNodeRef>,
     left: Option<BinaryTreeNodeRef>,
@@ -18,12 +20,13 @@ pub struct BinaryTree {
 
 impl BinaryTree {
     pub fn new() -> Self {
-        BinaryTree{root: None}
+        BinaryTree { root: None }
     }
 
     pub fn new_node() -> BinaryTreeNodeRef {
         Rc::new(RefCell::new(BinaryTreeNode {
             id: Uuid::new_v4(),
+            name: "".to_string(),
             value: 0,
             parent: None,
             left: None,
@@ -36,9 +39,9 @@ impl BinaryTree {
 mod tests {
     use super::*;
 
-    fn populate() {
-        /*  
-                     n0 
+    fn populate() -> BinaryTree {
+        /*
+                     n0
                 /           \
               n1              n2
             /    \          /     \
@@ -46,53 +49,153 @@ mod tests {
          /   \   /   \   /   \    /   \
         n7   n8 n9  n10 n11  n12 n13  n14
 
+        left_child = parent * 2 + 1
+        right_child = parent * 2 + 2
+        parent_of_left_child = (left_child - 1)/2
+        parent_of_right_child = (right_child - 2)/2
+
+        position:
+        is_left = n%2 != 0
+        is_rignt = n%2 == 0
         */
 
         let mut tree = BinaryTree::new();
         const NODES_COUNT: usize = 15;
         let mut nodes = Vec::<BinaryTreeNodeRef>::with_capacity(NODES_COUNT);
-        (0..NODES_COUNT).for_each(|_| nodes.push(BinaryTree::new_node()));
+        (0..NODES_COUNT).for_each(|n| {
+            let node = BinaryTree::new_node();
+            node.borrow_mut().name = format!("n{}", n);
+            nodes.push(node)
+        });
+
+        (0..NODES_COUNT).for_each(|n| {
+            if n != 0 {
+                let parent_side = if n % 2 != 0 { 1 } else { 2 };
+                let parent = (n - parent_side) / 2;
+                nodes[n].borrow_mut().parent = Some(nodes[parent].clone());
+            }
+
+            let left_child = n * 2 + 1;
+            if left_child < NODES_COUNT {
+                nodes[n].borrow_mut().left = Some(nodes[left_child].clone());
+            }
+
+            let right_child = n * 2 + 2;
+            if left_child < NODES_COUNT {
+                nodes[n].borrow_mut().right = Some(nodes[right_child].clone());
+            }
+        });
 
         tree.root = Some(nodes[0].clone());
-
-        nodes[1].borrow_mut().parent = Some(nodes[0].clone());
-        nodes[2].borrow_mut().parent = Some(nodes[0].clone());
-        nodes[0].borrow_mut().left = Some(nodes[1].clone());
-        nodes[0].borrow_mut().right = Some(nodes[2].clone());
-
-        nodes[3].borrow_mut().parent = Some(nodes[1].clone());
-        nodes[4].borrow_mut().parent = Some(nodes[1].clone());
-        nodes[1].borrow_mut().left = Some(nodes[3].clone());
-        nodes[1].borrow_mut().right = Some(nodes[4].clone());
-
-        nodes[5].borrow_mut().parent = Some(nodes[2].clone());
-        nodes[6].borrow_mut().parent = Some(nodes[2].clone());
-        nodes[2].borrow_mut().left = Some(nodes[5].clone());
-        nodes[2].borrow_mut().right = Some(nodes[6].clone());
-
-        nodes[7].borrow_mut().parent = Some(nodes[3].clone());
-        nodes[8].borrow_mut().parent = Some(nodes[3].clone());
-        nodes[3].borrow_mut().left = Some(nodes[7].clone());
-        nodes[3].borrow_mut().right = Some(nodes[8].clone());
-
-        nodes[9].borrow_mut().parent = Some(nodes[4].clone());
-        nodes[10].borrow_mut().parent = Some(nodes[4].clone());
-        nodes[4].borrow_mut().left = Some(nodes[9].clone());
-        nodes[4].borrow_mut().right = Some(nodes[10].clone());
-
-        nodes[11].borrow_mut().parent = Some(nodes[5].clone());
-        nodes[12].borrow_mut().parent = Some(nodes[5].clone());
-        nodes[5].borrow_mut().left = Some(nodes[11].clone());
-        nodes[5].borrow_mut().right = Some(nodes[12].clone());
-
-        nodes[13].borrow_mut().parent = Some(nodes[6].clone());
-        nodes[14].borrow_mut().parent = Some(nodes[6].clone());
-        nodes[6].borrow_mut().left = Some(nodes[13].clone());
-        nodes[6].borrow_mut().right = Some(nodes[14].clone());
+        tree
     }
 
     #[test]
     fn binary_tree_populate_test() {
-        populate();
+        let tree = populate();
+        assert!(tree.root.is_some());
+        let root = tree.root.unwrap();
+        assert_eq!(root.borrow().name, "n0".to_string());
+
+        let n0 = root.borrow();
+        assert_eq!(n0.parent, None);
+
+        let n1 = n0.left.as_ref().unwrap().borrow();
+        assert_eq!(n1.name, "n1".to_string());
+        assert_eq!(
+            n1.parent.as_ref().unwrap().borrow().name,
+            "n0".to_string()
+        );
+
+        let n2 = n0.right.as_ref().unwrap().borrow();
+        assert_eq!(n2.name, "n2".to_string());
+        assert_eq!(
+            n2.parent.as_ref().unwrap().borrow().name,
+            "n0".to_string()
+        );
+
+        let n3 = n1.left.as_ref().unwrap().borrow();
+        assert_eq!(n3.name, "n3".to_string());
+        assert_eq!(
+            n3.parent.as_ref().unwrap().borrow().name,
+            "n1".to_string()
+        );
+
+        let n4 = n1.right.as_ref().unwrap().borrow();
+        assert_eq!(n4.name, "n4".to_string());
+        assert_eq!(
+            n4.parent.as_ref().unwrap().borrow().name,
+            "n1".to_string()
+        );
+
+        let n5 = n2.left.as_ref().unwrap().borrow();
+        assert_eq!(n5.name, "n5".to_string());
+        assert_eq!(
+            n5.parent.as_ref().unwrap().borrow().name,
+            "n2".to_string()
+        );
+
+        let n6 = n2.right.as_ref().unwrap().borrow();
+        assert_eq!(n6.name, "n6".to_string());
+        assert_eq!(
+            n6.parent.as_ref().unwrap().borrow().name,
+            "n2".to_string()
+        );
+
+        let n7 = n3.left.as_ref().unwrap().borrow();
+        assert_eq!(n7.name, "n7".to_string());
+        assert_eq!(
+            n7.parent.as_ref().unwrap().borrow().name,
+            "n3".to_string()
+        );
+
+        let n8 = n3.right.as_ref().unwrap().borrow();
+        assert_eq!(n8.name, "n8".to_string());
+        assert_eq!(
+            n8.parent.as_ref().unwrap().borrow().name,
+            "n3".to_string()
+        );
+
+        let n9 = n4.left.as_ref().unwrap().borrow();
+        assert_eq!(n9.name, "n9".to_string());
+        assert_eq!(
+            n9.parent.as_ref().unwrap().borrow().name,
+            "n4".to_string()
+        );
+
+        let n10 = n4.right.as_ref().unwrap().borrow();
+        assert_eq!(n10.name, "n10".to_string());
+        assert_eq!(
+            n10.parent.as_ref().unwrap().borrow().name,
+            "n4".to_string()
+        );
+
+        let n11 = n5.left.as_ref().unwrap().borrow();
+        assert_eq!(n11.name, "n11".to_string());
+        assert_eq!(
+            n11.parent.as_ref().unwrap().borrow().name,
+            "n5".to_string()
+        );
+
+        let n12 = n5.right.as_ref().unwrap().borrow();
+        assert_eq!(n12.name, "n12".to_string());
+        assert_eq!(
+            n12.parent.as_ref().unwrap().borrow().name,
+            "n5".to_string()
+        );
+
+        let n13 = n6.left.as_ref().unwrap().borrow();
+        assert_eq!(n13.name, "n13".to_string());
+        assert_eq!(
+            n13.parent.as_ref().unwrap().borrow().name,
+            "n6".to_string()
+        );
+
+        let n14 = n6.right.as_ref().unwrap().borrow();
+        assert_eq!(n14.name, "n14".to_string());
+        assert_eq!(
+            n14.parent.as_ref().unwrap().borrow().name,
+            "n6".to_string()
+        );
     }
 }
