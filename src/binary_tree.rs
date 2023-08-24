@@ -105,101 +105,59 @@ mod tests {
 
         let n1 = n0.left.as_ref().unwrap().borrow();
         assert_eq!(n1.name, "n1".to_string());
-        assert_eq!(
-            n1.parent.as_ref().unwrap().borrow().name,
-            "n0".to_string()
-        );
+        assert_eq!(n1.parent.as_ref().unwrap().borrow().name, "n0".to_string());
 
         let n2 = n0.right.as_ref().unwrap().borrow();
         assert_eq!(n2.name, "n2".to_string());
-        assert_eq!(
-            n2.parent.as_ref().unwrap().borrow().name,
-            "n0".to_string()
-        );
+        assert_eq!(n2.parent.as_ref().unwrap().borrow().name, "n0".to_string());
 
         let n3 = n1.left.as_ref().unwrap().borrow();
         assert_eq!(n3.name, "n3".to_string());
-        assert_eq!(
-            n3.parent.as_ref().unwrap().borrow().name,
-            "n1".to_string()
-        );
+        assert_eq!(n3.parent.as_ref().unwrap().borrow().name, "n1".to_string());
 
         let n4 = n1.right.as_ref().unwrap().borrow();
         assert_eq!(n4.name, "n4".to_string());
-        assert_eq!(
-            n4.parent.as_ref().unwrap().borrow().name,
-            "n1".to_string()
-        );
+        assert_eq!(n4.parent.as_ref().unwrap().borrow().name, "n1".to_string());
 
         let n5 = n2.left.as_ref().unwrap().borrow();
         assert_eq!(n5.name, "n5".to_string());
-        assert_eq!(
-            n5.parent.as_ref().unwrap().borrow().name,
-            "n2".to_string()
-        );
+        assert_eq!(n5.parent.as_ref().unwrap().borrow().name, "n2".to_string());
 
         let n6 = n2.right.as_ref().unwrap().borrow();
         assert_eq!(n6.name, "n6".to_string());
-        assert_eq!(
-            n6.parent.as_ref().unwrap().borrow().name,
-            "n2".to_string()
-        );
+        assert_eq!(n6.parent.as_ref().unwrap().borrow().name, "n2".to_string());
 
         let n7 = n3.left.as_ref().unwrap().borrow();
         assert_eq!(n7.name, "n7".to_string());
-        assert_eq!(
-            n7.parent.as_ref().unwrap().borrow().name,
-            "n3".to_string()
-        );
+        assert_eq!(n7.parent.as_ref().unwrap().borrow().name, "n3".to_string());
 
         let n8 = n3.right.as_ref().unwrap().borrow();
         assert_eq!(n8.name, "n8".to_string());
-        assert_eq!(
-            n8.parent.as_ref().unwrap().borrow().name,
-            "n3".to_string()
-        );
+        assert_eq!(n8.parent.as_ref().unwrap().borrow().name, "n3".to_string());
 
         let n9 = n4.left.as_ref().unwrap().borrow();
         assert_eq!(n9.name, "n9".to_string());
-        assert_eq!(
-            n9.parent.as_ref().unwrap().borrow().name,
-            "n4".to_string()
-        );
+        assert_eq!(n9.parent.as_ref().unwrap().borrow().name, "n4".to_string());
 
         let n10 = n4.right.as_ref().unwrap().borrow();
         assert_eq!(n10.name, "n10".to_string());
-        assert_eq!(
-            n10.parent.as_ref().unwrap().borrow().name,
-            "n4".to_string()
-        );
+        assert_eq!(n10.parent.as_ref().unwrap().borrow().name, "n4".to_string());
 
         let n11 = n5.left.as_ref().unwrap().borrow();
         assert_eq!(n11.name, "n11".to_string());
-        assert_eq!(
-            n11.parent.as_ref().unwrap().borrow().name,
-            "n5".to_string()
-        );
+        assert_eq!(n11.parent.as_ref().unwrap().borrow().name, "n5".to_string());
 
         let n12 = n5.right.as_ref().unwrap().borrow();
         assert_eq!(n12.name, "n12".to_string());
-        assert_eq!(
-            n12.parent.as_ref().unwrap().borrow().name,
-            "n5".to_string()
-        );
+        assert_eq!(n12.parent.as_ref().unwrap().borrow().name, "n5".to_string());
 
         let n13 = n6.left.as_ref().unwrap().borrow();
         assert_eq!(n13.name, "n13".to_string());
-        assert_eq!(
-            n13.parent.as_ref().unwrap().borrow().name,
-            "n6".to_string()
-        );
+        assert_eq!(n13.parent.as_ref().unwrap().borrow().name, "n6".to_string());
 
         let n14 = n6.right.as_ref().unwrap().borrow();
         assert_eq!(n14.name, "n14".to_string());
-        assert_eq!(
-            n14.parent.as_ref().unwrap().borrow().name,
-            "n6".to_string()
-        );
+        assert_eq!(n14.parent.as_ref().unwrap().borrow().name, "n6".to_string());
     }
 
     #[test]
@@ -223,22 +181,33 @@ mod tests {
         }
 
         assert_eq!(nodes.len(), NODES_COUNT);
-        
+
         for (index, node_ref) in nodes.iter().enumerate() {
             let node = node_ref.borrow();
             assert_eq!(node.name, format!("n{index}"));
-            if index != 0 {
+            if index == 0 {
+                assert_eq!(node.parent.as_ref(), None);
+            } else {
                 let parent_position = if index % 2 != 0 { 1 } else { 2 };
                 let parent = (index - parent_position) / 2;
-                assert_eq!(node.parent.as_ref().unwrap().borrow().name, format!("n{}", parent));
+                assert_eq!(
+                    node.parent.as_ref().unwrap().borrow().name,
+                    format!("n{}", parent)
+                );
             }
             let left = index * 2 + 1;
             if left < NODES_COUNT {
-                assert_eq!(node.left.as_ref().unwrap().borrow().name, format!("n{}", left));
+                assert_eq!(
+                    node.left.as_ref().unwrap().borrow().name,
+                    format!("n{}", left)
+                );
             }
             let right = left + 1;
             if left < NODES_COUNT {
-                assert_eq!(node.right.as_ref().unwrap().borrow().name, format!("n{}", right));
+                assert_eq!(
+                    node.right.as_ref().unwrap().borrow().name,
+                    format!("n{}", right)
+                );
             }
         }
     }
