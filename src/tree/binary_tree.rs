@@ -171,11 +171,10 @@ pub mod test_utils {
         });
 
         nodes[0].clone()
-
     }
 
     pub fn populate_balanced_binary_search_tree() -> BinaryTreeNodeRef {
-        /* 
+        /*
         node values:
                        8
                 /             \
@@ -195,7 +194,6 @@ pub mod test_utils {
         });
         root
     }
-
 }
 
 #[cfg(test)]
