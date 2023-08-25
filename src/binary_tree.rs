@@ -1,4 +1,4 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, rc::Rc, collections::VecDeque};
 
 use uuid::Uuid;
 
@@ -33,12 +33,50 @@ impl BinaryTree {
             right: None,
         }))
     }
+
+    pub fn count(&self) -> usize {
+        let mut count = 0;
+        let mut queue = VecDeque::new();
+        let node = self.root.as_ref().unwrap();
+        queue.push_back(node.clone());
+        while let Some(node) = queue.pop_front() {
+            count += 1;
+
+            let n = node.borrow();
+            if let Some(left) = n.left.as_ref() {
+                queue.push_back(left.clone());
+            }
+            if let Some(right) = n.right.as_ref() {
+                queue.push_back(right.clone());
+            }
+        }
+
+        count
+    }
+
+    pub fn flatten (&self) -> Vec<BinaryTreeNodeRef> {
+        let mut nodes = Vec::new();
+        let mut queue = VecDeque::new();
+        let node = self.root.as_ref().unwrap();
+
+        queue.push_back(node.clone());
+        while let Some(node) = queue.pop_front() {
+            nodes.push(node.clone());
+            let n = node.borrow();
+            if let Some(left) = n.left.as_ref() {
+                queue.push_back(left.clone());
+            }
+            if let Some(right) = n.right.as_ref() {
+                queue.push_back(right.clone());
+            }
+        }
+        
+        nodes
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use std::collections::VecDeque;
-
     use super::*;
 
     const NODES_COUNT: usize = 15;
@@ -94,7 +132,7 @@ mod tests {
     }
 
     #[test]
-    fn binary_tree_populate_test() {
+    fn populate_test() {
         let tree = populate();
         assert!(tree.root.is_some());
         let root = tree.root.unwrap();
@@ -161,24 +199,10 @@ mod tests {
     }
 
     #[test]
-    fn binary_tree_populate_test2() {
+    fn populate_test2() {
         let tree = populate();
         assert!(tree.root.is_some());
-        let mut nodes = Vec::<BinaryTreeNodeRef>::with_capacity(NODES_COUNT);
-        let mut queue = VecDeque::new();
-        let root = tree.root.unwrap();
-
-        queue.push_back(root.clone());
-        while let Some(node) = queue.pop_front() {
-            nodes.push(node.clone());
-            let n = node.borrow();
-            if let Some(left) = n.left.as_ref() {
-                queue.push_back(left.clone());
-            }
-            if let Some(right) = n.right.as_ref() {
-                queue.push_back(right.clone());
-            }
-        }
+        let nodes = tree.flatten();
         let nodes_count = nodes.len();
         assert_eq!(nodes_count, NODES_COUNT);
 
@@ -209,6 +233,26 @@ mod tests {
                     format!("n{}", right)
                 );
             }
+        }
+    }
+
+    #[test]
+    fn count() {
+        let tree = populate();
+        assert!(tree.root.is_some());
+        assert_eq!(tree.count(), NODES_COUNT);
+    }
+
+    #[test]
+    fn flatten() {
+        let tree = populate();
+        assert!(tree.root.is_some());
+
+        let nodes = tree.flatten();
+        assert_eq!(nodes.len(), NODES_COUNT);
+        
+        for (index, node_ref) in nodes.iter().enumerate() {
+            assert_eq!(node_ref.borrow().name, format!("n{index}"));
         }
     }
 }
