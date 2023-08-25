@@ -5,12 +5,12 @@ use uuid::Uuid;
 
 #[derive(PartialEq, Debug)]
 pub struct BinaryTreeNode {
-    id: Uuid,
-    name: String,
-    value: u32,
-    parent: Option<BinaryTreeNodeRef>,
-    left: Option<BinaryTreeNodeRef>,
-    right: Option<BinaryTreeNodeRef>,
+    pub id: Uuid,
+    pub name: String,
+    pub value: u32,
+    pub parent: Option<BinaryTreeNodeRef>,
+    pub left: Option<BinaryTreeNodeRef>,
+    pub right: Option<BinaryTreeNodeRef>,
 }
 
 pub type BinaryTreeNodeRef = Rc<RefCell<BinaryTreeNode>>;
@@ -82,7 +82,7 @@ pub mod test_utils {
     use super::*;
     pub const NODES_COUNT: usize = 15;
 
-    pub fn populate() -> BinaryTree {
+    pub fn populate_balanced_binary_tree() -> BinaryTree {
         /*
                      n0
                 /           \
@@ -149,7 +149,7 @@ mod tests {
 
     #[test]
     fn populate_test() {
-        let tree = populate();
+        let tree = populate_balanced_binary_tree();
         assert!(tree.root.is_some());
         let root = tree.root.unwrap();
         assert_eq!(root.borrow().name, "n0".to_string());
@@ -216,7 +216,7 @@ mod tests {
 
     #[test]
     fn populate_test2() {
-        let tree = populate();
+        let tree = populate_balanced_binary_tree();
         assert!(tree.root.is_some());
         let nodes = tree.flatten();
         let nodes_count = nodes.len();
@@ -254,14 +254,14 @@ mod tests {
 
     #[test]
     fn count() {
-        let tree = populate();
+        let tree = populate_balanced_binary_tree();
         assert!(tree.root.is_some());
         assert_eq!(tree.count(), NODES_COUNT);
     }
 
     #[test]
     fn flatten() {
-        let tree = populate();
+        let tree = populate_balanced_binary_tree();
         assert!(tree.root.is_some());
 
         let nodes = tree.flatten();
