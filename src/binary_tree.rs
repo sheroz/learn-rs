@@ -97,16 +97,26 @@ mod tests {
         parent_of_right_child = (right_child - 2)/2
 
         position:
-        is_left = n%2 != 0
-        is_rignt = n%2 == 0
+        is_left  = (n % 2) != 0
+        is_rignt = (n % 2) == 0
         */
 
         let mut tree = BinaryTree::new();
         let mut nodes = Vec::<BinaryTreeNodeRef>::with_capacity(NODES_COUNT);
         (0..NODES_COUNT).for_each(|n| {
-            let node = BinaryTree::new_node();
-            node.borrow_mut().name = format!("n{}", n);
-            nodes.push(node)
+            let node_ref = BinaryTree::new_node();
+
+            // a new scope needed to drop the node variable before pushing the node_ref into vector
+            // or
+            // it requires writing: 
+            // node_ref.borrow_mut().name = format!("n{}", n);
+            // node_ref.borrow_mut().value = n as u32;
+            {
+                let mut node = node_ref.borrow_mut();
+                node.name = format!("n{}", n);
+                node.value = n as u32;
+            }
+            nodes.push(node_ref)
         });
 
         (0..NODES_COUNT).for_each(|n| {
