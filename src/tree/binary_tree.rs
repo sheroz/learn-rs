@@ -1,5 +1,6 @@
-use std::{cell::RefCell, rc::Rc, collections::VecDeque};
-
+use std::cell::RefCell;
+use std::collections::VecDeque;
+use std::rc::Rc;
 use uuid::Uuid;
 
 #[derive(PartialEq, Debug)]
@@ -54,7 +55,7 @@ impl BinaryTree {
         count
     }
 
-    pub fn flatten (&self) -> Vec<BinaryTreeNodeRef> {
+    pub fn flatten(&self) -> Vec<BinaryTreeNodeRef> {
         let mut nodes = Vec::new();
         let mut queue = VecDeque::new();
         let node = self.root.as_ref().unwrap();
@@ -70,18 +71,18 @@ impl BinaryTree {
                 queue.push_back(right.clone());
             }
         }
-        
+
         nodes
     }
 }
 
 #[cfg(test)]
-mod tests {
+pub mod test_utils {
+
     use super::*;
+    pub const NODES_COUNT: usize = 15;
 
-    const NODES_COUNT: usize = 15;
-
-    fn populate() -> BinaryTree {
+    pub fn populate() -> BinaryTree {
         /*
                      n0
                 /           \
@@ -108,7 +109,7 @@ mod tests {
 
             // a new scope needed to drop the node variable before pushing the node_ref into vector
             // or
-            // it requires writing: 
+            // it requires writing:
             // node_ref.borrow_mut().name = format!("n{}", n);
             // node_ref.borrow_mut().value = n as u32;
             {
@@ -140,6 +141,11 @@ mod tests {
         tree.root = Some(nodes[0].clone());
         tree
     }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::tree::binary_tree::test_utils::*;
 
     #[test]
     fn populate_test() {
@@ -260,7 +266,7 @@ mod tests {
 
         let nodes = tree.flatten();
         assert_eq!(nodes.len(), NODES_COUNT);
-        
+
         for (index, node_ref) in nodes.iter().enumerate() {
             assert_eq!(node_ref.borrow().name, format!("n{index}"));
         }
