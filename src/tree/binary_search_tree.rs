@@ -11,7 +11,13 @@ impl BinarySearchTree {
         BinarySearchTree { tree }
     }
 
-    pub fn is_binary_search_tree(tree: &BinaryTree) -> bool {
+    pub fn is_binary_search_tree2(node: BinaryTreeNodeRef) -> bool {
+        let flatten = BinaryTree::flatten_left_to_right(node);
+        let values: Vec<_> = flatten.iter().map(|n| n.borrow().data).collect();
+        values.windows(2).all(|v| v[0] < v[1])
+    }
+
+    pub fn is_binary_search_tree1(node: BinaryTreeNodeRef) -> bool {
         /*
         A binary search tree (BST) is a node-based binary tree data structure that has the following properties.
 
@@ -26,7 +32,6 @@ impl BinarySearchTree {
         let mut keys = HashSet::<u32>::new();
 
         let mut queue = VecDeque::new();
-        let node = tree.root.as_ref().unwrap();
         queue.push_back(node.clone());
         while let Some(node) = queue.pop_front() {
             let n = node.borrow();
@@ -38,10 +43,10 @@ impl BinarySearchTree {
             keys.insert(v);
 
             if let Some(left) = n.left.as_ref() {
-                let subtree = tree.flatten(left.clone());
+                let subtree = BinaryTree::flatten_top_down(left.clone());
                 let values = subtree.iter().map(|r| r.borrow().data).collect::<Vec<_>>();
                 for data in values {
-                    if data >= v  {
+                    if data >= v {
                         return false; // (1)
                     }
                 }
@@ -49,7 +54,7 @@ impl BinarySearchTree {
             }
 
             if let Some(right) = n.right.as_ref() {
-                let subtree = tree.flatten(right.clone());
+                let subtree = BinaryTree::flatten_top_down(right.clone());
                 let values = subtree.iter().map(|r| r.borrow().data).collect::<Vec<_>>();
                 for data in values {
                     if data <= v {
@@ -69,9 +74,26 @@ mod tests {
     use crate::tree::binary_tree::test_utils::*;
 
     #[test]
-    fn populate_tree() {
-        let tree = populate_balanced_binary_search_tree();
-        assert_eq!(tree.count(), NODES_COUNT);
-        assert!(BinarySearchTree::is_binary_search_tree(&tree));
+    fn is_binary_search_tree1() {
+        let root = populate_balanced_binary_search_tree();
+        assert!(BinarySearchTree::is_binary_search_tree1(root));
+    }
+
+    #[test]
+    fn non_binary_search_tree1() {
+        let root = populate_balanced_binary_tree();
+        assert!(!BinarySearchTree::is_binary_search_tree1(root));
+    }
+
+    #[test]
+    fn is_binary_search_tree2() {
+        let root = populate_balanced_binary_search_tree();
+        assert!(BinarySearchTree::is_binary_search_tree2(root));
+    }
+
+    #[test]
+    fn non_binary_search_tree2() {
+        let root = populate_balanced_binary_tree();
+        assert!(!BinarySearchTree::is_binary_search_tree2(root));
     }
 }

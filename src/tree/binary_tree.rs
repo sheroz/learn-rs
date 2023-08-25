@@ -20,8 +20,8 @@ pub struct BinaryTree {
 }
 
 impl BinaryTree {
-    pub fn new() -> Self {
-        BinaryTree { root: None }
+    pub fn with_root(root: BinaryTreeNodeRef) -> Self {
+        BinaryTree { root: Some(root) }
     }
 
     pub fn new_node() -> BinaryTreeNodeRef {
@@ -51,11 +51,10 @@ impl BinaryTree {
                 queue.push_back(right.clone());
             }
         }
-
         count
     }
 
-    pub fn flatten(&self, node: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
+    pub fn flatten_top_down(node: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
         let mut nodes = Vec::new();
         let mut queue = VecDeque::new();
         queue.push_back(node.clone());
@@ -69,7 +68,42 @@ impl BinaryTree {
                 queue.push_back(right.clone());
             }
         }
+        nodes
+    }
 
+    pub fn leftmost(node: BinaryTreeNodeRef) -> BinaryTreeNodeRef {
+        let mut leftmost = node;
+        loop {
+            let node_ref = leftmost.clone();
+            let node = node_ref.borrow();
+            if let Some(left) = node.left.as_ref() {
+                leftmost = left.clone();
+            } else {
+                return leftmost;
+            }
+        }
+    }
+
+    pub fn flatten_left_to_right(node: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
+        let mut nodes = Vec::new();
+        let mut queue = VecDeque::new();
+
+        let leftmost = BinaryTree::leftmost(node);
+        queue.push_back(leftmost);
+        while let Some(node_ref) = queue.pop_front() {
+            nodes.push(node_ref.clone());
+
+            let node = node_ref.borrow();
+
+            if let Some(parent) = node.parent.as_ref() {
+                nodes.push(parent.clone());
+            }
+
+            if let Some(right) = node.right.as_ref() {
+                let leftmost = BinaryTree::leftmost(right.clone());
+                queue.push_back(leftmost);
+            }
+        }
         nodes
     }
 }
@@ -80,7 +114,7 @@ pub mod test_utils {
     use super::*;
     pub const NODES_COUNT: usize = 15;
 
-    pub fn populate_balanced_binary_search_tree() -> BinaryTree {
+    pub fn populate_balanced_binary_tree() -> BinaryTreeNodeRef {
         /*
         node names:
                      n0
@@ -90,16 +124,6 @@ pub mod test_utils {
           n3      n4       n5      n6
          /   \   /   \   /   \    /   \
         n7   n8 n9  n10 n11  n12 n13  n14
-
-        node values:
-
-                       8
-                /             \
-              4                12
-            /    \           /    \
-           2       6       10      14
-         /   \   /  \     /  \    /  \
-        1     3 5    7   9   11  13   15
 
         left_child = parent * 2 + 1
         right_child = parent * 2 + 2 = left_child + 1
@@ -111,9 +135,6 @@ pub mod test_utils {
         is_rignt = (n % 2) == 0
         */
 
-        let node_values = [8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15];
-
-        let mut tree = BinaryTree::new();
         let mut nodes = Vec::<BinaryTreeNodeRef>::with_capacity(NODES_COUNT);
         (0..NODES_COUNT).for_each(|n| {
             let node_ref = BinaryTree::new_node();
@@ -126,7 +147,7 @@ pub mod test_utils {
             {
                 let mut node = node_ref.borrow_mut();
                 node.name = format!("n{}", n);
-                node.data = node_values[n];
+                node.data = n as u32;
             }
             nodes.push(node_ref)
         });
@@ -149,20 +170,41 @@ pub mod test_utils {
             }
         });
 
-        tree.root = Some(nodes[0].clone());
-        tree
+        nodes[0].clone()
+
     }
+
+    pub fn populate_balanced_binary_search_tree() -> BinaryTreeNodeRef {
+        /* 
+        node values:
+                       8
+                /             \
+              4                12
+            /    \           /    \
+           2       6       10      14
+         /   \   /  \     /  \    /  \
+        1     3 5    7   9   11  13   15
+        */
+
+        let node_values = [8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15];
+
+        let root = populate_balanced_binary_tree();
+        let flatten = BinaryTree::flatten_top_down(root.clone());
+        flatten.iter().enumerate().for_each(|v| {
+            v.1.borrow_mut().data = node_values[v.0];
+        });
+        root
+    }
+
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::tree::binary_tree::test_utils::*;
+    use crate::tree::binary_tree::{test_utils::*, BinaryTree};
 
     #[test]
     fn populate_test() {
-        let tree = populate_balanced_binary_search_tree();
-        assert!(tree.root.is_some());
-        let root = tree.root.unwrap();
+        let root = populate_balanced_binary_tree();
         assert_eq!(root.borrow().name, "n0".to_string());
 
         let n0 = root.borrow();
@@ -227,9 +269,8 @@ mod tests {
 
     #[test]
     fn populate_test2() {
-        let tree = populate_balanced_binary_search_tree();
-        assert!(tree.root.is_some());
-        let nodes = tree.flatten(tree.root.as_ref().unwrap().clone());
+        let root = populate_balanced_binary_tree();
+        let nodes = BinaryTree::flatten_top_down(root);
         let nodes_count = nodes.len();
         assert_eq!(nodes_count, NODES_COUNT);
 
@@ -265,21 +306,37 @@ mod tests {
 
     #[test]
     fn count() {
-        let tree = populate_balanced_binary_search_tree();
+        let root = populate_balanced_binary_tree();
+        let tree = BinaryTree::with_root(root);
         assert!(tree.root.is_some());
         assert_eq!(tree.count(), NODES_COUNT);
     }
 
     #[test]
-    fn flatten() {
-        let tree = populate_balanced_binary_search_tree();
-        assert!(tree.root.is_some());
+    fn flatten_top_down() {
+        let root = populate_balanced_binary_search_tree();
 
-        let nodes = tree.flatten(tree.root.as_ref().unwrap().clone());
+        let nodes = BinaryTree::flatten_top_down(root);
         assert_eq!(nodes.len(), NODES_COUNT);
 
         for (index, node_ref) in nodes.iter().enumerate() {
             assert_eq!(node_ref.borrow().name, format!("n{index}"));
+        }
+    }
+
+    #[test]
+    fn flatten_left_to_right() {
+        let root = populate_balanced_binary_tree();
+
+        let flatten = BinaryTree::flatten_left_to_right(root.clone());
+
+        let expected = [
+            "n7", "n3", "n8", "n1", "n9", "n4", "n10", "n0", "n11", "n5", "n12", "n2", "n13", "n6",
+            "n14",
+        ];
+
+        for (index, node_ref) in flatten.iter().enumerate() {
+            assert_eq!(node_ref.borrow().name, expected[index]);
         }
     }
 }
