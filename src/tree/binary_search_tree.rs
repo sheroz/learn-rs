@@ -1,4 +1,4 @@
-use std::collections::{VecDeque, HashSet};
+use std::collections::{HashSet, VecDeque};
 
 use crate::tree::binary_tree::*;
 
@@ -12,8 +12,8 @@ impl BinarySearchTree {
     }
 
     pub fn is_binary_search_tree(tree: &BinaryTree) -> bool {
-        /* 
-        A binary search tree (BST) is a node-based binary tree data structure that has the following properties. 
+        /*
+        A binary search tree (BST) is a node-based binary tree data structure that has the following properties.
 
         1. The left subtree of a node contains only nodes with keys less than the node’s key.
         2. The right subtree of a node contains only nodes with keys greater than the node’s key.
@@ -29,28 +29,34 @@ impl BinarySearchTree {
         let node = tree.root.as_ref().unwrap();
         queue.push_back(node.clone());
         while let Some(node) = queue.pop_front() {
-
             let n = node.borrow();
 
-            let v = n.value;
+            let v = n.data;
             if keys.contains(&v) {
                 return false; // (4)
             }
             keys.insert(v);
 
             if let Some(left) = n.left.as_ref() {
-                if left.borrow().value >= v {
-                    return false; // (1)
+                let subtree = tree.flatten(left.clone());
+                let values = subtree.iter().map(|r| r.borrow().data).collect::<Vec<_>>();
+                for data in values {
+                    if data >= v  {
+                        return false; // (1)
+                    }
                 }
-                queue.push_back(left.clone());
+                queue.push_back(left.clone()); // (3)
             }
 
             if let Some(right) = n.right.as_ref() {
-                if right.borrow().value <= v {
-                    return false; // (2)
+                let subtree = tree.flatten(right.clone());
+                let values = subtree.iter().map(|r| r.borrow().data).collect::<Vec<_>>();
+                for data in values {
+                    if data <= v {
+                        return false; // (2)
+                    }
                 }
-
-                queue.push_back(right.clone());
+                queue.push_back(right.clone()); // (3)
             }
         }
         true
@@ -64,8 +70,8 @@ mod tests {
 
     #[test]
     fn populate_tree() {
-        let tree = populate_balanced_binary_tree();
+        let tree = populate_balanced_binary_search_tree();
         assert_eq!(tree.count(), NODES_COUNT);
-        assert!(!BinarySearchTree::is_binary_search_tree(&tree));
+        assert!(BinarySearchTree::is_binary_search_tree(&tree));
     }
 }

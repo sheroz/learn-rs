@@ -7,7 +7,7 @@ use uuid::Uuid;
 pub struct BinaryTreeNode {
     pub id: Uuid,
     pub name: String,
-    pub value: u32,
+    pub data: u32,
     pub parent: Option<BinaryTreeNodeRef>,
     pub left: Option<BinaryTreeNodeRef>,
     pub right: Option<BinaryTreeNodeRef>,
@@ -28,7 +28,7 @@ impl BinaryTree {
         Rc::new(RefCell::new(BinaryTreeNode {
             id: Uuid::new_v4(),
             name: "".to_string(),
-            value: 0,
+            data: 0,
             parent: None,
             left: None,
             right: None,
@@ -55,11 +55,9 @@ impl BinaryTree {
         count
     }
 
-    pub fn flatten(&self) -> Vec<BinaryTreeNodeRef> {
+    pub fn flatten(&self, node: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
         let mut nodes = Vec::new();
         let mut queue = VecDeque::new();
-        let node = self.root.as_ref().unwrap();
-
         queue.push_back(node.clone());
         while let Some(node) = queue.pop_front() {
             nodes.push(node.clone());
@@ -82,8 +80,9 @@ pub mod test_utils {
     use super::*;
     pub const NODES_COUNT: usize = 15;
 
-    pub fn populate_balanced_binary_tree() -> BinaryTree {
+    pub fn populate_balanced_binary_search_tree() -> BinaryTree {
         /*
+        node names:
                      n0
                 /           \
               n1              n2
@@ -91,6 +90,16 @@ pub mod test_utils {
           n3      n4       n5      n6
          /   \   /   \   /   \    /   \
         n7   n8 n9  n10 n11  n12 n13  n14
+
+        node values:
+
+                       8
+                /             \
+              4                12
+            /    \           /    \
+           2       6       10      14
+         /   \   /  \     /  \    /  \
+        1     3 5    7   9   11  13   15
 
         left_child = parent * 2 + 1
         right_child = parent * 2 + 2 = left_child + 1
@@ -101,6 +110,8 @@ pub mod test_utils {
         is_left  = (n % 2) != 0
         is_rignt = (n % 2) == 0
         */
+
+        let node_values = [8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15];
 
         let mut tree = BinaryTree::new();
         let mut nodes = Vec::<BinaryTreeNodeRef>::with_capacity(NODES_COUNT);
@@ -115,7 +126,7 @@ pub mod test_utils {
             {
                 let mut node = node_ref.borrow_mut();
                 node.name = format!("n{}", n);
-                node.value = n as u32;
+                node.data = node_values[n];
             }
             nodes.push(node_ref)
         });
@@ -149,7 +160,7 @@ mod tests {
 
     #[test]
     fn populate_test() {
-        let tree = populate_balanced_binary_tree();
+        let tree = populate_balanced_binary_search_tree();
         assert!(tree.root.is_some());
         let root = tree.root.unwrap();
         assert_eq!(root.borrow().name, "n0".to_string());
@@ -216,9 +227,9 @@ mod tests {
 
     #[test]
     fn populate_test2() {
-        let tree = populate_balanced_binary_tree();
+        let tree = populate_balanced_binary_search_tree();
         assert!(tree.root.is_some());
-        let nodes = tree.flatten();
+        let nodes = tree.flatten(tree.root.as_ref().unwrap().clone());
         let nodes_count = nodes.len();
         assert_eq!(nodes_count, NODES_COUNT);
 
@@ -254,17 +265,17 @@ mod tests {
 
     #[test]
     fn count() {
-        let tree = populate_balanced_binary_tree();
+        let tree = populate_balanced_binary_search_tree();
         assert!(tree.root.is_some());
         assert_eq!(tree.count(), NODES_COUNT);
     }
 
     #[test]
     fn flatten() {
-        let tree = populate_balanced_binary_tree();
+        let tree = populate_balanced_binary_search_tree();
         assert!(tree.root.is_some());
 
-        let nodes = tree.flatten();
+        let nodes = tree.flatten(tree.root.as_ref().unwrap().clone());
         assert_eq!(nodes.len(), NODES_COUNT);
 
         for (index, node_ref) in nodes.iter().enumerate() {
