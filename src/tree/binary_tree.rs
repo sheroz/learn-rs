@@ -87,26 +87,40 @@ impl BinaryTree {
     }
 
     pub fn flatten_left_to_right(node: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
-        let mut nodes = Vec::new();
+        let mut nodes = VecDeque::new();
         let mut queue = VecDeque::new();
 
-        let leftmost = BinaryTree::leftmost(node);
-        queue.push_back(leftmost);
-        while let Some(node_ref) = queue.pop_front() {
-            nodes.push(node_ref.clone());
+        let mut left_queue = VecDeque::new();
+        let mut right_queue = VecDeque::new();
 
+        let mut node_ref = node.clone();
+        loop  {
             let node = node_ref.borrow();
+            if let Some(left) = node.left.as_ref() {
+                left_queue.push_back(left.clone());
+            }
 
-            if let Some(parent) = node.parent.as_ref() {
-                nodes.push(parent.clone());
+            while let Some(node_left_ref) = left_queue.pop_front() {
+                nodes.push_back(node_left_ref.clone());
+                if let Some(left) = node.left.as_ref() {
+                    left_queue.push_back(left.clone());
+                }
+            }
 
-                if let Some(right) = parent.borrow().right.as_ref() {
-                    let leftmost = BinaryTree::leftmost(right.clone());
-                    queue.push_back(leftmost);
+            nodes.push_back(node_ref.clone());
+
+            if let Some(right) = node.right.as_ref() {
+                right_queue.push_back(right.clone());
+            }
+
+            while let Some(node_right_ref) = right_queue.pop_front() {
+                nodes.push_back(node_right_ref.clone());
+                if let Some(right) = node.right.as_ref() {
+                    right_queue.push_back(right.clone());
                 }
             }
         }
-        nodes
+        nodes.into()
     }
 }
 
@@ -360,17 +374,22 @@ mod tests {
     fn flatten_left_to_right() {
         let root = populate_balanced_binary_tree();
 
-        let flatten = BinaryTree::flatten_left_to_right(root.clone());
+        let flatten: Vec<_> = BinaryTree::flatten_left_to_right(root.clone())
+            .iter()
+            .map(|n| n.borrow().name.clone())
+            .collect();
+        println!("flatten: {:?}", flatten);
 
         let expected = [
             "n7", "n3", "n8", "n1", "n9", "n4", "n10", "n0", "n11", "n5", "n12", "n2", "n13", "n6",
             "n14",
         ];
+        println!("expected: {:?}", expected);
 
         assert_eq!(flatten.len(), expected.len());
 
-        for (index, node_ref) in flatten.iter().enumerate() {
-            assert_eq!(node_ref.borrow().name, expected[index]);
+        for (index, node) in flatten.iter().enumerate() {
+            assert_eq!(node, expected[index]);
         }
     }
 }
