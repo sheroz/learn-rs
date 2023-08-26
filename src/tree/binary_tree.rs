@@ -87,6 +87,7 @@ impl BinaryTree {
     }
 
     pub fn flatten_left_to_right(node: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
+        // https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
         let mut nodes = VecDeque::new();
         let mut queue = VecDeque::new();
 
