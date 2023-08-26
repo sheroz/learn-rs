@@ -99,11 +99,11 @@ impl BinaryTree {
 
             if let Some(parent) = node.parent.as_ref() {
                 nodes.push(parent.clone());
-            }
 
-            if let Some(right) = node.right.as_ref() {
-                let leftmost = BinaryTree::leftmost(right.clone());
-                queue.push_back(leftmost);
+                if let Some(right) = parent.borrow().right.as_ref() {
+                    let leftmost = BinaryTree::leftmost(right.clone());
+                    queue.push_back(leftmost);
+                }
             }
         }
         nodes
@@ -200,6 +200,8 @@ pub mod test_utils {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
+
     use crate::tree::binary_tree::{test_utils::*, BinaryTree};
 
     #[test]
@@ -316,11 +318,41 @@ mod tests {
     fn flatten_top_down() {
         let root = populate_balanced_binary_search_tree();
 
-        let nodes = BinaryTree::flatten_top_down(root);
-        assert_eq!(nodes.len(), NODES_COUNT);
+        let flatten = BinaryTree::flatten_top_down(root);
+        assert_eq!(flatten.len(), NODES_COUNT);
 
-        for (index, node_ref) in nodes.iter().enumerate() {
+        for (index, node_ref) in flatten.iter().enumerate() {
             assert_eq!(node_ref.borrow().name, format!("n{index}"));
+        }
+    }
+
+    #[test]
+    fn leftmost() {
+        let expected = HashMap::from([
+            ("n0", "n7"),
+            ("n1", "n7"),
+            ("n2", "n11"),
+            ("n3", "n7"),
+            ("n4", "n9"),
+            ("n5", "n11"),
+            ("n6", "n13"),
+            ("n7", "n7"),
+            ("n8", "n8"),
+            ("n9", "n9"),
+            ("n10", "n10"),
+            ("n11", "n11"),
+            ("n12", "n12"),
+            ("n13", "n13"),
+            ("n14", "n14"),
+        ]);
+
+        let root = populate_balanced_binary_tree();
+        let flatten = BinaryTree::flatten_top_down(root);
+        for node_ref in flatten {
+            let leftmost = BinaryTree::leftmost(node_ref.clone());
+            let node = leftmost.borrow();
+            let name = node.name.as_str();
+            assert_eq!(name, expected[name]);
         }
     }
 
@@ -334,6 +366,8 @@ mod tests {
             "n7", "n3", "n8", "n1", "n9", "n4", "n10", "n0", "n11", "n5", "n12", "n2", "n13", "n6",
             "n14",
         ];
+
+        assert_eq!(flatten.len(), expected.len());
 
         for (index, node_ref) in flatten.iter().enumerate() {
             assert_eq!(node_ref.borrow().name, expected[index]);

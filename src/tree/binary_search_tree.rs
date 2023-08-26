@@ -19,11 +19,48 @@ pub struct BinarySearchTree {
 }
 
 impl BinarySearchTree {
-    pub fn new(tree: BinaryTree) -> Self {
-        BinarySearchTree { tree }
+    pub fn with_root(root: BinaryTreeNodeRef) -> Self {
+        BinarySearchTree { tree: BinaryTree::with_root(root) }
     }
 
-    pub fn is_binary_search_tree3(node: BinaryTreeNodeRef) -> bool {
+    pub fn is_binary_search_tree(node: BinaryTreeNodeRef) -> bool {
+        BinarySearchTree::is_binary_search_tree_v3(node)
+    }
+
+    pub fn search(&self, data: u32) -> Option<BinaryTreeNodeRef> {
+        if self.tree.root.is_none() {
+            return None;
+        }
+
+
+        let node = self.tree.root.as_ref().unwrap();
+
+        let mut queue = VecDeque::new();
+        queue.push_back(node.clone());
+
+        while let Some(node) = queue.pop_front() {
+            let n = node.borrow();
+
+            let node_data = n.data;
+            if data == node_data {
+                return Some(node.clone());
+            }
+
+            if data < node_data {
+                if let Some(left) = n.left.as_ref() {
+                    queue.push_back(left.clone());
+                }
+            }
+            else {
+                if let Some(right) = n.right.as_ref() {
+                    queue.push_back(right.clone());
+                }
+            }
+        }
+        None
+    }
+
+    pub fn is_binary_search_tree_v3(node: BinaryTreeNodeRef) -> bool {
         let mut queue = VecDeque::new();
 
         let mut prev = 0;
@@ -58,13 +95,13 @@ impl BinarySearchTree {
         true
     }
 
-    pub fn is_binary_search_tree2(node: BinaryTreeNodeRef) -> bool {
+    pub fn is_binary_search_tree_v2(node: BinaryTreeNodeRef) -> bool {
         let flatten = BinaryTree::flatten_left_to_right(node);
         let values: Vec<_> = flatten.iter().map(|n| n.borrow().data).collect();
         values.windows(2).all(|v| v[0] < v[1])
     }
 
-    pub fn is_binary_search_tree1(node: BinaryTreeNodeRef) -> bool {
+    pub fn is_binary_search_tree_v1(node: BinaryTreeNodeRef) -> bool {
         let mut keys = HashSet::<u32>::new();
         let mut queue = VecDeque::new();
         queue.push_back(node.clone());
@@ -109,38 +146,68 @@ mod tests {
     use crate::tree::binary_tree::test_utils::*;
 
     #[test]
-    fn is_binary_search_tree1() {
+    fn is_binary_search_tree_v1() {
         let root = populate_balanced_binary_search_tree();
-        assert!(BinarySearchTree::is_binary_search_tree1(root));
+        assert!(BinarySearchTree::is_binary_search_tree_v1(root));
     }
 
     #[test]
-    fn non_binary_search_tree1() {
+    fn non_binary_search_tree_v1() {
         let root = populate_balanced_binary_tree();
-        assert!(!BinarySearchTree::is_binary_search_tree1(root));
+        assert!(!BinarySearchTree::is_binary_search_tree_v1(root));
     }
 
     #[test]
-    fn is_binary_search_tree2() {
+    fn is_binary_search_tree_v2() {
         let root = populate_balanced_binary_search_tree();
-        assert!(BinarySearchTree::is_binary_search_tree2(root));
+        assert!(BinarySearchTree::is_binary_search_tree_v2(root));
     }
 
     #[test]
-    fn non_binary_search_tree2() {
+    fn non_binary_search_tree_v2() {
         let root = populate_balanced_binary_tree();
-        assert!(!BinarySearchTree::is_binary_search_tree2(root));
+        assert!(!BinarySearchTree::is_binary_search_tree_v2(root));
     }
 
     #[test]
-    fn is_binary_search_tree3() {
+    fn is_binary_search_tree_v3() {
         let root = populate_balanced_binary_search_tree();
-        assert!(BinarySearchTree::is_binary_search_tree3(root));
+        assert!(BinarySearchTree::is_binary_search_tree_v3(root));
     }
 
     #[test]
-    fn non_binary_search_tree3() {
+    fn non_binary_search_tree_v3() {
         let root = populate_balanced_binary_tree();
-        assert!(!BinarySearchTree::is_binary_search_tree3(root));
+        assert!(!BinarySearchTree::is_binary_search_tree_v3(root));
+    }
+
+    #[test]
+    fn is_binary_search_tree() {
+        let root = populate_balanced_binary_search_tree();
+        assert!(BinarySearchTree::is_binary_search_tree(root));
+    }
+
+    #[test]
+    fn non_binary_search_tree() {
+        let root = populate_balanced_binary_tree();
+        assert!(!BinarySearchTree::is_binary_search_tree(root));
+    }
+
+    #[test]
+    fn search() {
+        let root = populate_balanced_binary_search_tree();
+        let bst = BinarySearchTree::with_root(root.clone());
+
+        let flatten = BinaryTree::flatten_left_to_right(root);
+        let values: Vec<_> = flatten.iter().map(|n| n.borrow().data).collect();
+        let not_exist = 1 + *values.last().unwrap();
+        for v in values {
+            let node = bst.search(v);
+            assert!(node.is_some());
+            assert_eq!(node.unwrap().borrow().data, v);
+        }
+
+        let node = bst.search(not_exist);
+        assert!(node.is_none());
     }
 }
