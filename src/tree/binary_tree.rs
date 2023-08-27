@@ -86,41 +86,52 @@ impl BinaryTree {
         }
     }
 
-    pub fn flatten_left_to_right(node: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
+    pub fn flatten_left_to_right(node_ref: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
         // https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
+        // https://www.javatpoint.com/inorder-traversal
+        // https://www.tutorialspoint.com/data_structures_algorithms/tree_traversal.htm
+        // https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion-and-without-stack/
+        // found:
+        // https://www.geeksforgeeks.org/inorder-non-threaded-binary-tree-traversal-without-recursion-or-stack/
+
+
         let mut nodes = VecDeque::new();
         let mut queue = VecDeque::new();
 
         let mut left_queue = VecDeque::new();
         let mut right_queue = VecDeque::new();
 
-        let mut node_ref = node.clone();
-        loop  {
-            let node = node_ref.borrow();
+        queue.push_back(node_ref.clone());
+        while let Some(node_ref) = queue.pop_front() {
+            let  node = node_ref.borrow();    
             if let Some(left) = node.left.as_ref() {
                 left_queue.push_back(left.clone());
+                queue.push_back(left.clone());
             }
+        }
 
-            while let Some(node_left_ref) = left_queue.pop_front() {
-                nodes.push_back(node_left_ref.clone());
-                if let Some(left) = node.left.as_ref() {
-                    left_queue.push_back(left.clone());
-                }
-            }
-
+        while let Some(node_ref) = left_queue.pop_front() {
             nodes.push_back(node_ref.clone());
-
+            let  node = node_ref.borrow();    
             if let Some(right) = node.right.as_ref() {
                 right_queue.push_back(right.clone());
             }
+        }
 
-            while let Some(node_right_ref) = right_queue.pop_front() {
-                nodes.push_back(node_right_ref.clone());
-                if let Some(right) = node.right.as_ref() {
-                    right_queue.push_back(right.clone());
-                }
+        nodes.push_back(node_ref.clone());
+
+        /*
+        if let Some(right) = node.right.as_ref() {
+            right_queue.push_back(right.clone());
+        }
+
+        while let Some(node_right_ref) = right_queue.pop_front() {
+            nodes.push_back(node_right_ref.clone());
+            if let Some(right) = node.right.as_ref() {
+                right_queue.push_back(right.clone());
             }
         }
+        */
         nodes.into()
     }
 }
