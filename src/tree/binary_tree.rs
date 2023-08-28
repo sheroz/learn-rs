@@ -1,6 +1,5 @@
 // https://www.programiz.com/dsa/trees
 
-use std::borrow::BorrowMut;
 use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::rc::Rc;
@@ -95,11 +94,11 @@ impl BinaryTree {
         // https://www.javatpoint.com/inorder-traversal
         // https://www.tutorialspoint.com/data_structures_algorithms/tree_traversal.htm
         // https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion-and-without-stack/
-        // 
+        //
         // best suited one:
         // https://www.geeksforgeeks.org/inorder-non-threaded-binary-tree-traversal-without-recursion-or-stack/
 
-        let mut root = Some(node_ref.clone()); 
+        let mut root = Some(node_ref.clone());
 
         let mut nodes = VecDeque::new();
 
@@ -120,50 +119,30 @@ impl BinaryTree {
                 leftdone = false;
                 root = Some(right.clone());
             } else if let Some(parent) = root_ref.borrow().parent.clone() {
-                
+                let mut root_parent = Some(parent.clone());
+                let mut parent_right = parent.clone().borrow().right.clone();
+                while root_parent.is_some() && root == parent_right {
+                    root = root_parent.clone();
+                    root_parent = if root.is_some() {
+                        root.clone().unwrap().borrow().parent.clone()
+                    } else {
+                        None
+                    };
+                    parent_right = if root_parent.is_some() {
+                        root_parent.clone().unwrap().borrow().right.clone()
+                    } else {
+                        None
+                    };
+                }
+                if root_parent == None {
+                    break;
+                }
+                root = root_parent.clone();
             } else {
                 break;
             }
         }
 
-
-
-        let mut queue = VecDeque::new();
-
-        let mut left_queue = VecDeque::new();
-        let mut right_queue = VecDeque::new();
-
-        queue.push_back(node_ref.clone());
-        while let Some(node_ref) = queue.pop_front() {
-            let  node = node_ref.borrow();    
-            if let Some(left) = node.left.as_ref() {
-                left_queue.push_back(left.clone());
-                queue.push_back(left.clone());
-            }
-        }
-
-        while let Some(node_ref) = left_queue.pop_front() {
-            nodes.push_back(node_ref.clone());
-            let  node = node_ref.borrow();    
-            if let Some(right) = node.right.as_ref() {
-                right_queue.push_back(right.clone());
-            }
-        }
-
-        nodes.push_back(node_ref.clone());
-
-        /*
-        if let Some(right) = node.right.as_ref() {
-            right_queue.push_back(right.clone());
-        }
-
-        while let Some(node_right_ref) = right_queue.pop_front() {
-            nodes.push_back(node_right_ref.clone());
-            if let Some(right) = node.right.as_ref() {
-                right_queue.push_back(right.clone());
-            }
-        }
-        */
         nodes.into()
     }
 }
@@ -387,31 +366,39 @@ mod tests {
     #[test]
     fn leftmost() {
         let expected = HashMap::from([
-            ("n0", "n7"),
-            ("n1", "n7"),
-            ("n2", "n11"),
-            ("n3", "n7"),
-            ("n4", "n9"),
-            ("n5", "n11"),
-            ("n6", "n13"),
-            ("n7", "n7"),
-            ("n8", "n8"),
-            ("n9", "n9"),
-            ("n10", "n10"),
-            ("n11", "n11"),
-            ("n12", "n12"),
-            ("n13", "n13"),
-            ("n14", "n14"),
+            ("n0", Some("n7")),
+            ("n1", Some("n7")),
+            ("n2", Some("n11")),
+            ("n3", Some("n7")),
+            ("n4", Some("n9")),
+            ("n5", Some("n11")),
+            ("n6", Some("n13")),
+            ("n7", None),
+            ("n8", None),
+            ("n9", None),
+            ("n10", None),
+            ("n11", None),
+            ("n12", None),
+            ("n13", None),
+            ("n14", None),
         ]);
 
         let root = populate_balanced_binary_tree();
         let flatten = BinaryTree::flatten_top_down(root);
         for node_ref in flatten {
+            let node = node_ref.borrow();
+            let expected = expected[node.name.as_str()];
             let leftmost = BinaryTree::leftmost(node_ref.clone());
-            assert!(leftmost.is_some());
-            let node = leftmost.unwrap().borrow();
-            let name = node.name.as_str();
-            assert_eq!(name, expected[name]);
+            let name;
+            let found = match leftmost {
+                Some(left_ref) => {
+                    let node = left_ref.borrow();
+                    name = node.name.clone();
+                    Some(name.as_str())
+                }
+                None => None,
+            };
+            assert_eq!(expected, found);
         }
     }
 
