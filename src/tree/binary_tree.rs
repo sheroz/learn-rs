@@ -112,13 +112,17 @@ impl BinaryTree {
                 }
             }
 
-            leftdone = true;
             nodes.push_back(current_ref.clone());
+            root = Some(current_ref.clone());
 
-            if let Some(right) = root_ref.borrow().right.clone() {
+            leftdone = true;
+
+            let root_node = current_ref.borrow();
+
+            if let Some(right) = root_node.right.clone() {
                 leftdone = false;
                 root = Some(right.clone());
-            } else if let Some(parent) = root_ref.borrow().parent.clone() {
+            } else if let Some(parent) = root_node.parent.clone() {
                 let mut root_parent = Some(parent.clone());
                 let mut parent_right = parent.clone().borrow().right.clone();
                 while root_parent.is_some() {
@@ -139,10 +143,7 @@ impl BinaryTree {
                         None
                     };
                 }
-                if root_parent.is_none() {
-                    break;
-                }
-                root = root_parent.clone();
+                root = root_parent;
             } else {
                 break;
             }
