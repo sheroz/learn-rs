@@ -1,5 +1,6 @@
 // https://www.programiz.com/dsa/trees
 
+use std::borrow::BorrowMut;
 use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::rc::Rc;
@@ -73,13 +74,15 @@ impl BinaryTree {
         nodes
     }
 
-    pub fn leftmost(node: BinaryTreeNodeRef) -> BinaryTreeNodeRef {
-        let mut leftmost = node;
+    pub fn leftmost(node_ref: BinaryTreeNodeRef) -> Option<BinaryTreeNodeRef> {
+        let mut leftmost = None;
+        let mut current = node_ref;
         loop {
-            let node_ref = leftmost.clone();
+            let node_ref = current;
             let node = node_ref.borrow();
             if let Some(left) = node.left.as_ref() {
-                leftmost = left.clone();
+                current = left.clone();
+                leftmost = Some(left.clone());
             } else {
                 return leftmost;
             }
@@ -87,15 +90,44 @@ impl BinaryTree {
     }
 
     pub fn flatten_left_to_right(node_ref: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
+        // inorder traversal:
         // https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
         // https://www.javatpoint.com/inorder-traversal
         // https://www.tutorialspoint.com/data_structures_algorithms/tree_traversal.htm
         // https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion-and-without-stack/
-        // found:
+        // 
+        // best suited one:
         // https://www.geeksforgeeks.org/inorder-non-threaded-binary-tree-traversal-without-recursion-or-stack/
 
+        let mut root = Some(node_ref.clone()); 
 
         let mut nodes = VecDeque::new();
+
+        let mut leftdone = false;
+        while let Some(root_ref) = root.clone().as_ref() {
+            let mut current_ref = root_ref.clone();
+            if !leftdone {
+                if let Some(leftmost) = BinaryTree::leftmost(current_ref.clone()) {
+                    current_ref = leftmost.clone();
+                }
+            }
+
+            nodes.push_back(current_ref.clone());
+
+            leftdone = true;
+
+            if let Some(right) = root_ref.borrow().right.clone() {
+                leftdone = false;
+                root = Some(right.clone());
+            } else if let Some(parent) = root_ref.borrow().parent.clone() {
+                
+            } else {
+                break;
+            }
+        }
+
+
+
         let mut queue = VecDeque::new();
 
         let mut left_queue = VecDeque::new();
@@ -376,7 +408,8 @@ mod tests {
         let flatten = BinaryTree::flatten_top_down(root);
         for node_ref in flatten {
             let leftmost = BinaryTree::leftmost(node_ref.clone());
-            let node = leftmost.borrow();
+            assert!(leftmost.is_some());
+            let node = leftmost.unwrap().borrow();
             let name = node.name.as_str();
             assert_eq!(name, expected[name]);
         }

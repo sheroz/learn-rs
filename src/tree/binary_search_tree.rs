@@ -66,8 +66,11 @@ impl BinarySearchTree {
         let mut prev = 0;
         let mut prev_valid = false;
 
-        let leftmost = BinaryTree::leftmost(node);
-        queue.push_back(leftmost);
+        if let Some(leftmost) = BinaryTree::leftmost(node.clone()) {
+            queue.push_back(leftmost);
+        } else {
+            queue.push_back(node.clone());
+        }
 
         while let Some(node_ref) = queue.pop_front() {
             let node = node_ref.borrow();
@@ -88,8 +91,11 @@ impl BinarySearchTree {
             }
 
             if let Some(right) = node.right.as_ref() {
-                let leftmost = BinaryTree::leftmost(right.clone());
-                queue.push_back(leftmost);
+                if let Some(leftmost) = BinaryTree::leftmost(right.clone()) {
+                    queue.push_back(leftmost);
+                } else {
+                    queue.push_back(right.clone());
+                }
             }
         }
         true
