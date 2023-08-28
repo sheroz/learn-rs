@@ -104,6 +104,7 @@ impl BinaryTree {
 
         let mut leftdone = false;
         while let Some(root_ref) = root.clone().as_ref() {
+
             let mut current_ref = root_ref.clone();
             if !leftdone {
                 if let Some(leftmost) = BinaryTree::leftmost(current_ref.clone()) {
@@ -111,9 +112,8 @@ impl BinaryTree {
                 }
             }
 
-            nodes.push_back(current_ref.clone());
-
             leftdone = true;
+            nodes.push_back(current_ref.clone());
 
             if let Some(right) = root_ref.borrow().right.clone() {
                 leftdone = false;
@@ -121,7 +121,12 @@ impl BinaryTree {
             } else if let Some(parent) = root_ref.borrow().parent.clone() {
                 let mut root_parent = Some(parent.clone());
                 let mut parent_right = parent.clone().borrow().right.clone();
-                while root_parent.is_some() && root == parent_right {
+                while root_parent.is_some() {
+
+                    if BinaryTree::get_id(root) != BinaryTree::get_id(parent_right) {
+                        break;
+                    }
+
                     root = root_parent.clone();
                     root_parent = if root.is_some() {
                         root.clone().unwrap().borrow().parent.clone()
@@ -134,7 +139,7 @@ impl BinaryTree {
                         None
                     };
                 }
-                if root_parent == None {
+                if root_parent.is_none() {
                     break;
                 }
                 root = root_parent.clone();
@@ -145,6 +150,14 @@ impl BinaryTree {
 
         nodes.into()
     }
+
+    fn get_id(v: Option<BinaryTreeNodeRef>) -> Option<Uuid> {
+        match v {
+            Some(node) => Some(node.borrow().id),
+            None => None
+        } 
+    }
+
 }
 
 #[cfg(test)]
@@ -404,21 +417,23 @@ mod tests {
 
     #[test]
     fn flatten_left_to_right() {
-        let root = populate_balanced_binary_tree();
-
-        let flatten: Vec<_> = BinaryTree::flatten_left_to_right(root.clone())
-            .iter()
-            .map(|n| n.borrow().name.clone())
-            .collect();
-        println!("flatten: {:?}", flatten);
-
         let expected = [
             "n7", "n3", "n8", "n1", "n9", "n4", "n10", "n0", "n11", "n5", "n12", "n2", "n13", "n6",
             "n14",
         ];
         println!("expected: {:?}", expected);
 
+        let root = populate_balanced_binary_tree();
+        let flatten_nodes: Vec<_> = BinaryTree::flatten_left_to_right(root.clone());
+        assert_eq!(flatten_nodes.len(), expected.len());
+
+        let flatten: Vec<_> = flatten_nodes
+            .iter()
+            .map(|n| n.borrow().name.clone())
+            .collect();
+        // println!("flatten: {:?}", flatten);
         assert_eq!(flatten.len(), expected.len());
+
 
         for (index, node) in flatten.iter().enumerate() {
             assert_eq!(node, expected[index]);
