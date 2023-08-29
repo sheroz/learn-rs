@@ -17,6 +17,7 @@ pub struct BinaryTreeNode {
 
 pub type BinaryTreeNodeRef = Rc<RefCell<BinaryTreeNode>>;
 pub type BinaryTreeNodeWeakRef = Weak<RefCell<BinaryTreeNode>>;
+
 impl PartialEq for BinaryTreeNode {
     fn eq(&self, other: &Self) -> bool {
         self.id == other.id
