@@ -82,7 +82,7 @@ impl BinarySearchTree {
             prev = cur;
             prev_valid = true;
 
-            if let Some(parent) = node.parent.as_ref() {
+            if let Some(parent) = node.parent.upgrade() {
                 cur = parent.borrow().data;
                 if cur <= prev {
                     return false;

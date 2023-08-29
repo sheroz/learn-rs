@@ -2,21 +2,26 @@
 
 use std::cell::RefCell;
 use std::collections::VecDeque;
-use std::rc::Rc;
+use std::rc::{Rc, Weak};
 use uuid::Uuid;
 
-#[derive(PartialEq, Debug)]
+#[derive(Debug)]
 pub struct BinaryTreeNode {
     pub id: Uuid,
     pub name: String,
     pub data: u32,
-    pub parent: Option<BinaryTreeNodeRef>,
+    pub parent: BinaryTreeNodeWeakRef,
     pub left: Option<BinaryTreeNodeRef>,
     pub right: Option<BinaryTreeNodeRef>,
 }
 
 pub type BinaryTreeNodeRef = Rc<RefCell<BinaryTreeNode>>;
-
+pub type BinaryTreeNodeWeakRef = Weak<RefCell<BinaryTreeNode>>;
+impl PartialEq for BinaryTreeNode {
+    fn eq(&self, other: &Self) -> bool {
+        self.id == other.id
+    }
+}
 pub struct BinaryTree {
     pub root: Option<BinaryTreeNodeRef>,
 }
@@ -31,7 +36,7 @@ impl BinaryTree {
             id: Uuid::new_v4(),
             name: "".to_string(),
             data: 0,
-            parent: None,
+            parent: Weak::new(),
             left: None,
             right: None,
         }))
@@ -104,7 +109,6 @@ impl BinaryTree {
 
         let mut leftdone = false;
         while let Some(root_ref) = root.clone().as_ref() {
-
             let mut current_ref = root_ref.clone();
             if !leftdone {
                 if let Some(leftmost) = Self::leftmost(current_ref.clone()) {
@@ -122,18 +126,17 @@ impl BinaryTree {
             if let Some(right) = root_node.right.clone() {
                 leftdone = false;
                 root = Some(right.clone());
-            } else if let Some(parent) = root_node.parent.clone() {
+            } else if let Some(parent) = root_node.parent.upgrade() {
                 let mut root_parent = Some(parent.clone());
                 let mut parent_right = parent.clone().borrow().right.clone();
                 while root_parent.is_some() {
-                    
                     if !Self::is_same(&root, &parent_right) {
                         break;
                     }
 
                     root = root_parent.clone();
                     root_parent = if root.is_some() {
-                        root.clone().unwrap().borrow().parent.clone()
+                        root.clone().unwrap().borrow().parent.upgrade()
                     } else {
                         None
                     };
@@ -159,10 +162,9 @@ impl BinaryTree {
     fn get_node_id(v: &Option<BinaryTreeNodeRef>) -> Option<Uuid> {
         match v {
             Some(node) => Some(node.borrow().id),
-            None => None
-        } 
+            None => None,
+        }
     }
-
 }
 
 #[cfg(test)]
@@ -213,7 +215,7 @@ pub mod test_utils {
             if n != 0 {
                 let parent_position = if n % 2 != 0 { 1 } else { 2 };
                 let parent = (n - parent_position) / 2;
-                nodes[n].borrow_mut().parent = Some(nodes[parent].clone());
+                nodes[n].borrow_mut().parent = Rc::downgrade(&nodes[parent]);
             }
 
             let left_child = n * 2 + 1;
@@ -265,63 +267,78 @@ mod tests {
         assert_eq!(root.borrow().name, "n0".to_string());
 
         let n0 = root.borrow();
-        assert_eq!(n0.parent, None);
+        assert_eq!(n0.parent.upgrade(), None);
 
         let n1 = n0.left.as_ref().unwrap().borrow();
         assert_eq!(n1.name, "n1".to_string());
-        assert_eq!(n1.parent.as_ref().unwrap().borrow().name, "n0".to_string());
+        assert_eq!(n1.parent.upgrade().unwrap().borrow().name, "n0".to_string());
 
         let n2 = n0.right.as_ref().unwrap().borrow();
         assert_eq!(n2.name, "n2".to_string());
-        assert_eq!(n2.parent.as_ref().unwrap().borrow().name, "n0".to_string());
+        assert_eq!(n2.parent.upgrade().unwrap().borrow().name, "n0".to_string());
 
         let n3 = n1.left.as_ref().unwrap().borrow();
         assert_eq!(n3.name, "n3".to_string());
-        assert_eq!(n3.parent.as_ref().unwrap().borrow().name, "n1".to_string());
+        assert_eq!(n3.parent.upgrade().unwrap().borrow().name, "n1".to_string());
 
         let n4 = n1.right.as_ref().unwrap().borrow();
         assert_eq!(n4.name, "n4".to_string());
-        assert_eq!(n4.parent.as_ref().unwrap().borrow().name, "n1".to_string());
+        assert_eq!(n4.parent.upgrade().unwrap().borrow().name, "n1".to_string());
 
         let n5 = n2.left.as_ref().unwrap().borrow();
         assert_eq!(n5.name, "n5".to_string());
-        assert_eq!(n5.parent.as_ref().unwrap().borrow().name, "n2".to_string());
+        assert_eq!(n5.parent.upgrade().unwrap().borrow().name, "n2".to_string());
 
         let n6 = n2.right.as_ref().unwrap().borrow();
         assert_eq!(n6.name, "n6".to_string());
-        assert_eq!(n6.parent.as_ref().unwrap().borrow().name, "n2".to_string());
+        assert_eq!(n6.parent.upgrade().unwrap().borrow().name, "n2".to_string());
 
         let n7 = n3.left.as_ref().unwrap().borrow();
         assert_eq!(n7.name, "n7".to_string());
-        assert_eq!(n7.parent.as_ref().unwrap().borrow().name, "n3".to_string());
+        assert_eq!(n7.parent.upgrade().unwrap().borrow().name, "n3".to_string());
 
         let n8 = n3.right.as_ref().unwrap().borrow();
         assert_eq!(n8.name, "n8".to_string());
-        assert_eq!(n8.parent.as_ref().unwrap().borrow().name, "n3".to_string());
+        assert_eq!(n8.parent.upgrade().unwrap().borrow().name, "n3".to_string());
 
         let n9 = n4.left.as_ref().unwrap().borrow();
         assert_eq!(n9.name, "n9".to_string());
-        assert_eq!(n9.parent.as_ref().unwrap().borrow().name, "n4".to_string());
+        assert_eq!(n9.parent.upgrade().unwrap().borrow().name, "n4".to_string());
 
         let n10 = n4.right.as_ref().unwrap().borrow();
         assert_eq!(n10.name, "n10".to_string());
-        assert_eq!(n10.parent.as_ref().unwrap().borrow().name, "n4".to_string());
+        assert_eq!(
+            n10.parent.upgrade().unwrap().borrow().name,
+            "n4".to_string()
+        );
 
         let n11 = n5.left.as_ref().unwrap().borrow();
         assert_eq!(n11.name, "n11".to_string());
-        assert_eq!(n11.parent.as_ref().unwrap().borrow().name, "n5".to_string());
+        assert_eq!(
+            n11.parent.upgrade().unwrap().borrow().name,
+            "n5".to_string()
+        );
 
         let n12 = n5.right.as_ref().unwrap().borrow();
         assert_eq!(n12.name, "n12".to_string());
-        assert_eq!(n12.parent.as_ref().unwrap().borrow().name, "n5".to_string());
+        assert_eq!(
+            n12.parent.upgrade().unwrap().borrow().name,
+            "n5".to_string()
+        );
 
         let n13 = n6.left.as_ref().unwrap().borrow();
         assert_eq!(n13.name, "n13".to_string());
-        assert_eq!(n13.parent.as_ref().unwrap().borrow().name, "n6".to_string());
+        assert_eq!(
+            n13.parent.upgrade().unwrap().borrow().name,
+            "n6".to_string()
+        );
 
         let n14 = n6.right.as_ref().unwrap().borrow();
         assert_eq!(n14.name, "n14".to_string());
-        assert_eq!(n14.parent.as_ref().unwrap().borrow().name, "n6".to_string());
+        assert_eq!(
+            n14.parent.upgrade().unwrap().borrow().name,
+            "n6".to_string()
+        );
     }
 
     #[test]
@@ -335,12 +352,12 @@ mod tests {
             let node = node_ref.borrow();
             assert_eq!(node.name, format!("n{index}"));
             if index == 0 {
-                assert_eq!(node.parent.as_ref(), None);
+                assert_eq!(node.parent.upgrade(), None);
             } else {
                 let parent_position = if index % 2 != 0 { 1 } else { 2 };
                 let parent = (index - parent_position) / 2;
                 assert_eq!(
-                    node.parent.as_ref().unwrap().borrow().name,
+                    node.parent.upgrade().unwrap().borrow().name,
                     format!("n{}", parent)
                 );
             }
@@ -401,9 +418,21 @@ mod tests {
             ("n14", None),
         ]);
 
+
         let root = populate_balanced_binary_tree();
-        let flatten = BinaryTree::flatten_top_down(root);
-        for node_ref in flatten {
+        let flatten_nodes = BinaryTree::flatten_top_down(root);
+        assert_eq!(flatten_nodes.len(), expected.len());
+        let mut flatten_names: Vec<_> = flatten_nodes
+            .iter()
+            .map(|n| n.borrow().name.clone())
+            .collect();
+
+        let mut expected_names = expected.iter().map(|v| v.0.to_string()).collect::<Vec<_>>();
+        flatten_names.sort();
+        expected_names.sort();
+        assert_eq!(flatten_names, expected_names);
+
+        for node_ref in flatten_nodes {
             let node = node_ref.borrow();
             let expected = expected[node.name.as_str()];
             let leftmost = BinaryTree::leftmost(node_ref.clone());
@@ -426,22 +455,15 @@ mod tests {
             "n7", "n3", "n8", "n1", "n9", "n4", "n10", "n0", "n11", "n5", "n12", "n2", "n13", "n6",
             "n14",
         ];
-        println!("expected: {:?}", expected);
 
         let root = populate_balanced_binary_tree();
         let flatten_nodes: Vec<_> = BinaryTree::flatten_left_to_right(root.clone());
         assert_eq!(flatten_nodes.len(), expected.len());
 
-        let flatten: Vec<_> = flatten_nodes
+        let flatten_names: Vec<_> = flatten_nodes
             .iter()
             .map(|n| n.borrow().name.clone())
             .collect();
-        // println!("flatten: {:?}", flatten);
-        assert_eq!(flatten.len(), expected.len());
-
-
-        for (index, node) in flatten.iter().enumerate() {
-            assert_eq!(node, expected[index]);
-        }
+        assert_eq!(flatten_names, expected);
     }
 }
