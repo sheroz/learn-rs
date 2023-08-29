@@ -23,6 +23,76 @@ impl BinarySearchTree {
         BinarySearchTree { tree: BinaryTree::with_root(root) }
     }
 
+    pub fn insert_recursion() {
+        /*
+        public TreeNode Insert(TreeNode root, int value)
+            {
+                if (root == null)
+                {
+                    return new TreeNode(value);
+                }
+
+                if (root.Value > value)
+                {
+                    root.Left = Insert(root.Left, value);
+                }
+                else
+                {
+                    root.Right = Insert(root.Right, value);
+                }
+
+                return root;
+            }
+         */
+    }
+    pub fn insert_iterative(root: BinaryTreeNodeRef, new_node: BinaryTreeNodeRef) {
+        /*
+        def insert(root, key): 
+            # Create a new Node containing
+            # the new element
+            newnode = newNode(key)
+        
+            # Pointer to start traversing from root
+            # and traverses downward path to search
+            # where the new node to be inserted
+            x = root
+        
+            # Pointer y maintains the trailing
+            # pointer of x
+            y = None
+        
+            while (x != None):
+                y = x
+                if (key < x.key):
+                    x = x.left
+                else:
+                    x = x.right
+        
+            # If the root is None i.e the tree is
+            # empty. The new node is the root node
+            if (y == None):
+                y = newnode
+        
+            # If the new key is less than the leaf node key
+            # Assign the new node to be its left child
+            elif (key < y.key):
+                y.left = newnode
+        
+            # else assign the new node its
+            # right child
+            else:
+                y.right = newnode
+        
+            # Returns the pointer where the
+            # new node is inserted
+            return y 
+         */
+    }
+
+    pub fn delete() {
+
+    }
+
     pub fn is_binary_search_tree(node: BinaryTreeNodeRef) -> bool {
         BinarySearchTree::is_binary_search_tree_v3(node)
     }

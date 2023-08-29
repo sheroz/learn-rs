@@ -1,6 +1,7 @@
 // https://www.programiz.com/dsa/trees
 
 use std::cell::RefCell;
+use std::cmp::Ordering;
 use std::collections::VecDeque;
 use std::rc::{Rc, Weak};
 use uuid::Uuid;
@@ -18,11 +19,26 @@ pub struct BinaryTreeNode {
 pub type BinaryTreeNodeRef = Rc<RefCell<BinaryTreeNode>>;
 pub type BinaryTreeNodeWeakRef = Weak<RefCell<BinaryTreeNode>>;
 
+impl Ord for BinaryTreeNode {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.data.cmp(&other.data)
+    }
+}
+
+impl PartialOrd for BinaryTreeNode {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
 impl PartialEq for BinaryTreeNode {
     fn eq(&self, other: &Self) -> bool {
         self.id == other.id
     }
 }
+
+impl Eq for BinaryTreeNode { }
+
 pub struct BinaryTree {
     pub root: Option<BinaryTreeNodeRef>,
 }
@@ -42,6 +58,8 @@ impl BinaryTree {
             right: None,
         }))
     }
+
+    pub fn insert() {}
 
     pub fn count(&self) -> usize {
         let mut count = 0;
@@ -419,7 +437,6 @@ mod tests {
             ("n14", None),
         ]);
 
-
         let root = populate_balanced_binary_tree();
         let flatten_nodes = BinaryTree::flatten_top_down(root);
         assert_eq!(flatten_nodes.len(), expected.len());
@@ -432,21 +449,22 @@ mod tests {
         flatten_names.sort();
         expected_names.sort();
         assert_eq!(flatten_names, expected_names);
-
+        
         for node_ref in flatten_nodes {
             let node = node_ref.borrow();
-            let expected = expected[node.name.as_str()];
             let leftmost = BinaryTree::leftmost(node_ref.clone());
             let name;
-            let found = match leftmost {
-                Some(left_ref) => {
-                    let node = left_ref.borrow();
-                    name = node.name.clone();
-                    Some(name.as_str())
+            assert_eq!(
+                expected[node.name.as_str()],
+                match leftmost {
+                    Some(left_ref) => {
+                        let node = left_ref.borrow();
+                        name = node.name.clone();
+                        Some(name.as_str())
+                    }
+                    None => None,
                 }
-                None => None,
-            };
-            assert_eq!(expected, found);
+            );
         }
     }
 
