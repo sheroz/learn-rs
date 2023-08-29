@@ -107,7 +107,7 @@ impl BinaryTree {
 
             let mut current_ref = root_ref.clone();
             if !leftdone {
-                if let Some(leftmost) = BinaryTree::leftmost(current_ref.clone()) {
+                if let Some(leftmost) = Self::leftmost(current_ref.clone()) {
                     current_ref = leftmost.clone();
                 }
             }
@@ -126,8 +126,8 @@ impl BinaryTree {
                 let mut root_parent = Some(parent.clone());
                 let mut parent_right = parent.clone().borrow().right.clone();
                 while root_parent.is_some() {
-
-                    if BinaryTree::get_id(root) != BinaryTree::get_id(parent_right) {
+                    
+                    if !Self::is_same(&root, &parent_right) {
                         break;
                     }
 
@@ -152,7 +152,11 @@ impl BinaryTree {
         nodes.into()
     }
 
-    fn get_id(v: Option<BinaryTreeNodeRef>) -> Option<Uuid> {
+    fn is_same(v1: &Option<BinaryTreeNodeRef>, v2: &Option<BinaryTreeNodeRef>) -> bool {
+        Self::get_node_id(v1) == Self::get_node_id(v2)
+    }
+
+    fn get_node_id(v: &Option<BinaryTreeNodeRef>) -> Option<Uuid> {
         match v {
             Some(node) => Some(node.borrow().id),
             None => None
