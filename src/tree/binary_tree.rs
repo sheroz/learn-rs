@@ -59,8 +59,6 @@ impl BinaryTree {
         }))
     }
 
-    pub fn insert() {}
-
     pub fn count(node: &BinaryTreeNodeRef) -> usize {
         let mut count = 0;
         let mut queue = VecDeque::new();
@@ -95,7 +93,14 @@ impl BinaryTree {
         }
         nodes
     }
-
+    pub fn get_root(node_ref: &BinaryTreeNodeRef) -> BinaryTreeNodeRef {
+        let mut start = node_ref.clone();
+        while let Some(parent) = start.clone().borrow().parent.upgrade() {
+            start = parent.clone();
+        }
+        start
+    }
+    
     pub fn leftmost(node_ref: BinaryTreeNodeRef) -> Option<BinaryTreeNodeRef> {
         let mut leftmost = None;
         let mut current = node_ref;
@@ -158,6 +163,7 @@ impl BinaryTree {
                     } else {
                         None
                     };
+
                     parent_right = if root_parent.is_some() {
                         root_parent.clone().unwrap().borrow().right.clone()
                     } else {
@@ -412,12 +418,16 @@ mod tests {
     fn flatten_top_down() {
         let root = populate_balanced_binary_search_tree();
 
-        let flatten = BinaryTree::flatten_top_down(root);
-        assert_eq!(flatten.len(), NODES_COUNT);
+        let flatten_nodes = BinaryTree::flatten_top_down(root);
+        assert_eq!(flatten_nodes.len(), NODES_COUNT);
 
-        for (index, node_ref) in flatten.iter().enumerate() {
-            assert_eq!(node_ref.borrow().name, format!("n{index}"));
-        }
+        let flatten_names: Vec<_> = flatten_nodes
+        .iter()
+        .map(|n| n.borrow().name.clone())
+        .collect();
+
+        let expected_names = (0..NODES_COUNT).map(|n| format!("n{}",n)).collect::<Vec<_>>();
+        assert_eq!(flatten_names, expected_names);
     }
 
     #[test]

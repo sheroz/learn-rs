@@ -1,18 +1,7 @@
 // https://www.programiz.com/dsa/binary-search-tree
 
-/*
-A binary search tree (BST) is a node-based binary tree data structure that has the following properties.
-
-1. The left subtree of a node contains only nodes with keys less than the node’s key.
-2. The right subtree of a node contains only nodes with keys greater than the node’s key.
-3. Both the left and right subtrees must also be binary search trees.
-4. Each node (item in the tree) has a distinct key.
-
-https://www.geeksforgeeks.org/a-program-to-check-if-a-binary-tree-is-bst-or-not/
-*/
-
 use crate::tree::binary_tree::*;
-use std::collections::{HashSet, VecDeque};
+use std::{collections::{HashSet, VecDeque}, rc::Rc};
 
 pub struct BinarySearchTree {
     pub tree: BinaryTree,
@@ -33,12 +22,13 @@ impl BinarySearchTree {
             None => return Some(new_node_ref),
             Some(node_ref) => {
                 if node_ref.borrow().data > new_node_ref.borrow().data {
-                    let left = node_ref.clone().borrow().left.clone(); 
-                    node_ref.borrow_mut().left = Self::insert_recursion(left, new_node_ref);
+                    let left = node_ref.clone().borrow().left.clone();
+                    node_ref.borrow_mut().left = Self::insert_recursion(left, new_node_ref.clone());
                 } else {
                     let right = node_ref.clone().borrow().right.clone(); 
-                    node_ref.borrow_mut().right = Self::insert_recursion(right, new_node_ref);
+                    node_ref.borrow_mut().right = Self::insert_recursion(right, new_node_ref.clone());
                 }
+                // new_node_ref.borrow_mut().parent = Rc::downgrade(&node_ref);
                 return Some(node_ref);
             }
         }
@@ -61,21 +51,21 @@ impl BinarySearchTree {
         }
 
         if insert_node.is_none() {
-            return Some(new_node.clone());
+            insert_node = Some(new_node.clone());
         }
         else {
-            let mut node = insert_node.as_ref().unwrap().borrow_mut();
+            let node_ref = insert_node.as_ref().unwrap();
+            let mut node = node_ref.borrow_mut();
             if new_node.borrow().data < node.data {
                 node.left = Some(new_node.clone());
             }
             else {
                 node.right = Some(new_node.clone());
             }
+            new_node.borrow_mut().parent = Rc::downgrade(&node_ref.clone());
         }
-        root
+        insert_node
     }
-
-    pub fn delete() {}
 
     pub fn is_binary_search_tree(node: &BinaryTreeNodeRef) -> bool {
         BinarySearchTree::is_binary_search_tree_v3(node)
@@ -213,6 +203,8 @@ mod tests {
         }
         assert!(root.is_some());
         let root_node = root.unwrap();
+        println!("{:#?}", root_node);
+
         assert_eq!(BinaryTree::count(&root_node), list.len());
 
         assert!(BinarySearchTree::is_binary_search_tree(&root_node));
@@ -224,17 +216,17 @@ mod tests {
     fn insert_iterative() {
         let list= populate_node_list();
         
-        let mut root = None;
+        let mut node = None;
         for node_ref in &list {
-            root = BinarySearchTree::insert_iterative(root, node_ref.clone());
+            node = BinarySearchTree::insert_iterative(node, node_ref.clone());
         }
-        assert!(root.is_some());
-        let root_node = root.unwrap();
-        assert_eq!(BinaryTree::count(&root_node), list.len());
+        let root = BinaryTree::get_root(&node.unwrap());
+        println!("{:#?}",root);
+        assert_eq!(BinaryTree::count(&root), list.len());
 
-        assert!(BinarySearchTree::is_binary_search_tree(&root_node));
+        assert!(BinarySearchTree::is_binary_search_tree(&root));
 
-        assert!(BinarySearchTree::is_binary_search_tree_v2(&root_node));
+        assert!(BinarySearchTree::is_binary_search_tree_v2(&root));
     }
 
     #[test]
