@@ -272,6 +272,18 @@ pub mod test_utils {
         });
         root
     }
+
+    pub fn populate_node_ref_list() -> Vec<BinaryTreeNodeRef> {
+        let root = populate_balanced_binary_tree();
+        let flatten = BinaryTree::flatten_top_down(root);
+        for node_ref in &flatten {
+            node_ref.borrow_mut().parent = Weak::new();
+            node_ref.borrow_mut().left = None;
+            node_ref.borrow_mut().right = None;
+        }
+        flatten
+    }
+
 }
 
 #[cfg(test)]
@@ -395,6 +407,17 @@ mod tests {
                 );
             }
         }
+    }
+
+    #[test]
+    fn populate_node_ref_list_test() {
+        let list = populate_node_ref_list();
+        assert_eq!(list.len(), NODES_COUNT);
+        let names: Vec<_> = list.iter().map(|v| v.borrow().name.clone()).collect();
+        (0..NODES_COUNT).for_each(|n|{
+            let name = format!("n{}",n);
+            assert!(names.contains(&name));
+        })
     }
 
     #[test]
