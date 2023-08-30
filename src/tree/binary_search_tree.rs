@@ -44,48 +44,35 @@ impl BinarySearchTree {
         }
     }
 
-    pub fn insert_iterative(root: BinaryTreeNodeRef, new_node: BinaryTreeNodeRef) {
-        /*
-        def insert(root, key):
-            # Create a new Node containing
-            # the new element
-            newnode = newNode(key)
+    pub fn insert_iterative(root: Option<BinaryTreeNodeRef>, new_node: BinaryTreeNodeRef) -> Option<BinaryTreeNodeRef> {
 
-            # Pointer to start traversing from root
-            # and traverses downward path to search
-            # where the new node to be inserted
-            x = root
+        let mut start = root.clone();
+        let mut inserted = None;
 
-            # Pointer y maintains the trailing
-            # pointer of x
-            y = None
+        while start.is_some() {
+            inserted = start.clone();
+            let node = inserted.as_ref().unwrap().borrow();
+            if new_node.borrow().data < node.data {
+                start = node.left.clone();
+            }
+            else {
+                start = node.right.clone();
+            }
+        }
 
-            while (x != None):
-                y = x
-                if (key < x.key):
-                    x = x.left
-                else:
-                    x = x.right
-
-            # If the root is None i.e the tree is
-            # empty. The new node is the root node
-            if (y == None):
-                y = newnode
-
-            # If the new key is less than the leaf node key
-            # Assign the new node to be its left child
-            elif (key < y.key):
-                y.left = newnode
-
-            # else assign the new node its
-            # right child
-            else:
-                y.right = newnode
-
-            # Returns the pointer where the
-            # new node is inserted
-            return y
-         */
+        if inserted.is_none() {
+            return Some(new_node.clone());
+        }
+        else {
+            let mut node = inserted.as_ref().unwrap().borrow_mut();
+            if new_node.borrow().data < node.data {
+                node.left = Some(new_node.clone());
+            }
+            else {
+                node.right = Some(new_node.clone());
+            }
+        }
+        root
     }
 
     pub fn delete() {}
@@ -213,14 +200,12 @@ impl BinarySearchTree {
 
 #[cfg(test)]
 mod tests {
-    use std::rc::Weak;
-
     use super::*;
     use crate::tree::binary_tree::test_utils::*;
     
     #[test]
-    fn insert() {
-        let list= populate_node_ref_list();
+    fn insert_recursion() {
+        let list= populate_node_list();
         
         let mut root = None;
         for node_ref in &list {
@@ -228,13 +213,28 @@ mod tests {
         }
         assert!(root.is_some());
         let root_node = root.unwrap();
+        assert_eq!(BinaryTree::count(&root_node), list.len());
+
         assert!(BinarySearchTree::is_binary_search_tree(&root_node));
 
-        let flatten = BinaryTree::flatten_top_down(root_node.clone());
-        assert_eq!(flatten.len(), list.len());
+        assert!(BinarySearchTree::is_binary_search_tree_v2(&root_node));
+    }
 
-        let flatten = BinaryTree::flatten_left_to_right(root_node);
-        assert_eq!(flatten.len(), list.len());
+    #[test]
+    fn insert_iterative() {
+        let list= populate_node_list();
+        
+        let mut root = None;
+        for node_ref in &list {
+            root = BinarySearchTree::insert_iterative(root, node_ref.clone());
+        }
+        assert!(root.is_some());
+        let root_node = root.unwrap();
+        assert_eq!(BinaryTree::count(&root_node), list.len());
+
+        assert!(BinarySearchTree::is_binary_search_tree(&root_node));
+
+        assert!(BinarySearchTree::is_binary_search_tree_v2(&root_node));
     }
 
     #[test]

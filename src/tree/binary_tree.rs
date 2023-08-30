@@ -61,10 +61,9 @@ impl BinaryTree {
 
     pub fn insert() {}
 
-    pub fn count(&self) -> usize {
+    pub fn count(node: &BinaryTreeNodeRef) -> usize {
         let mut count = 0;
         let mut queue = VecDeque::new();
-        let node = self.root.as_ref().unwrap();
         queue.push_back(node.clone());
         while let Some(node) = queue.pop_front() {
             count += 1;
@@ -192,6 +191,17 @@ pub mod test_utils {
     use super::*;
     pub const NODES_COUNT: usize = 15;
 
+    pub fn populate_node_list() -> Vec<BinaryTreeNodeRef> {
+        let mut list = Vec::<BinaryTreeNodeRef>::with_capacity(NODES_COUNT);
+        (0..NODES_COUNT).for_each(|n| {
+            let node_ref = BinaryTree::new_node();
+            node_ref.borrow_mut().name = format!("n{}", n);
+            node_ref.borrow_mut().data = n as u32;
+            list.push(node_ref)
+        });
+        list
+    }
+
     pub fn populate_balanced_binary_tree() -> BinaryTreeNodeRef {
         /*
         node names:
@@ -213,23 +223,7 @@ pub mod test_utils {
         is_rignt = (n % 2) == 0
         */
 
-        let mut nodes = Vec::<BinaryTreeNodeRef>::with_capacity(NODES_COUNT);
-        (0..NODES_COUNT).for_each(|n| {
-            let node_ref = BinaryTree::new_node();
-
-            // a new scope needed to drop the node variable before pushing the node_ref into vector
-            // or
-            // it requires writing:
-            // node_ref.borrow_mut().name = format!("n{}", n);
-            // node_ref.borrow_mut().value = n as u32;
-            {
-                let mut node = node_ref.borrow_mut();
-                node.name = format!("n{}", n);
-                node.data = n as u32;
-            }
-            nodes.push(node_ref)
-        });
-
+        let nodes = populate_node_list();
         (0..NODES_COUNT).for_each(|n| {
             if n != 0 {
                 let parent_position = if n % 2 != 0 { 1 } else { 2 };
@@ -272,18 +266,6 @@ pub mod test_utils {
         });
         root
     }
-
-    pub fn populate_node_ref_list() -> Vec<BinaryTreeNodeRef> {
-        let root = populate_balanced_binary_tree();
-        let flatten = BinaryTree::flatten_top_down(root);
-        for node_ref in &flatten {
-            node_ref.borrow_mut().parent = Weak::new();
-            node_ref.borrow_mut().left = None;
-            node_ref.borrow_mut().right = None;
-        }
-        flatten
-    }
-
 }
 
 #[cfg(test)]
@@ -293,7 +275,18 @@ mod tests {
     use crate::tree::binary_tree::{test_utils::*, BinaryTree};
 
     #[test]
-    fn populate_test() {
+    fn populate_node_ref_list_test() {
+        let list = populate_node_list();
+        assert_eq!(list.len(), NODES_COUNT);
+        let names: Vec<_> = list.iter().map(|v| v.borrow().name.clone()).collect();
+        (0..NODES_COUNT).for_each(|n|{
+            let name = format!("n{}",n);
+            assert!(names.contains(&name));
+        })
+    }
+
+    #[test]
+    fn binary_tree_populate_test1() {
         let root = populate_balanced_binary_tree();
         assert_eq!(root.borrow().name, "n0".to_string());
 
@@ -373,7 +366,7 @@ mod tests {
     }
 
     #[test]
-    fn populate_test2() {
+    fn binary_tree_populate_test2() {
         let root = populate_balanced_binary_tree();
         let nodes = BinaryTree::flatten_top_down(root);
         let nodes_count = nodes.len();
@@ -410,22 +403,9 @@ mod tests {
     }
 
     #[test]
-    fn populate_node_ref_list_test() {
-        let list = populate_node_ref_list();
-        assert_eq!(list.len(), NODES_COUNT);
-        let names: Vec<_> = list.iter().map(|v| v.borrow().name.clone()).collect();
-        (0..NODES_COUNT).for_each(|n|{
-            let name = format!("n{}",n);
-            assert!(names.contains(&name));
-        })
-    }
-
-    #[test]
     fn count() {
-        let root = populate_balanced_binary_tree();
-        let tree = BinaryTree::with_root(root);
-        assert!(tree.root.is_some());
-        assert_eq!(tree.count(), NODES_COUNT);
+        let node = populate_balanced_binary_tree();
+        assert_eq!(BinaryTree::count(&node), NODES_COUNT);
     }
 
     #[test]
