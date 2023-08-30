@@ -47,11 +47,11 @@ impl BinarySearchTree {
     pub fn insert_iterative(root: Option<BinaryTreeNodeRef>, new_node: BinaryTreeNodeRef) -> Option<BinaryTreeNodeRef> {
 
         let mut start = root.clone();
-        let mut inserted = None;
+        let mut insert_node = None;
 
         while start.is_some() {
-            inserted = start.clone();
-            let node = inserted.as_ref().unwrap().borrow();
+            insert_node = start.clone();
+            let node = insert_node.as_ref().unwrap().borrow();
             if new_node.borrow().data < node.data {
                 start = node.left.clone();
             }
@@ -60,11 +60,11 @@ impl BinarySearchTree {
             }
         }
 
-        if inserted.is_none() {
+        if insert_node.is_none() {
             return Some(new_node.clone());
         }
         else {
-            let mut node = inserted.as_ref().unwrap().borrow_mut();
+            let mut node = insert_node.as_ref().unwrap().borrow_mut();
             if new_node.borrow().data < node.data {
                 node.left = Some(new_node.clone());
             }
