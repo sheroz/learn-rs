@@ -18,17 +18,26 @@ impl BinarySearchTree {
         node: Option<BinaryTreeNodeRef>,
         new_node_ref: BinaryTreeNodeRef,
     ) -> Option<BinaryTreeNodeRef> {
+        let node = Self::insert_child_recursion(node, new_node_ref.clone());
+        if let Some(node_ref) =  node.as_ref(){
+            BinaryTree::assign_parents(node_ref);
+        }
+        node
+    }
+
+    fn insert_child_recursion(node: Option<BinaryTreeNodeRef>,
+        new_node_ref: BinaryTreeNodeRef,
+    ) -> Option<BinaryTreeNodeRef> {
         match node {
             None => return Some(new_node_ref),
             Some(node_ref) => {
                 if node_ref.borrow().data > new_node_ref.borrow().data {
                     let left = node_ref.clone().borrow().left.clone();
-                    node_ref.borrow_mut().left = Self::insert_recursion(left, new_node_ref.clone());
+                    node_ref.borrow_mut().left = Self::insert_child_recursion(left, new_node_ref.clone());
                 } else {
                     let right = node_ref.clone().borrow().right.clone(); 
-                    node_ref.borrow_mut().right = Self::insert_recursion(right, new_node_ref.clone());
+                    node_ref.borrow_mut().right = Self::insert_child_recursion(right, new_node_ref.clone());
                 }
-                // new_node_ref.borrow_mut().parent = Rc::downgrade(&node_ref);
                 return Some(node_ref);
             }
         }
@@ -103,41 +112,58 @@ impl BinarySearchTree {
     }
 
     pub fn is_binary_search_tree_v3(node: &BinaryTreeNodeRef) -> bool {
-        let mut queue = VecDeque::new();
+        // this is an optimized version of v2
+        let mut visited = None;
 
-        let mut prev = 0;
-        let mut prev_valid = false;
-
-        if let Some(leftmost) = BinaryTree::leftmost(node.clone()) {
-            queue.push_back(leftmost);
-        } else {
-            queue.push_back(node.clone());
-        }
-
-        while let Some(node_ref) = queue.pop_front() {
-            let node = node_ref.borrow();
-
-            let mut cur = node.data;
-            if prev_valid && cur <= prev {
-                return false;
+        let mut root = Some(node.clone());
+        let mut leftdone = false;
+        while let Some(root_ref) = root.as_ref() {
+            let mut current_ref = root_ref.clone();
+            if !leftdone {
+                if let Some(leftmost) = BinaryTree::leftmost(&current_ref) {
+                    current_ref = leftmost.clone();
+                }
             }
-            prev = cur;
-            prev_valid = true;
 
-            if let Some(parent) = node.parent.upgrade() {
-                cur = parent.borrow().data;
-                if cur <= prev {
+            if let Some(node) = visited {
+                if current_ref <= node {
                     return false;
                 }
-                prev = cur;
             }
+            visited = Some(current_ref.clone());
 
-            if let Some(right) = node.right.as_ref() {
-                if let Some(leftmost) = BinaryTree::leftmost(right.clone()) {
-                    queue.push_back(leftmost);
-                } else {
-                    queue.push_back(right.clone());
+            root = Some(current_ref.clone());
+            leftdone = true;
+
+            let root_node = current_ref.borrow();
+
+            if let Some(right) = root_node.right.as_ref() {
+                leftdone = false;
+                root = Some(right.clone());
+            } else if let Some(parent) = root_node.parent.upgrade() {
+                let mut root_parent = Some(parent.clone());
+                let mut parent_right = parent.clone().borrow().right.clone();
+                while root_parent.is_some() {
+                    if !BinaryTree::is_same(&root, &parent_right) {
+                        break;
+                    }
+
+                    root = root_parent;
+                    root_parent = if root.is_some() {
+                        root.clone().unwrap().borrow().parent.upgrade()
+                    } else {
+                        None
+                    };
+
+                    parent_right = if root_parent.is_some() {
+                        root_parent.clone().unwrap().borrow().right.clone()
+                    } else {
+                        None
+                    };
                 }
+                root = root_parent;
+            } else {
+                break;
             }
         }
         true

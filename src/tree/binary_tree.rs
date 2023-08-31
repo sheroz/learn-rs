@@ -99,22 +99,21 @@ impl BinaryTree {
         let mut nodes = VecDeque::new();
 
         let mut leftdone = false;
-        while let Some(root_ref) = root.clone().as_ref() {
+        while let Some(root_ref) = root.as_ref() {
             let mut current_ref = root_ref.clone();
             if !leftdone {
-                if let Some(leftmost) = Self::leftmost(current_ref.clone()) {
+                if let Some(leftmost) = Self::leftmost(&current_ref) {
                     current_ref = leftmost.clone();
                 }
             }
 
+            leftdone = true;
             nodes.push_back(current_ref.clone());
             root = Some(current_ref.clone());
 
-            leftdone = true;
-
             let root_node = current_ref.borrow();
 
-            if let Some(right) = root_node.right.clone() {
+            if let Some(right) = root_node.right.as_ref() {
                 leftdone = false;
                 root = Some(right.clone());
             } else if let Some(parent) = root_node.parent.upgrade() {
@@ -125,7 +124,7 @@ impl BinaryTree {
                         break;
                     }
 
-                    root = root_parent.clone();
+                    root = root_parent;
                     root_parent = if root.is_some() {
                         root.clone().unwrap().borrow().parent.upgrade()
                     } else {
@@ -155,22 +154,38 @@ impl BinaryTree {
         start
     }
 
-    pub fn leftmost(node_ref: BinaryTreeNodeRef) -> Option<BinaryTreeNodeRef> {
+    pub fn assign_parents(node: &BinaryTreeNodeRef) {
+        let mut queue = VecDeque::new();
+        queue.push_back(node.clone());
+        while let Some(node) = queue.pop_front() {
+            let n = node.borrow();
+            if let Some(left) = n.left.as_ref() {
+                left.borrow_mut().parent = Rc::downgrade(&node);
+                queue.push_back(left.clone());
+            }
+            if let Some(right) = n.right.as_ref() {
+                right.borrow_mut().parent = Rc::downgrade(&node);
+                queue.push_back(right.clone());
+            }
+        }  
+    }
+
+    pub fn leftmost(node_ref: &BinaryTreeNodeRef) -> Option<BinaryTreeNodeRef> {
         let mut leftmost = None;
-        let mut current = node_ref;
+        let mut current = node_ref.clone();
         loop {
-            let node_ref = current;
-            let node = node_ref.borrow();
+            let current_ref = current;
+            let node = current_ref.borrow();
             if let Some(left) = node.left.as_ref() {
                 current = left.clone();
-                leftmost = Some(left.clone());
+                leftmost = Some(current.clone());
             } else {
                 return leftmost;
             }
         }
     }
 
-    fn is_same(v1: &Option<BinaryTreeNodeRef>, v2: &Option<BinaryTreeNodeRef>) -> bool {
+    pub fn is_same(v1: &Option<BinaryTreeNodeRef>, v2: &Option<BinaryTreeNodeRef>) -> bool {
         Self::get_node_id(v1) == Self::get_node_id(v2)
     }
 
@@ -222,23 +237,16 @@ pub mod test_utils {
 
         let nodes = populate_node_list();
         (0..NODES_COUNT).for_each(|n| {
-            if n != 0 {
-                let parent_position = if n % 2 != 0 { 1 } else { 2 };
-                let parent = (n - parent_position) / 2;
-                nodes[n].borrow_mut().parent = Rc::downgrade(&nodes[parent]);
-            }
-
             let left_child = n * 2 + 1;
             if left_child < NODES_COUNT {
                 nodes[n].borrow_mut().left = Some(nodes[left_child].clone());
             }
-
             let right_child = left_child + 1;
             if left_child < NODES_COUNT {
                 nodes[n].borrow_mut().right = Some(nodes[right_child].clone());
             }
         });
-
+        BinaryTree::assign_parents(&nodes[0]);
         nodes[0].clone()
     }
 
@@ -458,7 +466,7 @@ mod tests {
 
         for node_ref in flatten_nodes {
             let node = node_ref.borrow();
-            let leftmost = BinaryTree::leftmost(node_ref.clone());
+            let leftmost = BinaryTree::leftmost(&node_ref);
             let name;
             assert_eq!(
                 expected[node.name.as_str()],
