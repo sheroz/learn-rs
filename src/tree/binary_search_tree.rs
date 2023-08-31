@@ -14,29 +14,28 @@ impl BinarySearchTree {
         }
     }
 
-    pub fn insert_recursion(
-        node: Option<BinaryTreeNodeRef>,
-        new_node_ref: BinaryTreeNodeRef,
-    ) -> Option<BinaryTreeNodeRef> {
-        let node = Self::insert_child_recursion(node, new_node_ref.clone());
-        if let Some(node_ref) =  node.as_ref(){
-            BinaryTree::assign_parents(node_ref);
-        }
-        node
-    }
-
-    fn insert_child_recursion(node: Option<BinaryTreeNodeRef>,
-        new_node_ref: BinaryTreeNodeRef,
+    pub fn insert_recursion(node: Option<BinaryTreeNodeRef>,
+        new_node_ref: &BinaryTreeNodeRef,
     ) -> Option<BinaryTreeNodeRef> {
         match node {
-            None => return Some(new_node_ref),
+            None => return Some(new_node_ref.clone()),
             Some(node_ref) => {
+                let mut parent = None;
                 if node_ref.borrow().data > new_node_ref.borrow().data {
-                    let left = node_ref.clone().borrow().left.clone();
-                    node_ref.borrow_mut().left = Self::insert_child_recursion(left, new_node_ref.clone());
+                    let left = node_ref.borrow().left.clone();
+                    if left.is_none() {
+                        parent = Some(Rc::downgrade(&node_ref));
+                    }
+                    node_ref.borrow_mut().left = Self::insert_recursion(left, new_node_ref);
                 } else {
-                    let right = node_ref.clone().borrow().right.clone(); 
-                    node_ref.borrow_mut().right = Self::insert_child_recursion(right, new_node_ref.clone());
+                    let right = node_ref.borrow().right.clone(); 
+                    if right.is_none() {
+                        parent = Some(Rc::downgrade(&node_ref));
+                    }
+                    node_ref.borrow_mut().right = Self::insert_recursion(right, new_node_ref);
+                }
+                if parent.is_some() {
+                    new_node_ref.borrow_mut().parent = parent.unwrap();
                 }
                 return Some(node_ref);
             }
@@ -225,7 +224,7 @@ mod tests {
         
         let mut root = None;
         for node_ref in &list {
-            root = BinarySearchTree::insert_recursion(root, node_ref.clone());
+            root = BinarySearchTree::insert_recursion(root, node_ref);
         }
         assert!(root.is_some());
         let root_node = root.unwrap();
