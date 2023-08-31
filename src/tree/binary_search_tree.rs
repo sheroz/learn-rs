@@ -55,6 +55,7 @@ impl BinarySearchTree {
         }
         else {
             let node_ref = insert_node.as_ref().unwrap();
+            new_node.borrow_mut().parent = Rc::downgrade(&node_ref);
             let mut node = node_ref.borrow_mut();
             if new_node.borrow().data < node.data {
                 node.left = Some(new_node.clone());
@@ -62,9 +63,8 @@ impl BinarySearchTree {
             else {
                 node.right = Some(new_node.clone());
             }
-            new_node.borrow_mut().parent = Rc::downgrade(&node_ref.clone());
         }
-        insert_node
+        return insert_node;
     }
 
     pub fn is_binary_search_tree(node: &BinaryTreeNodeRef) -> bool {
@@ -144,7 +144,7 @@ impl BinarySearchTree {
     }
 
     pub fn is_binary_search_tree_v2(node: &BinaryTreeNodeRef) -> bool {
-        let flatten = BinaryTree::flatten_left_to_right(node.clone());
+        let flatten = BinaryTree::flatten_inorder(node.clone());
         let values: Vec<_> = flatten.iter().map(|n| n.borrow().data).collect();
         values.windows(2).all(|v| v[0] < v[1])
     }
@@ -203,13 +203,11 @@ mod tests {
         }
         assert!(root.is_some());
         let root_node = root.unwrap();
-        println!("{:#?}", root_node);
-
         assert_eq!(BinaryTree::count(&root_node), list.len());
-
-        assert!(BinarySearchTree::is_binary_search_tree(&root_node));
-
+        assert!(BinarySearchTree::is_binary_search_tree_v1(&root_node));
         assert!(BinarySearchTree::is_binary_search_tree_v2(&root_node));
+        assert!(BinarySearchTree::is_binary_search_tree_v3(&root_node));
+        assert!(BinarySearchTree::is_binary_search_tree(&root_node));
     }
 
     #[test]
@@ -221,12 +219,11 @@ mod tests {
             node = BinarySearchTree::insert_iterative(node, node_ref.clone());
         }
         let root = BinaryTree::get_root(&node.unwrap());
-        println!("{:#?}",root);
         assert_eq!(BinaryTree::count(&root), list.len());
-
-        assert!(BinarySearchTree::is_binary_search_tree(&root));
-
+        assert!(BinarySearchTree::is_binary_search_tree_v1(&root));
         assert!(BinarySearchTree::is_binary_search_tree_v2(&root));
+        assert!(BinarySearchTree::is_binary_search_tree_v3(&root));
+        assert!(BinarySearchTree::is_binary_search_tree(&root));
     }
 
     #[test]
@@ -282,7 +279,7 @@ mod tests {
         let root = populate_balanced_binary_search_tree();
         let bst = BinarySearchTree::with_root(root.clone());
 
-        let flatten = BinaryTree::flatten_left_to_right(root);
+        let flatten = BinaryTree::flatten_inorder(root);
         let values: Vec<_> = flatten.iter().map(|n| n.borrow().data).collect();
         let not_exist = 1 + *values.last().unwrap();
         for v in values {

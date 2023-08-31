@@ -93,39 +93,8 @@ impl BinaryTree {
         }
         nodes
     }
-    pub fn get_root(node_ref: &BinaryTreeNodeRef) -> BinaryTreeNodeRef {
-        let mut start = node_ref.clone();
-        while let Some(parent) = start.clone().borrow().parent.upgrade() {
-            start = parent.clone();
-        }
-        start
-    }
     
-    pub fn leftmost(node_ref: BinaryTreeNodeRef) -> Option<BinaryTreeNodeRef> {
-        let mut leftmost = None;
-        let mut current = node_ref;
-        loop {
-            let node_ref = current;
-            let node = node_ref.borrow();
-            if let Some(left) = node.left.as_ref() {
-                current = left.clone();
-                leftmost = Some(left.clone());
-            } else {
-                return leftmost;
-            }
-        }
-    }
-
-    pub fn flatten_left_to_right(node_ref: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
-        // inorder traversal:
-        // https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
-        // https://www.javatpoint.com/inorder-traversal
-        // https://www.tutorialspoint.com/data_structures_algorithms/tree_traversal.htm
-        // https://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion-and-without-stack/
-        //
-        // best suited one:
-        // https://www.geeksforgeeks.org/inorder-non-threaded-binary-tree-traversal-without-recursion-or-stack/
-
+    pub fn flatten_inorder(node_ref: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
         let mut root = Some(node_ref.clone());
 
         let mut nodes = VecDeque::new();
@@ -177,6 +146,29 @@ impl BinaryTree {
         }
 
         nodes.into()
+    }
+
+    pub fn get_root(node_ref: &BinaryTreeNodeRef) -> BinaryTreeNodeRef {
+        let mut start = node_ref.clone();
+        while let Some(parent) = start.clone().borrow().parent.upgrade() {
+            start = parent.clone();
+        }
+        start
+    }
+    
+    pub fn leftmost(node_ref: BinaryTreeNodeRef) -> Option<BinaryTreeNodeRef> {
+        let mut leftmost = None;
+        let mut current = node_ref;
+        loop {
+            let node_ref = current;
+            let node = node_ref.borrow();
+            if let Some(left) = node.left.as_ref() {
+                current = left.clone();
+                leftmost = Some(left.clone());
+            } else {
+                return leftmost;
+            }
+        }
     }
 
     fn is_same(v1: &Option<BinaryTreeNodeRef>, v2: &Option<BinaryTreeNodeRef>) -> bool {
@@ -489,7 +481,7 @@ mod tests {
         ];
 
         let root = populate_balanced_binary_tree();
-        let flatten_nodes: Vec<_> = BinaryTree::flatten_left_to_right(root.clone());
+        let flatten_nodes: Vec<_> = BinaryTree::flatten_inorder(root.clone());
         assert_eq!(flatten_nodes.len(), expected.len());
 
         let flatten_names: Vec<_> = flatten_nodes
