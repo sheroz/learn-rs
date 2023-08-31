@@ -37,7 +37,7 @@ impl PartialEq for BinaryTreeNode {
     }
 }
 
-impl Eq for BinaryTreeNode { }
+impl Eq for BinaryTreeNode {}
 
 pub struct BinaryTree {
     pub root: Option<BinaryTreeNodeRef>,
@@ -93,10 +93,9 @@ impl BinaryTree {
         }
         nodes
     }
-    
+
     pub fn flatten_inorder(node_ref: BinaryTreeNodeRef) -> Vec<BinaryTreeNodeRef> {
         let mut root = Some(node_ref.clone());
-
         let mut nodes = VecDeque::new();
 
         let mut leftdone = false;
@@ -155,7 +154,7 @@ impl BinaryTree {
         }
         start
     }
-    
+
     pub fn leftmost(node_ref: BinaryTreeNodeRef) -> Option<BinaryTreeNodeRef> {
         let mut leftmost = None;
         let mut current = node_ref;
@@ -277,8 +276,8 @@ mod tests {
         let list = populate_node_list();
         assert_eq!(list.len(), NODES_COUNT);
         let names: Vec<_> = list.iter().map(|v| v.borrow().name.clone()).collect();
-        (0..NODES_COUNT).for_each(|n|{
-            let name = format!("n{}",n);
+        (0..NODES_COUNT).for_each(|n| {
+            let name = format!("n{}", n);
             assert!(names.contains(&name));
         })
     }
@@ -414,11 +413,13 @@ mod tests {
         assert_eq!(flatten_nodes.len(), NODES_COUNT);
 
         let flatten_names: Vec<_> = flatten_nodes
-        .iter()
-        .map(|n| n.borrow().name.clone())
-        .collect();
+            .iter()
+            .map(|n| n.borrow().name.clone())
+            .collect();
 
-        let expected_names = (0..NODES_COUNT).map(|n| format!("n{}",n)).collect::<Vec<_>>();
+        let expected_names = (0..NODES_COUNT)
+            .map(|n| format!("n{}", n))
+            .collect::<Vec<_>>();
         assert_eq!(flatten_names, expected_names);
     }
 
@@ -454,7 +455,7 @@ mod tests {
         flatten_names.sort();
         expected_names.sort();
         assert_eq!(flatten_names, expected_names);
-        
+
         for node_ref in flatten_nodes {
             let node = node_ref.borrow();
             let leftmost = BinaryTree::leftmost(node_ref.clone());
@@ -474,7 +475,7 @@ mod tests {
     }
 
     #[test]
-    fn flatten_left_to_right() {
+    fn flatten_inorder() {
         let expected = [
             "n7", "n3", "n8", "n1", "n9", "n4", "n10", "n0", "n11", "n5", "n12", "n2", "n13", "n6",
             "n14",
