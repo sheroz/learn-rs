@@ -1,4 +1,3 @@
-- sample implementations for Binary Tree and Binary Search Tree (BST)
 - implement A Star (A *) algorithm
 - implement sort functions and benchmark 
 - optimize base64 encoder and benchmark

@@ -5,7 +5,10 @@
 - [Palindrome](https://github.com/sheroz/palindrome)
 - [Fibonacci](https://github.com/sheroz/fibonacci)
 - [Shortest Path: Dijkstra](https://github.com/sheroz/shortest_path)
-- [Tree and Parent-Child Relationship](https://github.com/sheroz/tree-sample-rs)
+- [Tree and Parent-Child Relationship](https://github.com/sheroz/tree-samples-rs)
+  - Generic Tree
+  - Binary Tree
+  - Binary Search Tree
 
 ## Useful links
 
