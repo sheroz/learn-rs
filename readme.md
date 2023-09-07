@@ -9,7 +9,9 @@
   - Generic Tree
   - Binary Tree
   - Binary Search Tree
-
+- [Magma symmetric cipher](https://github.com/sheroz/magma)
+- [RSA asymmetric cipher](https://github.com/sheroz/rsa)
+  
 ## Useful links
 
 - [The Book](https://doc.rust-lang.org/book)
