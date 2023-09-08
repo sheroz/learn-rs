@@ -1,4 +1,4 @@
-# Playground Rust
+# Code samples and other resources for learning Rust
 
 ## List of samples built for learning purposes
 
