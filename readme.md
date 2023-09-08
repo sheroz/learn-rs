@@ -12,12 +12,20 @@
 - [Magma symmetric cipher](https://github.com/sheroz/magma)
 - [RSA asymmetric cipher](https://github.com/sheroz/rsa)
   
-## Useful links
+## Useful resources
+
+### Books
 
 - [The Book](https://doc.rust-lang.org/book)
+- [Programming Rust: Fast, Safe Systems Development](https://www.amazon.com/Programming-Rust-Fast-Systems-Development/dp/1492052590)
+- [The Rust Programming Language](https://www.cs.brandeis.edu/~cs146a/rust/doc-02-21-2015/book/README.html)
+
+### Other resources
+
+- [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
 - [The Rust Reference](https://doc.rust-lang.org/reference)
 - [Rust Collections](https://doc.rust-lang.org/std/collections)
-- [The Rust Programming Language](https://www.cs.brandeis.edu/~cs146a/rust/doc-02-21-2015/book/README.html)
+- [Rust by Example](https://doc.rust-lang.org/rust-by-example/index.html)
 - [The Dark Arts of Unsafe Rust](https://doc.rust-lang.org/nightly/nomicon/)
 - [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/)
 - [Benchmarking](https://bheisler.github.io/criterion.rs/book/)
