@@ -23,7 +23,6 @@
   
 ### Other resources
 
-- [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
 - [The Rust Reference](https://doc.rust-lang.org/reference)
 - [Rust Collections](https://doc.rust-lang.org/std/collections)
 - [Rust by Example](https://doc.rust-lang.org/rust-by-example/index.html)
@@ -31,6 +30,8 @@
 - [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/)
 - [About Concurrency](https://assets.bitbashing.io/papers/concurrency-primer.pdf) - what every systems programmer should know about concurrency
 - [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
+- [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
+- [Comprehensive Rust](https://github.com/google/comprehensive-rust) - the Rust course used by the Android team at Google
 
 ## Visual Studio Code
 
