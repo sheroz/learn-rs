@@ -12,7 +12,7 @@
 - [Magma symmetric cipher](https://github.com/sheroz/magma)
 - [RSA asymmetric cipher](https://github.com/sheroz/rsa)
   
-## Useful resources
+## Useful
 
 ### Books
 
@@ -29,26 +29,42 @@
 - [Rust by Example](https://doc.rust-lang.org/rust-by-example/index.html)
 - [The Dark Arts of Unsafe Rust](https://doc.rust-lang.org/nightly/nomicon/)
 - [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/)
-- [Benchmarking](https://bheisler.github.io/criterion.rs/book/)
+- [About Concurrency](https://assets.bitbashing.io/papers/concurrency-primer.pdf) - what every systems programmer should know about concurrency
+- [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
 
 ## Visual Studio Code
 
-### DEBUG CONSOLE
+- [Rust in Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
 
-#### Sample commands for debugging
+### Debugging
+
+- [Install debugging support](https://code.visualstudio.com/docs/languages/rust#_debugging)
+- [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
+
+Also simple and very useful:
+
+```rust
+dbg!(...)
+```
+
+Usage details and examples: [std::dbg](https://doc.rust-lang.org/std/macro.dbg.html)
+
+#### DEBUG CONSOLE
 
 ```text
 >help
 >vo
->vo source_text
->x &source_text
+>vo a
+>x &a
 >x 0x00555555597036
 >x -c 256 0x00555555597036
->p source_text
->p &source_text
+>p a
+>p &a
 ```
 
-### Setting-up and using the [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov) based code coverage
+### Code Coverage
+
+#### Setting-up and using the [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov) based code coverage
 
 ```text
 $cargo +stable install cargo-llvm-cov --locked
