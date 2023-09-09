@@ -1,6 +1,6 @@
 # Code samples and other resources for learning Rust
 
-## List of samples built for learning purposes
+## List of my samples built for learning purposes
 
 - [Palindrome](https://github.com/sheroz/palindrome)
 - [Fibonacci](https://github.com/sheroz/fibonacci)
