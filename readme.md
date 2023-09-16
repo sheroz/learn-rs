@@ -32,7 +32,8 @@
 - [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
 - [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
 - [Comprehensive Rust](https://github.com/google/comprehensive-rust) - the Rust course used by the Android team at Google
-
+- [Algorithms implemented in Rust](https://github.com/TheAlgorithms/Rust)
+  
 ## Visual Studio Code
 
 - [Rust in Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
