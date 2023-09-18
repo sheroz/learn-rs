@@ -1,4 +1,6 @@
-# Code samples and other resources for learning Rust
+# Learning Rust
+
+Code samples and other resources for learning [Rust Programming Language](https://www.rust-lang.org/)
 
 ## List of my samples built for learning purposes
 
