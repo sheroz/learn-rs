@@ -33,7 +33,8 @@
 - [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
 - [Comprehensive Rust](https://github.com/google/comprehensive-rust) - the Rust course used by the Android team at Google
 - [Algorithms implemented in Rust](https://github.com/TheAlgorithms/Rust)
-  
+- [Advice for learning Rust](https://github.com/QuineDot/rust-learning) - [Learning Rust](https://quinedot.github.io/rust-learning/)
+   
 ## Visual Studio Code
 
 - [Rust in Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
