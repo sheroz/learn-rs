@@ -22,7 +22,7 @@ Resources and code samples for learning [Rust Programming Language](https://www.
 - [Algorithms implemented in Rust](https://github.com/TheAlgorithms/Rust)
 - [Advice for learning Rust](https://github.com/QuineDot/rust-learning) - [Learning Rust](https://quinedot.github.io/rust-learning/)
 - [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
-- [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)
+- [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf) - explains the structure of memory subsystems in use on modern commodity hardware
   
 ## Visual Studio Code
 
