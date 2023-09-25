@@ -17,12 +17,13 @@ Resources and code samples for learning [Rust Programming Language](https://www.
 - [The Dark Arts of Unsafe Rust](https://doc.rust-lang.org/nightly/nomicon/)
 - [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/)
 - [About Concurrency](https://assets.bitbashing.io/papers/concurrency-primer.pdf) - what every systems programmer should know about concurrency
-- [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
 - [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
 - [Comprehensive Rust](https://github.com/google/comprehensive-rust) - the Rust course used by the Android team at Google
 - [Algorithms implemented in Rust](https://github.com/TheAlgorithms/Rust)
 - [Advice for learning Rust](https://github.com/QuineDot/rust-learning) - [Learning Rust](https://quinedot.github.io/rust-learning/)
-
+- [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
+- [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)
+  
 ## Visual Studio Code
 
 - [Rust in Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
