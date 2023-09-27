@@ -1,8 +1,8 @@
 // #[path = "../src/mycalc.rs"] mod mycalc; 
 
-extern crate playground_rs;
-use playground_rs::my_lib::sum2;
-use playground_rs::my_lib::mul2;
+extern crate learn_rs;
+use learn_rs::my_lib::sum2;
+use learn_rs::my_lib::mul2;
 
 #[test]
 fn test_sum2() {

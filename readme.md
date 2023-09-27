@@ -41,17 +41,17 @@ dbg!(...)
 
 Usage details and examples: [std::dbg](https://doc.rust-lang.org/std/macro.dbg.html)
 
-#### DEBUG CONSOLE
+#### DEBUG CONSOLE (lldb)
 
 ```text
 >help
->vo
->vo a
+>v
+>print a
+>p &a
 >x &a
 >x 0x00555555597036
 >x -c 256 0x00555555597036
->p a
->p &a
+>q
 ```
 
 ### Code Coverage

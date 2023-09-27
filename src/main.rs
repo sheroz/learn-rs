@@ -1,7 +1,7 @@
 use learn_rs::*;
 
 fn main() {
-
+    
     my_calc::calc_sample();
 
     my_collections::sample_array::array_sample();
