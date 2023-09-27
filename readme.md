@@ -27,6 +27,8 @@ Resources and code samples for learning [Rust Programming Language](https://www.
 ## Visual Studio Code
 
 - [Rust in Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
+- [Keyboard shortcuts for Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
+- [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
 
 ### Debugging
 
