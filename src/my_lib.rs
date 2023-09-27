@@ -5,7 +5,7 @@
 /// ```
 /// let arg1 = 1;
 /// let arg2 = 2;
-/// let result = playground_rs::my_lib::sum2(arg1, arg2);
+/// let result = learn_rs::my_lib::sum2(arg1, arg2);
 ///
 /// assert_eq!(3, result);
 /// ```
@@ -18,7 +18,7 @@ pub fn mul2(a: i32, b: i32) -> i32 {
 }
 
 pub fn mul21(a: i32, b: i32) -> i32 {
-    return a * b;
+    a * b
 }
 
 #[cfg(test)]
