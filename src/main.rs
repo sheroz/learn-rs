@@ -1,4 +1,4 @@
-use playground_rs::*;
+use learn_rs::*;
 
 fn main() {
 
