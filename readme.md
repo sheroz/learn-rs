@@ -14,7 +14,8 @@ Resources and code samples for learning [Rust Programming Language](https://www.
 - [The Rust Reference](https://doc.rust-lang.org/reference)
 - [Rust Collections](https://doc.rust-lang.org/std/collections)
 - [Rust by Example](https://doc.rust-lang.org/rust-by-example/index.html)
-- [The Dark Arts of Unsafe Rust](https://doc.rust-lang.org/nightly/nomicon/)
+- [The Rustonomicon](https://github.com/rust-lang/nomicon) - The Dark Arts of Advanced and Unsafe Rust Programming
+- [The Rustonomicon - nightly](https://doc.rust-lang.org/nightly/nomicon/) - The Dark Arts of Unsafe Rust
 - [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/)
 - [About Concurrency](https://assets.bitbashing.io/papers/concurrency-primer.pdf) - what every systems programmer should know about concurrency
 - [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
