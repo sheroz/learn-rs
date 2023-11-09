@@ -63,13 +63,14 @@ $cargo llvm-cov --open
 - [The Rustonomicon - nightly](https://doc.rust-lang.org/nightly/nomicon/) - The Dark Arts of Unsafe Rust
 - [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/)
 - [About Concurrency](https://assets.bitbashing.io/papers/concurrency-primer.pdf) - what every systems programmer should know about concurrency
+- [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)
 - [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
 - [Comprehensive Rust](https://github.com/google/comprehensive-rust) - the Rust course used by the Android team at Google
 - [Algorithms implemented in Rust](https://github.com/TheAlgorithms/Rust)
 - [Advice for learning Rust](https://github.com/QuineDot/rust-learning) - [Learning Rust](https://quinedot.github.io/rust-learning/)
-- [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
 - [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf) - explains the structure of memory subsystems in use on modern commodity hardware
-  
+- [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
+
 ### Recommended to explore
 
 - [Tokio](https://tokio.rs/) - asynchronous runtime
