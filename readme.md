@@ -36,7 +36,7 @@ Resources and code samples for learning [Rust Programming Language](https://www.
 - [Install debugging support](https://code.visualstudio.com/docs/languages/rust#_debugging)
 - [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
 
-Also simple and very useful:
+Also, try the simple and very useful `dbg!`:
 
 ```rust
 dbg!(...)
@@ -67,6 +67,12 @@ $cargo llvm-cov
 $cargo llvm-cov --html
 $cargo llvm-cov --open 
 ```
+
+## Recommended to explore
+
+- [Tokio](https://tokio.rs/) - asynchronous runtime
+- [axum](https://github.com/tokio-rs/axum) - web application framework
+- [SQLx](https://github.com/launchbadge/sqlx) - async SQL toolkit
 
 ## List of my samples built for learning purposes
 
