@@ -85,5 +85,6 @@ $cargo llvm-cov --open
   - Generic Tree
   - Binary Tree
   - Binary Search Tree
-- [Magma symmetric cipher](https://github.com/sheroz/magma)
-- [RSA asymmetric cipher](https://github.com/sheroz/rsa)
+- Cryptography
+  - [Magma symmetric cipher](https://github.com/sheroz/magma)
+  - [RSA asymmetric cipher](https://github.com/sheroz/rsa)
