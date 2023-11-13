@@ -87,7 +87,7 @@ $cargo llvm-cov --open
 - [axum](https://github.com/tokio-rs/axum) - web application framework
 - [SQLx](https://github.com/launchbadge/sqlx) - async SQL toolkit
 
-### List of my samples built for learning purposes
+### List of samples for learning purposes
 
 - [Palindrome](https://github.com/sheroz/palindrome)
 - [Fibonacci](https://github.com/sheroz/fibonacci)
@@ -97,5 +97,8 @@ $cargo llvm-cov --open
   - Binary Tree
   - Binary Search Tree
 - Cryptography
-  - [Magma symmetric cipher](https://github.com/sheroz/magma)
-  - [RSA asymmetric cipher](https://github.com/sheroz/rsa)
+  - [Magma Symmetric Cipher](https://github.com/sheroz/magma)
+  - [RSA Asymmetric Cipher](https://github.com/sheroz/rsa)
+- Web
+  - [Web Service](https://github.com/sheroz/axum-web)
+  
