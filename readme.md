@@ -69,6 +69,7 @@ $cargo llvm-cov --open
 - [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/)
 - [Advice for learning Rust](https://github.com/QuineDot/rust-learning) - [Learning Rust](https://quinedot.github.io/rust-learning/)
 - [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf) - explains the structure of memory subsystems in use on modern commodity hardware
+- [Personal blog of Luca Palmieri](https://www.lpalmieri.com/) - has many useful stuff about Rust
 
 #### Concurrency
 
