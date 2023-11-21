@@ -9,6 +9,7 @@ Tools, resources and code samples for learning [Rust Programming Language](https
 - [Rust in Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
 - [Keyboard shortcuts for Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
 - [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
+- [Boost Your Coding Fu With Visual Studio Code and Vim](https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim)
 
 ### Debugging
 
