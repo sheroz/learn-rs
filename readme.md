@@ -1,8 +1,8 @@
 # Learning Rust
 
-Tools, resources and code samples for learning [Rust Programming Language](https://www.rust-lang.org/)
-
 <img src="learn-rust.jpeg" width = 25%>  
+
+Tools, resources and code samples for learning [Rust Programming Language](https://www.rust-lang.org/)
 
 ## Tools
 
