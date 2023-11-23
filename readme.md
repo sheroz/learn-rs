@@ -1,7 +1,9 @@
 # Learning Rust
 
 Tools, resources and code samples for learning [Rust Programming Language](https://www.rust-lang.org/)
-  
+
+<img src="learn-rust.jpeg" width = 50%>  
+
 ## Tools
 
 ### Visual Studio Code
