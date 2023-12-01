@@ -4,13 +4,15 @@
 
 Tools, resources and code samples for learning [Rust Programming Language](https://www.rust-lang.org/)
 
+## Tools
+
 - [Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
   - [Keyboard shortcuts for Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
   - [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
   - [Boost Your Coding Fu With Visual Studio Code and Vim](https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim)
-- Try [RustRover (Preview)](https://www.jetbrains.com/rust/) - JetBrains IDE for Rust Developers
+- Try: [RustRover (Preview)](https://www.jetbrains.com/rust/) - JetBrains IDE for Rust Developers
 
-#### Visual Studio Code - Debugging
+### Visual Studio Code - Debugging
 
 - [Install debugging support](https://code.visualstudio.com/docs/languages/rust#_debugging)
 - [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
@@ -50,8 +52,8 @@ $cargo llvm-cov --open
 ### Clippy
 
 - [Clippy](https://github.com/rust-lang/rust-clippy) - A collection of lints to catch common mistakes and improve your Rust code
- 
-### Books
+
+## Books
 
 - [The Book](https://doc.rust-lang.org/book)
 - [Programming Rust: Fast, Safe Systems Development](https://www.amazon.com/Programming-Rust-Fast-Systems-Development/dp/1492052590)
@@ -86,13 +88,13 @@ $cargo llvm-cov --open
 
 - [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
 
-### Recommended to explore
+## Recommended to explore
 
 - [Tokio](https://tokio.rs/) - asynchronous runtime
 - [axum](https://github.com/tokio-rs/axum) - web application framework
 - [SQLx](https://github.com/launchbadge/sqlx) - async SQL toolkit
 
-### List of samples for learning purposes
+## List of samples for learning purposes
 
 - [Palindrome](https://github.com/sheroz/palindrome)
 - [Fibonacci](https://github.com/sheroz/fibonacci)
