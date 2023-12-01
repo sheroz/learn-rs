@@ -1,32 +1,29 @@
 # Learning Rust
 
-<img src="learn-rust.jpeg" width = 25%>  
+<img src="learn-rust.jpeg" style="width: 25%" alt="ferris-learner">  
 
 Tools, resources and code samples for learning [Rust Programming Language](https://www.rust-lang.org/)
 
-## Tools
+- [Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
+  - [Keyboard shortcuts for Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
+  - [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
+  - [Boost Your Coding Fu With Visual Studio Code and Vim](https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim)
+- Try [RustRover (Preview)](https://www.jetbrains.com/rust/) - JetBrains IDE for Rust Developers
 
-### Visual Studio Code
-
-- [Rust in Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
-- [Keyboard shortcuts for Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
-- [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
-- [Boost Your Coding Fu With Visual Studio Code and Vim](https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim)
-
-### Debugging
+#### Visual Studio Code - Debugging
 
 - [Install debugging support](https://code.visualstudio.com/docs/languages/rust#_debugging)
 - [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
 
-Also, try the simple and very useful `dbg!`:
+Also, try [`dbg!`](https://doc.rust-lang.org/std/macro.dbg.html)
 
 ```rust
-dbg!(...)
+dbg!(..);
 ```
 
 Usage details and examples: [std::dbg](https://doc.rust-lang.org/std/macro.dbg.html)
 
-#### DEBUG CONSOLE (lldb)
+#### Visual Studio Code - DEBUG CONSOLE (lldb)
 
 ```text
 >help
@@ -50,6 +47,10 @@ $cargo llvm-cov --html
 $cargo llvm-cov --open 
 ```
 
+### Clippy
+
+- [Clippy](https://github.com/rust-lang/rust-clippy) - A collection of lints to catch common mistakes and improve your Rust code
+ 
 ### Books
 
 - [The Book](https://doc.rust-lang.org/book)
