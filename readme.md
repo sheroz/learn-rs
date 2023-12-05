@@ -69,6 +69,7 @@ $cargo llvm-cov --open
 - [Rust by Example](https://doc.rust-lang.org/rust-by-example/index.html)
 - [Comprehensive Rust](https://github.com/google/comprehensive-rust) - the Rust course used by the Android team at Google
 - [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
+- [Idiomatic Rust](https://github.com/mre/idiomatic-rust) - collection of articles/talks/repos which teach concise, idiomatic Rust
 - [The Rustonomicon](https://github.com/rust-lang/nomicon) - The Dark Arts of Advanced and Unsafe Rust Programming
 - [The Rustonomicon - nightly](https://doc.rust-lang.org/nightly/nomicon/) - The Dark Arts of Unsafe Rust
 - [Algorithms implemented in Rust](https://github.com/TheAlgorithms/Rust)
