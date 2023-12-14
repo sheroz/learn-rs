@@ -10,7 +10,7 @@ Tools, resources and code samples for learning [Rust Programming Language](https
   - [Keyboard shortcuts for Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
   - [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
   - [Boost Your Coding Fu With Visual Studio Code and Vim](https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim)
-- Try: [RustRover (Preview)](https://www.jetbrains.com/rust/) - JetBrains IDE for Rust Developers
+- Take a look: [RustRover (Preview)](https://www.jetbrains.com/rust/) - JetBrains IDE for Rust Developers
 
 ### Visual Studio Code - Debugging
 
