@@ -62,6 +62,9 @@ $cargo llvm-cov --open
   
 ### Other resources
 
+- [Code of conduct](https://www.rust-lang.org/policies/code-of-conduct)
+- [This Week in Rust](https://this-week-in-rust.org/)
+
 #### Fundamentals
 
 - [The Rust Reference](https://doc.rust-lang.org/reference)
@@ -77,10 +80,6 @@ $cargo llvm-cov --open
 - [Advice for learning Rust](https://github.com/QuineDot/rust-learning) - [Learning Rust](https://quinedot.github.io/rust-learning/)
 - [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf) - explains the structure of memory subsystems in use on modern commodity hardware
 - [Personal blog of Luca Palmieri](https://www.lpalmieri.com/) - has many useful stuff about Rust
-
-#### Code of conduct
-
-- [Code of conduct](https://www.rust-lang.org/policies/code-of-conduct)
 
 #### Concurrency
 
