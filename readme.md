@@ -78,6 +78,10 @@ $cargo llvm-cov --open
 - [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf) - explains the structure of memory subsystems in use on modern commodity hardware
 - [Personal blog of Luca Palmieri](https://www.lpalmieri.com/) - has many useful stuff about Rust
 
+#### Code of conduct
+
+- [Code of conduct](https://www.rust-lang.org/policies/code-of-conduct)
+
 #### Concurrency
 
 - [About Concurrency](https://assets.bitbashing.io/papers/concurrency-primer.pdf) - what every systems programmer should know about concurrency
