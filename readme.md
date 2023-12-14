@@ -62,6 +62,9 @@ $cargo llvm-cov --open
   
 ### Other resources
 
+- [Code of conduct](https://www.rust-lang.org/policies/code-of-conduct)
+- [This Week in Rust](https://this-week-in-rust.org/)
+
 #### Fundamentals
 
 - [The Rust Reference](https://doc.rust-lang.org/reference)
