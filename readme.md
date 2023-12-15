@@ -11,6 +11,7 @@ Tools, resources and code samples for learning [Rust Programming Language](https
   - [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
   - [Boost Your Coding Fu With Visual Studio Code and Vim](https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim)
 - Take a look: [RustRover (Preview)](https://www.jetbrains.com/rust/) - JetBrains IDE for Rust Developers
+  - [VSCode Theme](https://plugins.jetbrains.com/plugin/19177-vscode-theme) - includes `VSCode Dark+` and `VSCode Dark Modern` themes 
 
 ### Visual Studio Code - Debugging
 
