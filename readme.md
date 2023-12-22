@@ -121,5 +121,5 @@ $cargo llvm-cov --open
   - [Magma Symmetric Cipher](https://github.com/sheroz/magma)
   - [RSA Asymmetric Cipher](https://github.com/sheroz/rsa)
 - Web
-  - [Web Service](https://github.com/sheroz/axum-web)
+  - [Getting started with Web Services in Rust (using axum, sqlx, postgres, and redis)](https://github.com/sheroz/axum-web)
   
