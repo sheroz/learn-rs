@@ -7,11 +7,20 @@ Tools, resources and code samples for learning [Rust Programming Language](https
 ## Tools
 
 - [Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
-  - [Keyboard shortcuts for Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
-  - [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
+  - Recommended plugins:
+    - [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+    - [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
+    - [Even Better TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml)
+    - [crates](https://marketplace.visualstudio.com/items?itemName=serayuzgur.crates)
+    - [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools)
+    - [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+    - [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
+  - Keyboard shortcuts:
+    - [Keyboard shortcuts for Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
+    - [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
   - [Boost Your Coding Fu With Visual Studio Code and Vim](https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim)
 - Take a look: [RustRover (Preview)](https://www.jetbrains.com/rust/) - JetBrains IDE for Rust Developers
-  - [VSCode Theme](https://plugins.jetbrains.com/plugin/19177-vscode-theme) - includes `VSCode Dark+` and `VSCode Dark Modern` themes 
+  - [VSCode Theme](https://plugins.jetbrains.com/plugin/19177-vscode-theme) - includes `VSCode Dark+` and `VSCode Dark Modern` themes
 
 ### Visual Studio Code - Debugging
 
