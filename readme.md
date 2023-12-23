@@ -110,16 +110,16 @@ $cargo llvm-cov --open
 
 ## List of samples for learning purposes
 
-- [Palindrome](https://github.com/sheroz/palindrome)
-- [Fibonacci](https://github.com/sheroz/fibonacci)
-- [Shortest Path: Dijkstra](https://github.com/sheroz/shortest_path)
+- Web Service: REST API
+  - [Getting started with Web Services in Rust (using axum, sqlx, postgres, and redis)](https://github.com/sheroz/axum-web)
+- Cryptography
+  - [Magma Symmetric Cipher](https://github.com/sheroz/magma)
+  - [RSA Asymmetric Cipher](https://github.com/sheroz/rsa)
 - [Tree and Parent-Child Relationship](https://github.com/sheroz/tree-samples-rs)
   - Generic Tree
   - Binary Tree
   - Binary Search Tree
-- Cryptography
-  - [Magma Symmetric Cipher](https://github.com/sheroz/magma)
-  - [RSA Asymmetric Cipher](https://github.com/sheroz/rsa)
-- Web
-  - [Getting started with Web Services in Rust (using axum, sqlx, postgres, and redis)](https://github.com/sheroz/axum-web)
+- [Shortest Path: Dijkstra](https://github.com/sheroz/shortest_path)
+- [Fibonacci](https://github.com/sheroz/fibonacci)
+- [Palindrome](https://github.com/sheroz/palindrome)
   
