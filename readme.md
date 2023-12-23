@@ -1,4 +1,4 @@
-# Learning Rust
+# Getting started with Rust
 
 <img src="learn-rust.jpeg" style="width: 25%" alt="ferris-learner">  
 
