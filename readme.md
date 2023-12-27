@@ -80,7 +80,7 @@ $cargo llvm-cov --open
 - [The Rust Reference](https://doc.rust-lang.org/reference)
 - [Rust Collections](https://doc.rust-lang.org/std/collections)
 - [Rust by Example](https://doc.rust-lang.org/rust-by-example/index.html)
-- [Comprehensive Rust](https://github.com/google/comprehensive-rust) - the Rust course used by the Android team at Google
+- [Comprehensive Rust](https://github.com/google/comprehensive-rust) - This is a free Rust course developed by the Android team at Google. The course covers the full spectrum of Rust, from basic syntax to advanced topics like generics and error handling.
 - [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
 - [Idiomatic Rust](https://github.com/mre/idiomatic-rust) - collection of articles/talks/repos which teach concise, idiomatic Rust
 - [The Rustonomicon](https://github.com/rust-lang/nomicon) - The Dark Arts of Advanced and Unsafe Rust Programming
