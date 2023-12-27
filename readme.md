@@ -108,7 +108,7 @@ $cargo llvm-cov --open
 
 - [Clippy](https://github.com/rust-lang/rust-clippy) - A collection of lints to catch common mistakes and improve your Rust code
 
-## List of samples for learning purposes
+## List of code samples built for learning purposes
 
 - Web Service: REST API
   - [Getting started with Web Services in Rust (using axum, sqlx, postgres, and redis)](https://github.com/sheroz/axum-web)
