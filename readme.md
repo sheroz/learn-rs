@@ -11,17 +11,16 @@ Resources, tools and code samples for learning [Rust Programming Language](https
 - [The Rust Programming Language](https://www.cs.brandeis.edu/~cs146a/rust/doc-02-21-2015/book/README.html)
 - [Easy Rust](https://dhghomon.github.io/easy_rust/)
   
+### Courses
+
+- [Comprehensive Rust](https://github.com/google/comprehensive-rust) - This is a free Rust course developed by the Android team at Google. The course covers the full spectrum of Rust, from basic syntax to advanced topics like generics and error handling.
+
 ### Other resources
 
-- [Code of conduct](https://www.rust-lang.org/policies/code-of-conduct)
 - [This Week in Rust](https://this-week-in-rust.org/)
-
-#### Fundamentals
-
 - [The Rust Reference](https://doc.rust-lang.org/reference)
 - [Rust Collections](https://doc.rust-lang.org/std/collections)
 - [Rust by Example](https://doc.rust-lang.org/rust-by-example/index.html)
-- [Comprehensive Rust](https://github.com/google/comprehensive-rust) - This is a free Rust course developed by the Android team at Google. The course covers the full spectrum of Rust, from basic syntax to advanced topics like generics and error handling.
 - [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
 - [Idiomatic Rust](https://github.com/mre/idiomatic-rust) - collection of articles/talks/repos which teach concise, idiomatic Rust
 - [The Rustonomicon](https://github.com/rust-lang/nomicon) - The Dark Arts of Advanced and Unsafe Rust Programming
@@ -31,6 +30,7 @@ Resources, tools and code samples for learning [Rust Programming Language](https
 - [Advice for learning Rust](https://github.com/QuineDot/rust-learning) - [Learning Rust](https://quinedot.github.io/rust-learning/)
 - [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf) - explains the structure of memory subsystems in use on modern commodity hardware
 - [Personal blog of Luca Palmieri](https://www.lpalmieri.com/) - has a good deal of useful stuff about Rust
+- [Code of conduct](https://www.rust-lang.org/policies/code-of-conduct)
 
 #### Concurrency
 
