@@ -14,7 +14,7 @@ Resources, tools and code samples for learning [Rust Programming Language](https
 ### Courses & Workshops
 
 - [Comprehensive Rust](https://github.com/google/comprehensive-rust) - This is a free Rust course developed by the Android team at Google. The course covers the full spectrum of Rust, from basic syntax to advanced topics like generics and error handling.
-- [Learn to write Rust procedural macros](https://github.com/dtolnay/proc-macro-workshop) -  Rust Latam conference, Montevideo Uruguay, March 2019.
+- [Learn to write Rust procedural macros](https://github.com/dtolnay/proc-macro-workshop) - Rust Latam conference, Montevideo Uruguay, March 2019.
 
 ### Other resources
 
@@ -23,7 +23,7 @@ Resources, tools and code samples for learning [Rust Programming Language](https
 - [Rust Collections](https://doc.rust-lang.org/std/collections)
 - [Rust by Example](https://doc.rust-lang.org/rust-by-example/index.html)
 - [Awesome Rust](https://github.com/rust-unofficial/awesome-rust) - a curated list of Rust code and resources
-- [Idiomatic Rust](https://github.com/mre/idiomatic-rust) - collection of articles/talks/repos which teach concise, idiomatic Rust
+- [Idiomatic Rust](https://github.com/mre/idiomatic-rust) - a collection of articles/talks/repos which teach concise, idiomatic Rust
 - [The Rustonomicon](https://github.com/rust-lang/nomicon) - The Dark Arts of Advanced and Unsafe Rust Programming
 - [The Rustonomicon - nightly](https://doc.rust-lang.org/nightly/nomicon/) - The Dark Arts of Unsafe Rust
 - [Algorithms implemented in Rust](https://github.com/TheAlgorithms/Rust)
@@ -112,7 +112,7 @@ $cargo llvm-cov --open
 ## List of code samples built for learning purposes
 
 - Web Service: REST API
-  - [Getting started with Web Services in Rust (using axum, sqlx, postgres, and redis)](https://github.com/sheroz/axum-web)
+  - [Getting started with Web Services in Rust (using axum, JWT, SQLx, PostgreSQL, and Redis)](https://github.com/sheroz/axum-web)
 - Cryptography
   - [Magma Symmetric Cipher](https://github.com/sheroz/magma)
   - [RSA Asymmetric Cipher](https://github.com/sheroz/rsa)
