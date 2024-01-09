@@ -11,9 +11,10 @@ Resources, tools and code samples for learning [Rust Programming Language](https
 - [The Rust Programming Language](https://www.cs.brandeis.edu/~cs146a/rust/doc-02-21-2015/book/README.html)
 - [Easy Rust](https://dhghomon.github.io/easy_rust/)
   
-### Courses
+### Courses & Workshops
 
 - [Comprehensive Rust](https://github.com/google/comprehensive-rust) - This is a free Rust course developed by the Android team at Google. The course covers the full spectrum of Rust, from basic syntax to advanced topics like generics and error handling.
+- [Learn to write Rust procedural macros](https://github.com/dtolnay/proc-macro-workshop) -  Rust Latam conference, Montevideo Uruguay, March 2019.
 
 ### Other resources
 
