@@ -2,14 +2,14 @@
 
 <img src="learn-rust.jpeg" style="width: 25%" alt="ferris-learner">  
 
-Resources, tools and code samples for learning [Rust Programming Language](https://www.rust-lang.org/)
+Resources, tools, and code samples for learning [Rust Programming Language](https://www.rust-lang.org/)
 
 ## Books
 
 - [The Book](https://doc.rust-lang.org/book)
-- [Programming Rust: Fast, Safe Systems Development](https://www.amazon.com/Programming-Rust-Fast-Systems-Development/dp/1492052590)
 - [The Rust Programming Language](https://www.cs.brandeis.edu/~cs146a/rust/doc-02-21-2015/book/README.html)
 - [Easy Rust](https://dhghomon.github.io/easy_rust/)
+- [Programming Rust: Fast, Safe Systems Development](https://www.amazon.com/Programming-Rust-Fast-Systems-Development/dp/1492052590)
   
 ### Courses & Workshops
 
