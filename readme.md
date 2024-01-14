@@ -112,7 +112,7 @@ $cargo llvm-cov --open
 ## List of code samples built for learning purposes
 
 - Web Service: REST API
-  - [Getting started with Web Services in Rust (using axum, JWT, SQLx, PostgreSQL, and Redis)](https://github.com/sheroz/axum-web)
+  - [Getting started with Web Services in Rust (using axum, JWT, SQLx, PostgreSQL, and Redis)](https://github.com/sheroz/axum-web-api-kickstart)
 - Cryptography
   - [Magma Symmetric Cipher](https://github.com/sheroz/magma)
   - [RSA Asymmetric Cipher](https://github.com/sheroz/rsa)
