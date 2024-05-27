@@ -45,12 +45,6 @@ Resources, tools, and code samples for learning [Rust Programming Language](http
 
 - [Benchmarking: Criterion](https://bheisler.github.io/criterion.rs/book/)
 
-### Recommended to explore
-
-- [Tokio](https://tokio.rs/) - asynchronous runtime
-- [axum](https://github.com/tokio-rs/axum) - web application framework
-- [SQLx](https://github.com/launchbadge/sqlx) - async SQL toolkit
-
 ## Tools
 
 - [Visual Studio Code](https://code.visualstudio.com/docs/languages/rust)
