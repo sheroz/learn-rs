@@ -7,9 +7,10 @@ Resources, tools, and code samples for learning [Rust Programming Language](http
 ## Books
 
 - [The Book](https://doc.rust-lang.org/book)
+- [Rust for Rustaceans](https://rust-for-rustaceans.com/)
+- [Programming Rust: Fast, Safe Systems Development](https://www.amazon.com/Programming-Rust-Fast-Systems-Development/dp/1492052590)
 - [The Rust Programming Language](https://www.cs.brandeis.edu/~cs146a/rust/doc-02-21-2015/book/README.html)
 - [Easy Rust](https://dhghomon.github.io/easy_rust/)
-- [Programming Rust: Fast, Safe Systems Development](https://www.amazon.com/Programming-Rust-Fast-Systems-Development/dp/1492052590)
   
 ### Courses & Workshops
 
@@ -65,7 +66,7 @@ Resources, tools, and code samples for learning [Rust Programming Language](http
     - [Keyboard shortcuts for Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-linux.pdf)
     - [Keyboard shortcuts for macOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
   - [Boost Your Coding Fu With Visual Studio Code and Vim](https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim)
-- Take a look: [RustRover (Preview)](https://www.jetbrains.com/rust/) - JetBrains IDE for Rust Developers
+- Take a look: [RustRover](https://www.jetbrains.com/rust/) - JetBrains IDE for Rust Developers
   - [VSCode Theme](https://plugins.jetbrains.com/plugin/19177-vscode-theme) - includes `VSCode Dark+` and `VSCode Dark Modern` themes
 
 ### Visual Studio Code - Debugging
