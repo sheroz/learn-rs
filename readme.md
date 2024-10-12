@@ -11,6 +11,7 @@ Resources, tools, and code samples for learning [Rust Programming Language](http
 - [Programming Rust: Fast, Safe Systems Development](https://www.amazon.com/Programming-Rust-Fast-Systems-Development/dp/1492052590)
 - [The Rust Programming Language](https://www.cs.brandeis.edu/~cs146a/rust/doc-02-21-2015/book/README.html)
 - [Easy Rust](https://dhghomon.github.io/easy_rust/)
+- [Effective Rust](https://www.lurklurk.org/effective-rust/)
   
 ### Courses & Workshops
 
